@@ -1,0 +1,26 @@
+#fb-root
+
+button(id="login") logout
+button(id="logout") logout
+.row-fluid
+	.span3
+		ul.nav.nav-list
+			ul#your-pics.nav-header Your Pictures
+			ul#albums.nav-header	Albums
+			ul#friends.nav-header Friends
+			ul#groups.nav-header 
+	#collage-wrapper.span9
+		#collage-menu
+			ul#collage-menu-list
+				li.menu-item(data-action="resize") Resize
+				li.menu-item(data-action="rotate") Rotate
+		p Canvas Here
+		#canvas-container
+		
+
+script(src="javascripts/kinetic-v3.10.3.js")
+script(src="javascripts/eventemitter2.js")
+script(src="javascripts/client.js")
+
+//- script(src="javascripts/fb-init.js")
+
