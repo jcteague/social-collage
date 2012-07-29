@@ -9,8 +9,10 @@ App.Collage = class Collage
 		@activeImage = null;
 		@images = []
 		@canvas.on "click",(evt) =>
+			console.log "canvas clicked"
 			cnvs_item =  @container.getIntersections(evt.offsetX,evt.offsetY)
 			if @currentItem? && cnvs_item.length == 0
+				console.log(@currentItem)
 				@currentItem.noLongerActive();
 				@currentItem = null
 		

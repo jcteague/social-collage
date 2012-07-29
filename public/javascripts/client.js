@@ -70,8 +70,8 @@
       this.onToolbarItemSelected = __bind(this.onToolbarItemSelected, this);
       this.onCanvasItemClick = __bind(this.onCanvasItemClick, this);
       this.collage = new App.Collage(this.canvas_element, this.event_emitter);
-      this.collageItemClick = App.Commands.resize;
-      event_emitter.on("ItemClicked", this.onCanvasItemClick);
+      this.collageItemClick = App.Commands.Resize.action;
+      event_emitter.on("ItemSelected", this.onCanvasItemClick);
       event_emitter.on("Toolbar.MenuItemSelected", this.onToolbarItemSelected);
     }
 
@@ -101,80 +101,65 @@
 
   App.Commands = {};
 
-  App.Commands.resize = function(collage_item) {
-    var bl, br, canvas_item, getAnchor, group, item_position, tl, tr,
-      _this = this;
-    console.log("making image resizable");
-    canvas_item = collage_item.item;
-    group = new Kinetic.Group({
-      draggable: true
-    });
-    group.add(canvas_item);
-    getAnchor = function(x, y, name) {
-      return new Kinetic.Rect({
-        x: x,
-        y: y,
-        name: name,
-        fill: '#000000',
-        width: 12,
-        height: 12,
-        draggable: true
+  App.Commands.Resize = {
+    action: function(collage_item) {
+      var bl, br, canvas_group, canvas_item, item_position, tl, tr, _ref,
+        _this = this;
+      console.log("making image resizable");
+      canvas_group = collage_item.group;
+      _ref = collage_item.corners, tl = _ref.tl, tr = _ref.tr, bl = _ref.bl, br = _ref.br;
+      canvas_item = collage_item.item;
+      item_position = canvas_item.getPosition();
+      tl.on("dragmove", function() {
+        var img_height, img_width;
+        tr.attrs.y = tl.attrs.y;
+        bl.attrs.x = tl.attrs.x;
+        img_width = tr.attrs.x - tl.attrs.x;
+        img_height = bl.attrs.y - tl.attrs.y;
+        canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
+        return canvas_item.setSize(img_width, img_height);
       });
-    };
-    item_position = canvas_item.getPosition();
-    tl = getAnchor(item_position.x - 6, item_position.y - 6, 'topLeft');
-    tr = getAnchor(item_position.x + canvas_item.getWidth() - 6, item_position.y - 6, 'topRight');
-    bl = getAnchor(item_position.x - 6, item_position.y - 6 + canvas_item.getHeight(), 'bottomRight');
-    br = getAnchor(item_position.x + canvas_item.getWidth() - 6, item_position.y - 6 + canvas_item.getHeight(), 'bottomLeft');
-    tl.on("dragmove", function() {
-      var img_height, img_width;
-      tr.attrs.y = tl.attrs.y;
-      bl.attrs.x = tl.attrs.x;
-      img_width = tr.attrs.x - tl.attrs.x;
-      img_height = bl.attrs.y - tl.attrs.y;
-      canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
-      return canvas_item.setSize(img_width, img_height);
-    });
-    bl.on("dragmove", function() {
-      var img_height, img_width;
-      tl.attrs.x = bl.attrs.x;
-      br.attrs.y = bl.attrs.y;
-      img_width = tr.attrs.x - tl.attrs.x;
-      img_height = bl.attrs.y - tl.attrs.y;
-      canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
-      return canvas_item.setSize(img_width, img_height);
-    });
-    tr.on("dragmove", function() {
-      var img_height, img_width;
-      tl.attrs.y = tr.attrs.y;
-      br.attrs.x = tr.attrs.x;
-      img_width = tr.attrs.x - tl.attrs.x;
-      img_height = bl.attrs.y - tl.attrs.y;
-      canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
-      return canvas_item.setSize(img_width, img_height);
-    });
-    br.on("dragmove", function() {
-      var img_height, img_width;
-      bl.attrs.y = br.attrs.y;
-      tr.attrs.x = br.attrs.x;
-      img_width = tr.attrs.x - tl.attrs.x;
-      img_height = bl.attrs.y - tl.attrs.y;
-      canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
-      return canvas_item.setSize(img_width, img_height);
-    });
-    _.each([tl, tr, br, bl], function(corner) {
-      var _this = this;
-      corner.on("mousedown", function() {
-        console.log("tl mousedown");
-        group.setDraggable(false);
-        return group.moveToTop();
+      bl.on("dragmove", function() {
+        var img_height, img_width;
+        tl.attrs.x = bl.attrs.x;
+        br.attrs.y = bl.attrs.y;
+        img_width = tr.attrs.x - tl.attrs.x;
+        img_height = bl.attrs.y - tl.attrs.y;
+        canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
+        return canvas_item.setSize(img_width, img_height);
       });
-      return corner.on("dragend", function() {
-        return group.setDraggable(true);
+      tr.on("dragmove", function() {
+        var img_height, img_width;
+        tl.attrs.y = tr.attrs.y;
+        br.attrs.x = tr.attrs.x;
+        img_width = tr.attrs.x - tl.attrs.x;
+        img_height = bl.attrs.y - tl.attrs.y;
+        canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
+        return canvas_item.setSize(img_width, img_height);
       });
-    });
-    app.collage.layer.add(group);
-    return app.collage.layer.draw();
+      br.on("dragmove", function() {
+        var img_height, img_width;
+        bl.attrs.y = br.attrs.y;
+        tr.attrs.x = br.attrs.x;
+        img_width = tr.attrs.x - tl.attrs.x;
+        img_height = bl.attrs.y - tl.attrs.y;
+        canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
+        return canvas_item.setSize(img_width, img_height);
+      });
+      _.each([tl, tr, br, bl], function(corner) {
+        var _this = this;
+        corner.show();
+        corner.on("mousedown", function() {
+          console.log("tl mousedown");
+          canvas_group.setDraggable(false);
+          return canvas_group.moveToTop();
+        });
+        return corner.on("dragend", function() {
+          return canvas_group.setDraggable(true);
+        });
+      });
+      return canvas_item.getLayer().draw();
+    }
   };
 
   App.Collage = Collage = (function() {
@@ -196,8 +181,10 @@
       this.images = [];
       this.canvas.on("click", function(evt) {
         var cnvs_item;
+        console.log("canvas clicked");
         cnvs_item = _this.container.getIntersections(evt.offsetX, evt.offsetY);
         if ((_this.currentItem != null) && cnvs_item.length === 0) {
+          console.log(_this.currentItem);
           _this.currentItem.noLongerActive();
           return _this.currentItem = null;
         }
@@ -255,7 +242,11 @@
     function Photo(image_data, onImageLoaded) {
       var img,
         _this = this;
+      this.deSelectSteps = [];
       img = new Image();
+      this.group = new Kinetic.Group({
+        draggagle: true
+      });
       img.onload = function() {
         _this.item = new Kinetic.Image({
           image: img,
@@ -266,13 +257,56 @@
           name: 'image',
           draggagle: true
         });
+        _this.group.add(_this.item);
+        _this.add_corners();
         _this.item.on('click', function() {
-          return app.event_emitter.emit("ItemClicked", "Image", _this);
+          return app.event_emitter.emit("ItemSelected", "Image", _this);
         });
-        return onImageLoaded(_this.item);
+        return onImageLoaded(_this.group);
       };
       img.src = image_data.src;
     }
+
+    Photo.prototype.add_corners = function() {
+      var getAnchor, item_position, k, v, _ref, _results;
+      getAnchor = function(x, y, name) {
+        return new Kinetic.Rect({
+          x: x,
+          y: y,
+          name: name,
+          fill: '#000000',
+          width: 12,
+          height: 12,
+          visible: false,
+          draggable: true
+        });
+      };
+      item_position = this.item.getPosition();
+      this.corners = {
+        tl: getAnchor(item_position.x - 6, item_position.y - 6, 'topLeft'),
+        tr: getAnchor(item_position.x + this.item.getWidth() - 6, item_position.y - 6, 'topRight'),
+        bl: getAnchor(item_position.x - 6, item_position.y - 6 + this.item.getHeight(), 'bottomRight'),
+        br: getAnchor(item_position.x + this.item.getWidth() - 6, item_position.y - 6 + this.item.getHeight(), 'bottomLeft')
+      };
+      _ref = this.corners;
+      _results = [];
+      for (k in _ref) {
+        v = _ref[k];
+        _results.push(this.group.add(v));
+      }
+      return _results;
+    };
+
+    Photo.prototype.noLongerActive = function() {
+      var corner, x, _ref;
+      _ref = this.corners;
+      for (x in _ref) {
+        corner = _ref[x];
+        corner.hide();
+      }
+      this.group.setDraggable(true);
+      return this.group.getLayer().draw();
+    };
 
     return Photo;
 
