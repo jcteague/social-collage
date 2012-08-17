@@ -1,4 +1,7 @@
-App.Commands = {}
+App.Commands = {
+
+
+}
 App.Commands.Resize =  
 
 
@@ -54,10 +57,7 @@ App.Commands.Resize =
 			corner.on "dragend", =>
 				canvas_group.setDraggable(true)
 		canvas_item.getLayer().draw()
-	
-		 		
 
 
-
-	
-
+				
+		 

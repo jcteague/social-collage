@@ -5,9 +5,11 @@ appFiles  = [
 	# omit src/ and .coffee to make the below lines a little shorter
 	'facebook-lib'
 	'app'
-	'toolbar-commands'
+	'ResizeCommand'
+	'rotate'
+	'rotate-slider'
 	'collage'
-	'collage-image'
+	'photo'
 	'toolbar'
 	'main'
 ]

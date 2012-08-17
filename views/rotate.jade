@@ -1,0 +1,53 @@
+p canvans
+#canvas-container
+
+
+script(src="javascripts/kinetic-v3.10.3.js")
+script(type="text/javascript")
+	$(function(){
+		var stage = new Kinetic.Stage({container:'canvas-container',width:600, height:500});
+		var layer = new Kinetic.Layer({draggable:true});
+		var rect = new Kinetic.Rect({
+			x:100,
+			y:100,
+			width:100,
+			height:50,
+			fill:'blue',
+			stroke:'red',
+			strokeWidth:4,
+			offset:[50,25],
+			draggable:true
+
+				})
+		var hyp = Math.sqrt(50*50+25*25)
+		
+		layer.on("mousedown",function(){
+			console.log("layer mousedown")
+			group.setDraggable(false)
+			group.moveToTop();
+					});
+		layer.on("dragend",function(){
+			group.setDraggable(true)
+			})
+		layer.on("dragmove",function(evt){
+			console.log(evt)
+			var dv = Vector.create([this.attrs.x,this.attrs.y])
+			var dr = Vector.create([rect.attrs.x,rect.attrs.y])
+			var theta = dv.angleFrom(dr);
+			console.log("theta: " + theta *(360/Math.PI))
+			cx = 50+hyp*Math.cos(theta)
+			cy = 25+hyp*Math.sin(theta)
+			console.log()
+			rect.rotate(theta)
+			console.log("rect position");
+			console.log(rect.getPosition())
+
+			this.setPosition(rect.getX()-6,rect.getY()-6)
+			})
+		var group = new Kinetic.Group({draggable:true});
+		group.add(rect);
+		
+		layer.add(group);
+		stage.add(layer);
+		
+		})

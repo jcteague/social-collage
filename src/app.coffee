@@ -17,4 +17,4 @@ class App
 		@collageItemClick(item)
 
 	onToolbarItemSelected: (command) =>
-		console.log(command)
+		@collageItemClick = App.Commands[command].action

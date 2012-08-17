@@ -21,6 +21,8 @@ App.Collage = class Collage
 			console.log("Item Selected Event");
 			@currentItem?.noLongerActive();
 			@currentItem = item;
+		@event_emitter.on "rotation.changed", (value) =>
+			@currentItem?.rotate(value)
 		
 	dimensions: ->
 		@stage.getSize();

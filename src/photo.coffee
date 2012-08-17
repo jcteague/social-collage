@@ -2,17 +2,22 @@ App.Photo = class Photo
 
 	constructor: (image_data,onImageLoaded) ->
 		@deSelectSteps = []
-		img = new Image()
+		@img = new Image()
 		@group = new Kinetic.Group({draggagle:true})
-		img.onload = () =>
+		@img.onload = () =>
+			@image_center = 
+				x: image_data.width /2,
+				y: image_data.height / 2
+			
 			@item = new Kinetic.Image({
-				image:img,
-				x: image_data.x,
-				y: image_data.y,
+				image:@img,
+				x: image_data.x
+				y: image_data.y
 				width: image_data.width,
 				height: image_data.height,
 				name:'image',
-				draggagle: true
+				draggagle: true,
+			  
 			})
 			@group.add(@item)
 			@add_corners()	
@@ -20,7 +25,7 @@ App.Photo = class Photo
 				app.event_emitter.emit("ItemSelected","Image",@)
 
 			onImageLoaded(@group)
-		img.src = image_data.src;
+		@img.src = image_data.src;
 	add_corners: ->
 		getAnchor = (x,y,name) ->
 			return new Kinetic.Rect({
@@ -45,4 +50,18 @@ App.Photo = class Photo
 		corner.hide() for x, corner of @corners
 		@group.setDraggable(true)
 		@group.getLayer().draw()
+	rotate: (degree) ->
+		@group.setOffset(@image_center.x,@image_center.y)
+		@group.setPosition(@image_center.x,@image_center.y)
+		cr = @group.getRotationDeg()
+		dr = (degree - cr)
+		new_rotation = cr + dr
+		console.log("photo: rotating #{new_rotation}")
+		
+		@group.setRotationDeg(new_rotation)
+		@group.getLayer().draw()
+		@group.setOffset(0,0)
+		
+		
+
 

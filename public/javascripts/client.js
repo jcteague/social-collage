@@ -1,5 +1,5 @@
 (function() {
-  var App, Collage, Photo, ToolBar, facebookLogin, fb_photo_dropped, initialize,
+  var App, Collage, Photo, RotateSlider, ToolBar, facebookLogin, fb_photo_dropped, initialize,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __slice = Array.prototype.slice;
 
@@ -92,7 +92,7 @@
     };
 
     App.prototype.onToolbarItemSelected = function(command) {
-      return console.log(command);
+      return this.collageItemClick = App.Commands[command].action;
     };
 
     return App;
@@ -162,6 +162,80 @@
     }
   };
 
+  App.Commands.Rotate = {
+    action: function(collage_item) {
+      var c, canvas_group, canvas_item, center_vector, corners, drag_start_position, image_center;
+      console.log("rotating");
+      canvas_group = collage_item.group;
+      canvas_item = collage_item.item;
+      corners = (function() {
+        var _results;
+        _results = [];
+        for (c in collage_item.corners) {
+          _results.push(collage_item.corners[c]);
+        }
+        return _results;
+      })();
+      image_center = {
+        x: canvas_item.attrs.x + (canvas_item.attrs.width / 2),
+        y: canvas_item.attrs.y + (canvas_item.attrs.height / 2)
+      };
+      center_vector = Vector.create([image_center.x, image_center.y]);
+      console.log(image_center);
+      drag_start_position = {
+        x: 0,
+        y: 0
+      };
+      _.each(corners, function(c) {
+        c.show();
+        c.on("dragstart", function() {
+          canvas_group.setDraggable(false);
+          drag_start_position.x = c.attrs.x;
+          return drag_start_position.y = c.attrs.y;
+        });
+        c.on("dragend", function() {
+          return canvas_group.setDraggable(true);
+        });
+        return c.on("dragmove", function(evt) {
+          var current_vector, start_vector, theta;
+          console.log(this);
+          console.log("drag start " + drag_start_position.x + ", " + drag_start_position.y);
+          start_vector = Vector.create([drag_start_position.x, drag_start_position.y]);
+          current_vector = Vector.create([this.attrs.x, this.attrs.y]);
+          theta = current_vector.angleFrom(start_vector);
+          console.log("theta: " + (theta * 360 / Math.PI));
+          return canvas_group.rotate(theta);
+        });
+      });
+      return canvas_item.getLayer().draw();
+    }
+  };
+
+  App.RotateSlider = RotateSlider = (function() {
+
+    function RotateSlider(container, event_emmitter) {
+      this.container = container;
+      this.event_emmitter = event_emmitter;
+      this.onSlide = __bind(this.onSlide, this);
+      this.slide_element = $('<div id="rotate-slider" class="slider">').slider({
+        min: -180,
+        max: 180,
+        slide: this.onSlide
+      });
+      this.rotate_value_element = $('<span id="#rotate-value">').text('0');
+      $("#" + this.container).append(this.slide_element).append(this.rotate_value_element);
+    }
+
+    RotateSlider.prototype.onSlide = function(evt, ui) {
+      console.log("slide");
+      this.rotate_value_element.text(ui.value);
+      return this.event_emmitter.emit("rotation.changed", ui.value);
+    };
+
+    return RotateSlider;
+
+  })();
+
   App.Collage = Collage = (function() {
 
     function Collage(canvas_element, event_emitter) {
@@ -194,6 +268,10 @@
         console.log("Item Selected Event");
         if ((_ref = _this.currentItem) != null) _ref.noLongerActive();
         return _this.currentItem = item;
+      });
+      this.event_emitter.on("rotation.changed", function(value) {
+        var _ref;
+        return (_ref = _this.currentItem) != null ? _ref.rotate(value) : void 0;
       });
     }
 
@@ -240,16 +318,19 @@
   App.Photo = Photo = (function() {
 
     function Photo(image_data, onImageLoaded) {
-      var img,
-        _this = this;
+      var _this = this;
       this.deSelectSteps = [];
-      img = new Image();
+      this.img = new Image();
       this.group = new Kinetic.Group({
         draggagle: true
       });
-      img.onload = function() {
+      this.img.onload = function() {
+        _this.image_center = {
+          x: image_data.width / 2,
+          y: image_data.height / 2
+        };
         _this.item = new Kinetic.Image({
-          image: img,
+          image: _this.img,
           x: image_data.x,
           y: image_data.y,
           width: image_data.width,
@@ -264,7 +345,7 @@
         });
         return onImageLoaded(_this.group);
       };
-      img.src = image_data.src;
+      this.img.src = image_data.src;
     }
 
     Photo.prototype.add_corners = function() {
@@ -308,6 +389,19 @@
       return this.group.getLayer().draw();
     };
 
+    Photo.prototype.rotate = function(degree) {
+      var cr, dr, new_rotation;
+      this.group.setOffset(this.image_center.x, this.image_center.y);
+      this.group.setPosition(this.image_center.x, this.image_center.y);
+      cr = this.group.getRotationDeg();
+      dr = degree - cr;
+      new_rotation = cr + dr;
+      console.log("photo: rotating " + new_rotation);
+      this.group.setRotationDeg(new_rotation);
+      this.group.getLayer().draw();
+      return this.group.setOffset(0, 0);
+    };
+
     return Photo;
 
   })();
@@ -315,20 +409,41 @@
   App.ToolBar = ToolBar = (function() {
 
     function ToolBar(items_class_selector) {
+      var _this = this;
       this.toolbar_items = $(items_class_selector);
+      this.set_initial_active();
       this.toolbar_items.click(function(evt, ui) {
         var command_name;
-        command_name = $(this).data('action');
-        return app.event_emitter.emit('Toolbar.MenuItemSelected', App.Commands[command_name]);
+        command_name = $(evt.currentTarget).data('action');
+        console.log("#command clicked: " + command_name);
+        _this.set_active($(evt.currentTarget));
+        return app.event_emitter.emit('Toolbar.MenuItemSelected', command_name);
       });
     }
+
+    ToolBar.prototype.set_active = function(toolbar_item) {
+      toolbar_item.addClass('active');
+      if (this.active != null) this.active.removeClass('active');
+      return this.active = toolbar_item;
+    };
+
+    ToolBar.prototype.set_initial_active = function() {
+      var active_item, i, _i, _len, _ref;
+      _ref = this.toolbar_items;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        i = _ref[_i];
+        if ($(i).hasClass('active')) active_item = $(i);
+      }
+      if (active_item == null) active_item = this.toolbar_items[0];
+      return this.set_active(active_item);
+    };
 
     return ToolBar;
 
   })();
 
   $(function() {
-    var collage_toolbar;
+    var collage_toolbar, rotateSlider;
     window.emitter = new EventEmitter2();
     window.app = new App('canvas-container', emitter);
     collage_toolbar = new App.ToolBar('#collage-menu-list .menu-item');
@@ -336,11 +451,12 @@
     $('#logout').click(function() {
       return FB.logout();
     });
-    return $('#canvas-container canvas').droppable({
+    $('#canvas-container canvas').droppable({
       drop: fb_photo_dropped
     }).css({
       border: 'solid black 1px'
     });
+    return rotateSlider = new RotateSlider('sub-menu', window.emitter);
   });
 
   fb_photo_dropped = function(evt, ui) {

@@ -2,19 +2,35 @@
 
 button(id="login") logout
 button(id="logout") logout
+
+
 .row-fluid
 	.span3
 		ul.nav.nav-list
 			ul#your-pics.nav-header Your Pictures
 			ul#albums.nav-header	Albums
 			ul#friends.nav-header Friends
-			ul#groups.nav-header 
+			ul#groups.nav-header
+
 	#collage-wrapper.span9
-		#collage-menu
-			ul#collage-menu-list
-				li.menu-item(data-action="resize") Resize
-				li.menu-item(data-action="rotate") Rotate
-		p Canvas Here
+		#slider.button-group
+			button.btn.dropdown-toggle(data-toggle="dropdown")
+				| Rotate 
+				span.caret
+			ul.dropdown-menu
+				li
+					a(href="#") Slider
+				li
+					a(href="#") Another action
+		.navbar
+			.navbar-inner
+				.container
+					ul#collage-menu-list.nav
+						li.menu-item.active(data-action="Resize")
+							a(href="#") Resize
+						li.menu-item(data-action="Rotate")
+							a(href="#") Rotate
+		#sub-menu 	
 		#canvas-container
 		
 

@@ -6,7 +6,7 @@ $ ->
 	$('#login').click(facebookLogin)  
 	$('#logout').click(() -> FB.logout())
 	$('#canvas-container canvas').droppable({drop:fb_photo_dropped}).css({border:'solid black 1px'})
-	
+	rotateSlider = new RotateSlider('sub-menu',window.emitter)	
 		
         
 fb_photo_dropped = (evt,ui) ->
