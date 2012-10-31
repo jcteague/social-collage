@@ -7,6 +7,6 @@ exports.index = function(req, res){
   res.render('index', { title: 'Express' })
 };
 
-exports.rotation = function(req,res){
-	res.render('rotate',{title:'Rotation'})
+exports.requirejs = function(req,res){
+	res.render('requirejs',{title:'requirejs',layout:false})
 }

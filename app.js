@@ -31,6 +31,7 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 app.get('/rotate',routes.rotation)
+app.get('/requirejs',routes.requirejs)
 app.get('/create',function(qs,rs){
   
 })

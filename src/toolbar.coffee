@@ -1,8 +1,9 @@
 App.ToolBar = class ToolBar
 	constructor: (items_class_selector) ->
-		@toolbar_items = $(items_class_selector)
+		toolbar_items = $(items_class_selector)
 		@set_initial_active()
 		@toolbar_items.click (evt,ui) =>
+
 			command_name = $(evt.currentTarget).data 'action'
 			console.log("#command clicked: #{command_name}")
 

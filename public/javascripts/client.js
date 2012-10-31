@@ -62,6 +62,33 @@
     });
   };
 
+  requirejs.config({
+    paths: {
+      "jquery": "jquery-1.7.2.min",
+      "underscore": "underscore-min",
+      "jqueryUI": "jqueryui-min",
+      "bootstrap": "bootstrap",
+      "eventEmitter": "eventemitter2",
+      "kinetic": "kinetic-min",
+      "sylvester": "sylvester"
+    }
+  }, {
+    shim: {
+      underscore: {
+        exports: '_'
+      },
+      kinetic: {
+        exports: 'Kinetic'
+      }
+    }
+  });
+
+  require(['jquery', 'kinetic', 'underscore-min'], function($, k, _) {
+    console.log($);
+    console.log(k);
+    return console.log(_);
+  });
+
   App = (function() {
 
     function App(canvas_element, event_emitter) {
@@ -409,8 +436,9 @@
   App.ToolBar = ToolBar = (function() {
 
     function ToolBar(items_class_selector) {
-      var _this = this;
-      this.toolbar_items = $(items_class_selector);
+      var toolbar_items,
+        _this = this;
+      toolbar_items = $(items_class_selector);
       this.set_initial_active();
       this.toolbar_items.click(function(evt, ui) {
         var command_name;
