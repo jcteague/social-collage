@@ -6,7 +6,7 @@
       "underscore": "underscore-min",
       "jqueryUI": "jqueryui-min",
       "bootstrap": "bootstrap",
-      "eventEmitter": "eventemitter2",
+      "EventEmitter2": "eventemitter2",
       "kinetic": "kinetic-min",
       "sylvester": "sylvester"
     },
@@ -20,14 +20,18 @@
       jqueryUI: {
         exports: '$',
         deps: ['jquery']
+      },
+      EventEmitter2: {
+        exports: "EventEmitter2"
       }
     }
   });
 
-  require(['jquery', 'UserPhotos'], function($, UserPhotos) {
+  require(['jquery', 'UserPhotos', 'App'], function($, UserPhotos, App) {
     return $(function() {
-      var userPhotos;
+      var app, userPhotos;
       userPhotos = new UserPhotos();
+      app = new App('canvas-container');
       return console.log("loading dependencies");
     });
   });

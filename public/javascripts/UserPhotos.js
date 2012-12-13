@@ -21,7 +21,7 @@
           pics = $('#your-pics');
           return _.each(response.data, function(item) {
             var img_el;
-            img_el = $("<img src=" + item.picture + "' class='picture'>");
+            img_el = $("<img src='" + item.picture + "' class='picture'>");
             img_el.draggable({
               cursor: 'move',
               cursorAt: {
@@ -31,7 +31,7 @@
               revert: 'invalid',
               helper: 'clone'
             });
-            img_el.data('fb_data', item);
+            img_el.data('img_data', item);
             return pics.append(img_el);
           });
         });

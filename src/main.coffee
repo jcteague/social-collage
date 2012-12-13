@@ -5,20 +5,21 @@ requirejs.config(
 			"underscore": "underscore-min",
 			"jqueryUI": "jqueryui-min",
 			"bootstrap": "bootstrap",
-			"eventEmitter": "eventemitter2",
+			"EventEmitter2": "eventemitter2",
 			"kinetic": "kinetic-min",
 			"sylvester": "sylvester"
 		shim:
 			underscore:{exports:'_'},
 			kinetic:{exports:'Kinetic'},
 			jqueryUI:{exports:'$',deps:['jquery']}
-
+			EventEmitter2: {exports:"EventEmitter2"}
 		
 	}
 	
 )
-require ['jquery','UserPhotos'],($, UserPhotos)->
+require ['jquery','UserPhotos','App'],($, UserPhotos,App)->
 	$ ->
 		userPhotos = new UserPhotos()
+		app = new App('canvas-container')
 		console.log("loading dependencies")
 		
