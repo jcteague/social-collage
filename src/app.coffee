@@ -1,8 +1,8 @@
-define ['EventEmitter','Collage','ResizeCommand'],(event_emitter,Collage,resize) ->
+define ['EventEmitter','Collage','Commands'],(event_emitter,Collage,commands) ->
 	class App
 		constructor: (@canvas_element) ->
 			@collage = new Collage(@canvas_element)
-			@collageItemClick = resize.action
+			@collageItemClick = commands.resize.action
 			event_emitter.on "ItemSelected", @onCanvasItemClick
 			event_emitter.on "Toolbar.MenuItemSelected", @onToolbarItemSelected
 
