@@ -23,6 +23,7 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 				@group.add(@item)
 				@add_corners()	
 				@item.on 'click', =>
+					console.log('Image Clicked')
 					event_emitter.emit("ItemSelected","Image",@)
 
 				onImageLoaded(@group)
@@ -45,6 +46,8 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 				tr: getAnchor(item_position.x+@item.getWidth()-6,item_position.y-6,'topRight');
 				bl: getAnchor(item_position.x-6,item_position.y-6+@item.getHeight(),'bottomRight');
 				br: getAnchor(item_position.x+@item.getWidth()-6,item_position.y-6+@item.getHeight(),'bottomLeft');
+			
+			
 			@group.add(v) for k,v of @corners
 
 		noLongerActive: ->

@@ -6,3 +6,7 @@ body {
 a {
   color: #00B7FF;
 }
+#canvas-container{
+	border: solid 1px black;
+	height:800px;
+}

@@ -4,6 +4,8 @@
  */
 
 var express = require('express')
+  , request = require('request')
+  , http = require('http')
   , routes = require('./routes');
 
 var app = module.exports = express.createServer();
@@ -30,6 +32,10 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
+app.get('/images', function(req, res,next){
+  var src = req.query.src;
+  request.get(req.query.src).pipe(res)
+});
 app.get('/rotate',routes.rotation)
 app.get('/requirejs',routes.requirejs)
 app.get('/create',function(qs,rs){

@@ -35,6 +35,7 @@ define ['kinetic'], (Kinetic) ->
 				canvas_item.setSize(img_width,img_height)
 			
 			br.on "dragmove",() =>
+				
 				bl.attrs.y = br.attrs.y
 				tr.attrs.x = br.attrs.x
 				img_width = tr.attrs.x - tl.attrs.x
@@ -51,6 +52,8 @@ define ['kinetic'], (Kinetic) ->
 				
 				corner.on "dragend", =>
 					canvas_group.setDraggable(true)
+				corner.on "dragmove", =>
+					canvas_item.getLayer().draw()
 			canvas_item.getLayer().draw()
 
 

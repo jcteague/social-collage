@@ -2,7 +2,7 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 	class Collage
 		constructor: (@canvas_element)->
 			@canvas = $("##{@canvas_element}")
-			@stage = new Kinetic.Stage({container:canvas_element,width:600 ,height:500})
+			@stage = new Kinetic.Stage({container:canvas_element,width:@canvas.width() ,height:@canvas.height()})
 			@layer = new Kinetic.Layer();
 			@container = new Kinetic.Container();
 			@stage.add(@layer);
@@ -12,10 +12,12 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 			@canvas.on "click",(evt) =>
 				console.log "canvas clicked"
 				cnvs_item =  @container.getIntersections(evt.offsetX,evt.offsetY)
+				console.log(cnvs_item)
 				if @currentItem? && cnvs_item.length == 0
-					console.log(@currentItem)
+					console.log("de selecting current canvas item")
 					@currentItem.noLongerActive();
 					@currentItem = null
+					
 			image_dropped = (evt,ui) =>
 				console.log("photo image dropped")
 				img = $(ui.draggable)
@@ -34,7 +36,7 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 				@currentItem = item;
 			event_emitter.on "rotation.changed", (value) =>
 				@currentItem?.rotate(value)
-			
+				
 		dimensions: ->
 			@stage.getSize();
 
@@ -59,7 +61,7 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 				image.width <= collage_dimensions.width && image.height <= collage_dimensions.height
 			@addImage(
 				{
-					src:imageToAdd.source,
+					src:'/images?src='+imageToAdd.source,
 					width:imageToAdd.width,
 					height:imageToAdd.height,
 					x:image_data.offsetX,
