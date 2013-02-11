@@ -7,13 +7,14 @@
 
       function Photo(image_data, onImageLoaded) {
         var _this = this;
+        this.itemType = 'Photo';
         this.deSelectSteps = [];
         this.img = new Image();
         this.group = new Kinetic.Group({
           draggagle: true
         });
         this.img.onload = function() {
-          _this.image_center = {
+          _this.center = {
             x: image_data.width / 2,
             y: image_data.height / 2
           };
@@ -24,14 +25,12 @@
             width: image_data.width,
             height: image_data.height,
             name: 'image',
-            draggagle: true
+            draggagle: true,
+            stroke: 'black',
+            strokWidth: 2
           });
           _this.group.add(_this.item);
           _this.add_corners();
-          _this.item.on('click', function() {
-            console.log('Image Clicked');
-            return event_emitter.emit("ItemSelected", "Image", _this);
-          });
           return onImageLoaded(_this.group);
         };
         this.img.src = image_data.src;
@@ -67,6 +66,15 @@
         return _results;
       };
 
+      Photo.prototype.intersects = function(x, y) {
+        var x1, x2, y1, y2;
+        x1 = this.item.attrs.x;
+        x2 = x1 + this.item.attrs.width;
+        y1 = this.item.attrs.y;
+        y2 = y1 + this.item.attrs.width;
+        return (x1 < x && x < x2) && (y1 < y && y < y2);
+      };
+
       Photo.prototype.noLongerActive = function() {
         var corner, x, _ref;
         _ref = this.corners;
@@ -78,10 +86,31 @@
         return this.group.getLayer().draw();
       };
 
+      Photo.prototype.getCanvasPosition = function() {
+        return this.item.getOffset();
+      };
+
+      Photo.prototype.getScreenPosition = function() {
+        var cnvs_position, img_position;
+        cnvs_position = $(this.item.getCanvas().element).offset();
+        img_position = this.item.getAbsolutePosition();
+        return {
+          x: cnvs_position.left + img_position.x,
+          y: cnvs_position.top + img_position.y
+        };
+      };
+
+      Photo.prototype.getItemDimensions = function() {
+        return {
+          width: this.item.getWidth(),
+          height: this.item.getHeight()
+        };
+      };
+
       Photo.prototype.rotate = function(degree) {
         var cr, dr, new_rotation;
-        this.group.setOffset(this.image_center.x, this.image_center.y);
-        this.group.setPosition(this.image_center.x, this.image_center.y);
+        this.group.setOffset(this.center.x, this.center.y);
+        this.group.setPosition(this.center.x, this.center.y);
         cr = this.group.getRotationDeg();
         dr = degree - cr;
         new_rotation = cr + dr;

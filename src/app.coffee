@@ -3,23 +3,25 @@ define ['EventEmitter','Collage','Toolbar','Commands'],(event_emitter,Collage,To
 		constructor: (@canvas_element) ->
 			@collage = new Collage(@canvas_element)
 			@toolbar = new Toolbar('#collage-menu-list .menu-item')
-			@collageItemClick = commands.resize.action
-			event_emitter.on "ItemSelected", @onCanvasItemClick
+			@selected_command = commands.resize
+			event_emitter.on "ItemSelected", @onCanvasItemSelected
 			event_emitter.on "Toolbar.MenuItemSelected", @onToolbarItemSelected
 
 		setToolbarAction: (action) ->	
 			@toolbarAction = action
 			@event_emitter.emit("toolbar-action-selected", action)
-		emit: (event_name, event_parameters...) ->
-			@event_emmitter.emit(event_name,event_parameters)	
+		
 
-		onCanvasItemClick: (item_type, item) =>
+		onCanvasItemSelected: (item_type, item) =>
 			console.log "oncanvas click event #{item_type} item type"
-			@collageItemClick(item)
+			@selected_command.bind_to(item)
 
 		onToolbarItemSelected: (command) =>
-			@collageItemClick = commands[command].action
-
+			console.log("Toobar Item command: #{command}")
+			@selected_command = commands[command]
+			if @collage.currentItem?
+				@selected_command.bind_to(@collage.currentItem)
+	
 	# class App
 	# 	constructor: (@canvas_element) ->
 	# 		@event_emmitter.on "Toolbar.MenuItemSelected", (command_name) ->

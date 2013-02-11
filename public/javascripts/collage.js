@@ -19,18 +19,7 @@
         this.container = new Kinetic.Container();
         this.stage.add(this.layer);
         this.activeImage = null;
-        this.images = [];
-        this.canvas.on("click", function(evt) {
-          var cnvs_item;
-          console.log("canvas clicked");
-          cnvs_item = _this.container.getIntersections(evt.offsetX, evt.offsetY);
-          console.log(cnvs_item);
-          if ((_this.currentItem != null) && cnvs_item.length === 0) {
-            console.log("de selecting current canvas item");
-            _this.currentItem.noLongerActive();
-            return _this.currentItem = null;
-          }
-        });
+        this.collage_items = [];
         image_dropped = function(evt, ui) {
           var img, img_data;
           console.log("photo image dropped");
@@ -46,13 +35,20 @@
         this.canvas.find('canvas').droppable({
           drop: image_dropped
         });
-        event_emitter.on("ItemSelected", function(type, item) {
-          var _ref;
-          console.log("Item Selected Event");
-          if ((_ref = _this.currentItem) != null) {
-            _ref.noLongerActive();
+        this.canvas.on("click", function(evt) {
+          var cnvs_item;
+          console.log("canvas clicked");
+          cnvs_item = _this.find_item(evt.offsetX, evt.offsetY);
+          console.log(cnvs_item);
+          if ((_this.currentItem != null) && cnvs_item.length === 0) {
+            console.log("de selecting current canvas item");
+            _this.currentItem.noLongerActive();
+            return _this.currentItem = null;
+          } else {
+            console.log("collage item selected");
+            _this.currentItem = cnvs_item;
+            return event_emitter.emit("ItemSelected", _this.currentItem.itemType, _this.currentItem);
           }
-          return _this.currentItem = item;
         });
         event_emitter.on("rotation.changed", function(value) {
           var _ref;
@@ -78,7 +74,23 @@
           return _this.stage.draw();
         };
         canvas_image = new Photo(imageSrc, onImageCreated);
-        return this.images.push(canvas_image);
+        return this.collage_items.push(canvas_image);
+      };
+
+      Collage.prototype.find_item = function(x, y) {
+        var i;
+        return ((function() {
+          var _i, _len, _ref, _results;
+          _ref = this.collage_items;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            i = _ref[_i];
+            if (i.intersects(x, y)) {
+              _results.push(i);
+            }
+          }
+          return _results;
+        }).call(this))[0];
       };
 
       Collage.prototype.addFbPhoto = function(image_data) {

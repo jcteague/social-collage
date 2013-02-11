@@ -1,6 +1,7 @@
 define ['jquery','EventEmitter'],($,event_emitter) ->
 	class ToolBar
 		constructor: (items_class_selector) ->
+
 			@toolbar_items = $(items_class_selector)
 			@set_initial_active()
 			@toolbar_items.click (evt,ui) =>

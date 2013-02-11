@@ -7,11 +7,11 @@
 
       function Resize() {}
 
-      Resize.action = function(collage_item) {
+      Resize.bind_to = function(collage_item) {
         var bl, br, canvas_group, canvas_item, item_position, tl, tr, _ref,
           _this = this;
         console.log("making image resizable");
-        canvas_group = collage_item.group;
+        canvas_group = collage_item.item.group;
         _ref = collage_item.corners, tl = _ref.tl, tr = _ref.tr, bl = _ref.bl, br = _ref.br;
         canvas_item = collage_item.item;
         item_position = canvas_item.getPosition();

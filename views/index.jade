@@ -26,12 +26,15 @@ button(id="logout") logout
 			.navbar-inner
 				.container
 					ul#collage-menu-list.nav
-						li.menu-item.active(data-action="Resize")
+						li.menu-item.active(data-action="resize")
 							a(href="#") Resize
-						li.menu-item(data-action="Rotate")
+						li.menu-item(data-action="rotate")
 							a(href="#") Rotate
 		#sub-menu 	
 		#canvas-container
+		#rotater
+			#rotate-slider.slider
+			span#rotate-value	
 
 
 //- script(src="javascripts/kinetic-v3.10.3.js")

@@ -8,16 +8,8 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 			@stage.add(@layer);
 
 			@activeImage = null;
-			@images = []
-			@canvas.on "click",(evt) =>
-				console.log "canvas clicked"
-				cnvs_item =  @container.getIntersections(evt.offsetX,evt.offsetY)
-				console.log(cnvs_item)
-				if @currentItem? && cnvs_item.length == 0
-					console.log("de selecting current canvas item")
-					@currentItem.noLongerActive();
-					@currentItem = null
-					
+			@collage_items = []
+			
 			image_dropped = (evt,ui) =>
 				console.log("photo image dropped")
 				img = $(ui.draggable)
@@ -30,10 +22,23 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 			
 			@canvas.find('canvas').droppable({drop: image_dropped})
 
-			event_emitter.on "ItemSelected",(type, item) =>
-				console.log("Item Selected Event");
-				@currentItem?.noLongerActive();
-				@currentItem = item;
+			@canvas.on "click",(evt) =>
+				console.log "canvas clicked"
+				cnvs_item =  @find_item(evt.offsetX,evt.offsetY)
+				console.log(cnvs_item)
+				if @currentItem? && cnvs_item.length == 0
+					console.log("de selecting current canvas item")
+					@currentItem.noLongerActive();
+					@currentItem = null		
+				else
+					console.log("collage item selected")
+					@currentItem = cnvs_item
+					event_emitter.emit "ItemSelected", @currentItem.itemType, @currentItem
+
+			# event_emitter.on "ItemSelected",(type, item) =>
+			# 	console.log("Item Selected Event");
+			# 	@currentItem?.noLongerActive();
+			# 	@currentItem = item;
 			event_emitter.on "rotation.changed", (value) =>
 				@currentItem?.rotate(value)
 				
@@ -51,9 +56,10 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 				@stage.draw()
 
 			canvas_image = new Photo(imageSrc,onImageCreated)
-			@images.push(canvas_image);
+			@collage_items.push(canvas_image);
 
-
+		find_item: (x,y) ->
+			(i for i in @collage_items when i.intersects(x,y))[0]
 
 		addFbPhoto: (image_data) ->
 			collage_dimensions = @dimensions();

@@ -1,9 +1,9 @@
 define ['kinetic'], (Kinetic) ->
 	class Resize
-		@action: (collage_item) ->
+		@bind_to: (collage_item) ->
 
 			console.log("making image resizable")
-			canvas_group = collage_item.group
+			canvas_group = collage_item.item.group
 			{tl,tr,bl,br} = collage_item.corners
 			canvas_item = collage_item.item
 			

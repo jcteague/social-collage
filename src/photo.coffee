@@ -2,11 +2,12 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 	class Photo 
 
 		constructor: (image_data,onImageLoaded) ->
+			@itemType = 'Photo'
 			@deSelectSteps = []
 			@img = new Image()
 			@group = new Kinetic.Group({draggagle:true})
 			@img.onload = () =>
-				@image_center = 
+				@center = 
 					x: image_data.width /2,
 					y: image_data.height / 2
 				
@@ -18,13 +19,15 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 					height: image_data.height,
 					name:'image',
 					draggagle: true,
+					stroke: 'black',
+					strokWidth: 2
 				  
 				})
 				@group.add(@item)
 				@add_corners()	
-				@item.on 'click', =>
-					console.log('Image Clicked')
-					event_emitter.emit("ItemSelected","Image",@)
+				# @item.on 'click', =>
+				# 	console.log('Image Clicked')
+				# 	event_emitter.emit("ItemSelected","Image",@)
 
 				onImageLoaded(@group)
 			@img.src = image_data.src;
@@ -50,13 +53,39 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 			
 			@group.add(v) for k,v of @corners
 
+		intersects: (x,y)->
+			x1 = @item.attrs.x
+			x2 = x1+@item.attrs.width
+			y1 = @item.attrs.y
+			y2 = y1+@item.attrs.width
+			x1 < x < x2 and y1 < y < y2
+			
+
 		noLongerActive: ->
 			corner.hide() for x, corner of @corners
 			@group.setDraggable(true)
 			@group.getLayer().draw()
+
+		getCanvasPosition: ->
+			@item.getOffset()
+
+		getScreenPosition: ->
+			cnvs_position = $(@item.getCanvas().element).offset()
+			img_position = @item.getAbsolutePosition()
+			{
+				x: cnvs_position.left+img_position.x,
+				y: cnvs_position.top+img_position.y
+			}
+		getItemDimensions: ->
+			 {
+			 		width: @item.getWidth()
+			 		height: @item.getHeight()
+			 }
+
+
 		rotate: (degree) ->
-			@group.setOffset(@image_center.x,@image_center.y)
-			@group.setPosition(@image_center.x,@image_center.y)
+			@group.setOffset(@center.x,@center.y)
+			@group.setPosition(@center.x,@center.y)
 			cr = @group.getRotationDeg()
 			dr = (degree - cr)
 			new_rotation = cr + dr
