@@ -1,5 +1,6 @@
 define ['jqueryUI','underscore'], ($,_)->
 	class UserPhotos
+	
 		constructor: ->
 			@fb_init()
 
@@ -13,7 +14,7 @@ define ['jqueryUI','underscore'], ($,_)->
 			FB.api '/me/photos',(response)->
 				pics = $('#your-pics')
 				_.each response.data, (item) ->
-					img_el = $("<img src='#{item.picture}' class='picture'>")
+					img_el = $("<img src='#{item.picture}' class='picture thumbnail'>")
 					img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
 					img_el.data('img_data',item)
 					pics.append(img_el);  

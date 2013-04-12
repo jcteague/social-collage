@@ -25,20 +25,19 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 			@canvas.on "click",(evt) =>
 				console.log "canvas clicked"
 				cnvs_item =  @find_item(evt.offsetX,evt.offsetY)
-				console.log(cnvs_item)
-				if @currentItem? && cnvs_item.length == 0
+				
+				#currentItem exist and no 
+				if @currentItem? && cnvs_item?.length == 0
 					console.log("de selecting current canvas item")
-					@currentItem.noLongerActive();
-					@currentItem = null		
+					event_emitter.emit 'ItemDeSelected', @currentItem
+					
+					@currentItem = null
 				else
 					console.log("collage item selected")
+					console.log(cnvs_item)
 					@currentItem = cnvs_item
 					event_emitter.emit "ItemSelected", @currentItem.itemType, @currentItem
 
-			# event_emitter.on "ItemSelected",(type, item) =>
-			# 	console.log("Item Selected Event");
-			# 	@currentItem?.noLongerActive();
-			# 	@currentItem = item;
 			event_emitter.on "rotation.changed", (value) =>
 				@currentItem?.rotate(value)
 				

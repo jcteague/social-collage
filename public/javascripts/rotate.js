@@ -6,7 +6,7 @@
 
       function _Class() {}
 
-      _Class.bind_to = function(collage_item) {
+      _Class.prototype.bind_to = function(collage_item) {
         var canvas_group, canvas_item, item_dimensions, item_position, sliderOptions;
         console.log("rotating");
         canvas_group = collage_item.group;
@@ -20,6 +20,10 @@
         };
         this.slider = new RotateSlider(sliderOptions);
         return canvas_item.getLayer().draw();
+      };
+
+      _Class.prototype.un_bind = function(collage_item) {
+        return this.slider.hide();
       };
 
       return _Class;

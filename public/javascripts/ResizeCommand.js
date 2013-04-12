@@ -2,12 +2,11 @@
 (function() {
 
   define(['kinetic'], function(Kinetic) {
-    var Resize;
-    return Resize = (function() {
+    return (function() {
 
-      function Resize() {}
+      function _Class() {}
 
-      Resize.bind_to = function(collage_item) {
+      _Class.bind_to = function(collage_item) {
         var bl, br, canvas_group, canvas_item, item_position, tl, tr, _ref,
           _this = this;
         console.log("making image resizable");
@@ -53,6 +52,8 @@
         });
         _.each([tl, tr, br, bl], function(corner) {
           var _this = this;
+          console.log("displaying corner: " + corner.attrs.x + "," + corner.attrs.y);
+          console.dir(corner);
           corner.show();
           corner.on("mousedown", function() {
             console.log("tl mousedown");
@@ -69,7 +70,7 @@
         return canvas_item.getLayer().draw();
       };
 
-      return Resize;
+      return _Class;
 
     })();
   });

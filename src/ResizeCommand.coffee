@@ -1,5 +1,5 @@
 define ['kinetic'], (Kinetic) ->
-	class Resize
+	class 
 		@bind_to: (collage_item) ->
 
 			console.log("making image resizable")
@@ -44,6 +44,8 @@ define ['kinetic'], (Kinetic) ->
 				canvas_item.setSize(img_width,img_height)		
 
 			_.each [tl,tr,br,bl],(corner) ->
+				console.log "displaying corner: #{corner.attrs.x},#{corner.attrs.y}"
+				console.dir corner
 				corner.show()
 				corner.on "mousedown",() =>
 					console.log("tl mousedown")

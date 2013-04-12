@@ -7,10 +7,16 @@ button(id="logout") logout
 .row-fluid
 	.span3
 		ul.nav.nav-list
-			ul#your-pics.nav-header Your Pictures
-			ul#albums.nav-header	Albums
-			ul#friends.nav-header Friends
-			ul#groups.nav-header
+			.pics-you
+				|Your Pictures
+				ul#your-pics.thumbnails
+			.pics-friends
+			ul#albums.nav-header	
+				|Albums
+				.pics-friends
+			ul#friends.nav-header 
+				|Friends
+				ul#groups.nav-header
 
 	#collage-wrapper.span9
 		#slider.button-group
@@ -21,7 +27,7 @@ button(id="logout") logout
 				li
 					a(href="#") Slider
 				li
-					a(href="#") Another action
+					a(href="#") Another action	
 		.navbar
 			.navbar-inner
 				.container

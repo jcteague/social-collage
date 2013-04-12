@@ -6,8 +6,15 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 			@deSelectSteps = []
 			@img = new Image()
 			@group = new Kinetic.Group({draggagle:true})
+			
 			@img.onload = () =>
-				@center = 
+				@loadImage(image_data)
+				onImageLoaded(@group)
+			
+			@img.src = image_data.src;
+			
+		loadImage: (image_data) ->
+			@center = 
 					x: image_data.width /2,
 					y: image_data.height / 2
 				
@@ -20,7 +27,7 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 					name:'image',
 					draggagle: true,
 					stroke: 'black',
-					strokWidth: 2
+					strokeWidth: 2
 				  
 				})
 				@group.add(@item)
@@ -29,8 +36,7 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 				# 	console.log('Image Clicked')
 				# 	event_emitter.emit("ItemSelected","Image",@)
 
-				onImageLoaded(@group)
-			@img.src = image_data.src;
+				
 		add_corners: ->
 			getAnchor = (x,y,name) ->
 				return new Kinetic.Rect({

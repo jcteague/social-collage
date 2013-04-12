@@ -24,7 +24,7 @@
           pics = $('#your-pics');
           return _.each(response.data, function(item) {
             var img_el;
-            img_el = $("<img src='" + item.picture + "' class='picture'>");
+            img_el = $("<img src='" + item.picture + "' class='picture thumbnail'>");
             img_el.draggable({
               cursor: 'move',
               cursorAt: {

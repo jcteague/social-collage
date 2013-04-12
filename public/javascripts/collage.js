@@ -39,13 +39,13 @@
           var cnvs_item;
           console.log("canvas clicked");
           cnvs_item = _this.find_item(evt.offsetX, evt.offsetY);
-          console.log(cnvs_item);
-          if ((_this.currentItem != null) && cnvs_item.length === 0) {
+          if ((_this.currentItem != null) && (cnvs_item != null ? cnvs_item.length : void 0) === 0) {
             console.log("de selecting current canvas item");
-            _this.currentItem.noLongerActive();
+            event_emitter.emit('ItemDeSelected', _this.currentItem);
             return _this.currentItem = null;
           } else {
             console.log("collage item selected");
+            console.log(cnvs_item);
             _this.currentItem = cnvs_item;
             return event_emitter.emit("ItemSelected", _this.currentItem.itemType, _this.currentItem);
           }

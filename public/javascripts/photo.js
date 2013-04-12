@@ -14,27 +14,31 @@
           draggagle: true
         });
         this.img.onload = function() {
-          _this.center = {
-            x: image_data.width / 2,
-            y: image_data.height / 2
-          };
-          _this.item = new Kinetic.Image({
-            image: _this.img,
-            x: image_data.x,
-            y: image_data.y,
-            width: image_data.width,
-            height: image_data.height,
-            name: 'image',
-            draggagle: true,
-            stroke: 'black',
-            strokWidth: 2
-          });
-          _this.group.add(_this.item);
-          _this.add_corners();
+          _this.loadImage(image_data);
           return onImageLoaded(_this.group);
         };
         this.img.src = image_data.src;
       }
+
+      Photo.prototype.loadImage = function(image_data) {
+        this.center = {
+          x: image_data.width / 2,
+          y: image_data.height / 2
+        };
+        this.item = new Kinetic.Image({
+          image: this.img,
+          x: image_data.x,
+          y: image_data.y,
+          width: image_data.width,
+          height: image_data.height,
+          name: 'image',
+          draggagle: true,
+          stroke: 'black',
+          strokeWidth: 2
+        });
+        this.group.add(this.item);
+        return this.add_corners();
+      };
 
       Photo.prototype.add_corners = function() {
         var getAnchor, item_position, k, v, _ref, _results;
