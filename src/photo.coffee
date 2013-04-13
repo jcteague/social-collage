@@ -1,7 +1,7 @@
 define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 	class Photo 
 
-		constructor: (image_data,onImageLoaded) ->
+		constructor: (image_data,@stage, onImageLoaded) ->
 			@itemType = 'Photo'
 			@deSelectSteps = []
 			@img = new Image()
@@ -12,7 +12,9 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 				onImageLoaded(@group)
 			
 			@img.src = image_data.src;
-			
+		draw:	 ->
+			# @group.getLayer().draw()
+			@group.getStage().draw()
 		loadImage: (image_data) ->
 			@center = 
 					x: image_data.width /2,

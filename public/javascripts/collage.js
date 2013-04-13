@@ -47,7 +47,7 @@
             console.log("collage item selected");
             console.log(cnvs_item);
             _this.currentItem = cnvs_item;
-            return event_emitter.emit("ItemSelected", _this.currentItem.itemType, _this.currentItem);
+            return event_emitter.emit("ItemSelected", _this.currentItem);
           }
         });
         event_emitter.on("rotation.changed", function(value) {
@@ -73,7 +73,7 @@
           _this.layer.add(k_image);
           return _this.stage.draw();
         };
-        canvas_image = new Photo(imageSrc, onImageCreated);
+        canvas_image = new Photo(imageSrc, this.stage, onImageCreated);
         return this.collage_items.push(canvas_image);
       };
 

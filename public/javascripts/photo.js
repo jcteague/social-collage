@@ -5,8 +5,9 @@
     var Photo;
     return Photo = (function() {
 
-      function Photo(image_data, onImageLoaded) {
+      function Photo(image_data, stage, onImageLoaded) {
         var _this = this;
+        this.stage = stage;
         this.itemType = 'Photo';
         this.deSelectSteps = [];
         this.img = new Image();
@@ -19,6 +20,10 @@
         };
         this.img.src = image_data.src;
       }
+
+      Photo.prototype.draw = function() {
+        return this.group.getStage().draw();
+      };
 
       Photo.prototype.loadImage = function(image_data) {
         this.center = {

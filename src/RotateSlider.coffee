@@ -16,6 +16,9 @@ define ['jquery','EventEmitter'], ($, event_emitter) ->
 			@rotate_value_element.text(ui.value) 
 			event_emitter.emit("rotation.changed",ui.value)
 
+		hide: ->
+			@slider.hide()
+
 
 
 

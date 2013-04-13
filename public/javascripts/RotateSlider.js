@@ -27,6 +27,10 @@
         return event_emitter.emit("rotation.changed", ui.value);
       };
 
+      RotateSlider.prototype.hide = function() {
+        return this.slider.hide();
+      };
+
       return RotateSlider;
 
     })();

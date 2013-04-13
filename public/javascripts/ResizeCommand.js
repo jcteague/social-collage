@@ -2,15 +2,21 @@
 (function() {
 
   define(['kinetic'], function(Kinetic) {
-    return (function() {
-
-      function _Class() {}
-
-      _Class.bind_to = function(collage_item) {
+    return {
+      unbind: function(collage_item) {
+        var k, v, _ref;
+        _ref = collage_item.corners;
+        for (k in _ref) {
+          v = _ref[k];
+          v.remove();
+        }
+        return collage_item.draw();
+      },
+      bind_to: function(collage_item) {
         var bl, br, canvas_group, canvas_item, item_position, tl, tr, _ref,
           _this = this;
         console.log("making image resizable");
-        canvas_group = collage_item.item.group;
+        canvas_group = collage_item.group;
         _ref = collage_item.corners, tl = _ref.tl, tr = _ref.tr, bl = _ref.bl, br = _ref.br;
         canvas_item = collage_item.item;
         item_position = canvas_item.getPosition();
@@ -50,7 +56,7 @@
           canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
           return canvas_item.setSize(img_width, img_height);
         });
-        _.each([tl, tr, br, bl], function(corner) {
+        return _.each([tl, tr, br, bl], function(corner) {
           var _this = this;
           console.log("displaying corner: " + corner.attrs.x + "," + corner.attrs.y);
           console.dir(corner);
@@ -63,16 +69,13 @@
           corner.on("dragend", function() {
             return canvas_group.setDraggable(true);
           });
-          return corner.on("dragmove", function() {
-            return canvas_item.getLayer().draw();
+          corner.on("dragmove", function() {
+            return collage_item.draw();
           });
+          return collage_item.draw();
         });
-        return canvas_item.getLayer().draw();
-      };
-
-      return _Class;
-
-    })();
+      }
+    };
   });
 
 }).call(this);

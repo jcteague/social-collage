@@ -1,6 +1,6 @@
-define (require) ->
+define ["ResizeCommand", "Rotate"], (resize_command, rotate_command) ->
 	{
-		resize : require('ResizeCommand')
-		rotate : require('rotate')	
+		resize : resize_command
+		rotate : rotate_command	
 	}
 	

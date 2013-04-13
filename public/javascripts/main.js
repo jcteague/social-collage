@@ -8,7 +8,7 @@
       "jqueryUI": "jqueryui-min",
       "bootstrap": "bootstrap",
       "EventEmitter2": "eventemitter2",
-      "kinetic": "kinetic-v4.3.1",
+      "kinetic": "kinetic-v4.4.1",
       "sylvester": "sylvester"
     },
     shim: {

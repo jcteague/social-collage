@@ -2,36 +2,45 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  define(['jquery', 'underscore', 'EventEmitter', 'CommandTypes'], function($, _, event_emitter, commands) {
+  define(['jquery', 'underscore', 'EventEmitter', 'commands'], function($, _, event_emitter, commands) {
     var ToolBar;
     return ToolBar = (function() {
 
       function ToolBar(items_class_selector, default_command) {
-        this.onCanvasItemSelected = __bind(this.onCanvasItemSelected, this);
+        this.applyCommand = __bind(this.applyCommand, this);
 
         var _this = this;
-        this.current_command = default_command;
+        this.current_command = commands[default_command];
         this.toolbar_items = $(items_class_selector);
-        event_emitter.on("ItemSelected", this.onCanvasItemSelected);
+        event_emitter.on("ItemSelected", this.applyCommand);
         this.toolbar_items.click(function(evt, ui) {
-          var command_name, _ref;
-          command_name = $(evt.currentTarget).data('action');
+          var command_name, menu_item, _ref;
+          menu_item = $(evt.currentTarget);
+          command_name = menu_item.data('action');
+          console.log("selected action: " + command_name);
           if (((_ref = _this.current_command) != null ? _ref.commandName : void 0) === command_name) {
             return;
-          } else {
-            _this.current_command = commands[command_name];
           }
-          _this.set_active($(evt.currentTarget));
+          if (_this.selected_canvas_item) {
+            _this.current_command.unbind(_this.selected_canvas_item);
+          }
+          _this.current_command = commands[command_name];
+          _this.applyCommand(_this.selected_canvas_item);
+          _this.set_active(menu_item);
           return event_emitter.emit('Toolbar.MenuItemSelected', command_name);
         });
       }
 
       ToolBar.prototype.set_active = function(toolbar_item) {
-        toolbar_item.addClass('active');
-        if (this.active != null) {
-          this.active.removeClass('active');
+        var i, _i, _len, _ref;
+        _ref = this.toolbar_items;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          i = _ref[_i];
+          if ($(i).hasClass('active')) {
+            $(i).removeClass('active');
+          }
         }
-        return this.active = toolbar_item;
+        return toolbar_item.addClass('active');
       };
 
       ToolBar.prototype.set_initial_active = function() {
@@ -49,7 +58,8 @@
         return this.set_active(active_item);
       };
 
-      ToolBar.prototype.onCanvasItemSelected = function(item_type, item) {
+      ToolBar.prototype.applyCommand = function(item) {
+        this.selected_canvas_item = item;
         console.log("canvas item selected toolbar handler");
         return this.current_command.bind_to(item);
       };

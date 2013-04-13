@@ -36,7 +36,7 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 					console.log("collage item selected")
 					console.log(cnvs_item)
 					@currentItem = cnvs_item
-					event_emitter.emit "ItemSelected", @currentItem.itemType, @currentItem
+					event_emitter.emit "ItemSelected", @currentItem
 
 			event_emitter.on "rotation.changed", (value) =>
 				@currentItem?.rotate(value)
@@ -54,7 +54,7 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 				@layer.add(k_image)
 				@stage.draw()
 
-			canvas_image = new Photo(imageSrc,onImageCreated)
+			canvas_image = new Photo(imageSrc,@stage,onImageCreated)
 			@collage_items.push(canvas_image);
 
 		find_item: (x,y) ->

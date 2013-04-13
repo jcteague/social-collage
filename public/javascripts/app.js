@@ -8,7 +8,7 @@
       function App(canvas_element) {
         this.canvas_element = canvas_element;
         this.collage = new Collage(this.canvas_element);
-        this.toolbar = new Toolbar('#collage-menu-list .menu-item', commands.resize);
+        this.toolbar = new Toolbar('#collage-menu-list .menu-item', "resize");
       }
 
       return App;

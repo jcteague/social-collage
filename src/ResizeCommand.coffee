@@ -1,9 +1,11 @@
 define ['kinetic'], (Kinetic) ->
-	class 
-		@bind_to: (collage_item) ->
-
+	
+		unbind: (collage_item) ->
+			v.remove() for k,v of collage_item.corners
+			collage_item.draw() 
+		bind_to: (collage_item) ->
 			console.log("making image resizable")
-			canvas_group = collage_item.item.group
+			canvas_group = collage_item.group
 			{tl,tr,bl,br} = collage_item.corners
 			canvas_item = collage_item.item
 			
@@ -55,8 +57,8 @@ define ['kinetic'], (Kinetic) ->
 				corner.on "dragend", =>
 					canvas_group.setDraggable(true)
 				corner.on "dragmove", =>
-					canvas_item.getLayer().draw()
-			canvas_item.getLayer().draw()
+					collage_item.draw()
+				collage_item.draw()
 
 
 				
