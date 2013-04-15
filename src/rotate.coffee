@@ -13,7 +13,7 @@ define ['underscore','RotateSlider'], (_,RotateSlider) ->
 			width:item_dimensions.width
 		@slider = new RotateSlider(sliderOptions)
 		
-		canvas_item.getLayer().draw()
+		canvas_group.getLayer().draw()
 	unbind: (collage_item) ->
 		@slider.hide()
 

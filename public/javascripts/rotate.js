@@ -16,7 +16,7 @@
           width: item_dimensions.width
         };
         this.slider = new RotateSlider(sliderOptions);
-        return canvas_item.getLayer().draw();
+        return canvas_group.getLayer().draw();
       },
       unbind: function(collage_item) {
         return this.slider.hide();

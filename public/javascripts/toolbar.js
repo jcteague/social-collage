@@ -21,18 +21,19 @@
           }
         });
         this.toolbar_items.click(function(evt, ui) {
-          var command_name, menu_item, _ref;
+          var command_name, menu_item, previous_command, _ref;
           menu_item = $(evt.currentTarget);
           command_name = menu_item.data('action');
           console.log("selected action: " + command_name);
           if (((_ref = _this.current_command) != null ? _ref.commandName : void 0) === command_name) {
             return;
           }
-          if (_this.selected_canvas_item) {
-            _this.current_command.unbind(_this.selected_canvas_item);
-          }
+          previous_command = _this.current_command;
           _this.current_command = commands[command_name];
-          _this.applyCommand(_this.selected_canvas_item);
+          if (_this.selected_canvas_item) {
+            previous_command.unbind(_this.selected_canvas_item);
+            _this.applyCommand(_this.selected_canvas_item);
+          }
           _this.set_active(menu_item);
           return event_emitter.emit('Toolbar.MenuItemSelected', command_name);
         });

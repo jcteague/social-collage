@@ -1,7 +1,7 @@
 define ['kinetic'], (Kinetic) ->
 	
 		unbind: (collage_item) ->
-			v.remove() for k,v of collage_item.corners
+			v.hide() for k,v of collage_item.corners
 			collage_item.draw() 
 		bind_to: (collage_item) ->
 			console.log("making image resizable")

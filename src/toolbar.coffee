@@ -16,11 +16,11 @@ define ['jquery','underscore','EventEmitter','commands'],($,_,event_emitter,comm
 				if @current_command?.commandName == command_name
 					return
 				
-				
+				previous_command = @current_command
+				@current_command = commands[command_name]
 				if @selected_canvas_item
-					@current_command.unbind @selected_canvas_item
-				@current_command = commands[command_name]	
-				@applyCommand @selected_canvas_item
+					previous_command.unbind @selected_canvas_item
+					@applyCommand @selected_canvas_item
 
 	
 				@set_active(menu_item)

@@ -8,7 +8,7 @@
         _ref = collage_item.corners;
         for (k in _ref) {
           v = _ref[k];
-          v.remove();
+          v.hide();
         }
         return collage_item.draw();
       },
