@@ -4,7 +4,10 @@ define ['jquery','underscore','EventEmitter','commands'],($,_,event_emitter,comm
 			@current_command = commands[default_command]
 			@toolbar_items = $(items_class_selector)
 			event_emitter.on "ItemSelected", @applyCommand
-
+			event_emitter.on "ItemDeSelected", () => 
+				console.log "toolbar ItemDelected:"
+				@current_command?.unbind @selected_canvas_item
+				return
 
 			@toolbar_items.click (evt,ui) =>
 				menu_item = $(evt.currentTarget)

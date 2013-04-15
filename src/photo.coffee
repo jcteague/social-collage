@@ -65,7 +65,7 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 			x1 = @item.attrs.x
 			x2 = x1+@item.attrs.width
 			y1 = @item.attrs.y
-			y2 = y1+@item.attrs.width
+			y2 = y1+@item.attrs.height
 			x1 < x < x2 and y1 < y < y2
 			
 

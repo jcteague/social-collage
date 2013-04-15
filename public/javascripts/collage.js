@@ -39,7 +39,7 @@
           var cnvs_item;
           console.log("canvas clicked");
           cnvs_item = _this.find_item(evt.offsetX, evt.offsetY);
-          if ((_this.currentItem != null) && (cnvs_item != null ? cnvs_item.length : void 0) === 0) {
+          if ((_this.currentItem != null) && !(cnvs_item != null)) {
             console.log("de selecting current canvas item");
             event_emitter.emit('ItemDeSelected', _this.currentItem);
             return _this.currentItem = null;

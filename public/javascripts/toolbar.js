@@ -13,6 +13,13 @@
         this.current_command = commands[default_command];
         this.toolbar_items = $(items_class_selector);
         event_emitter.on("ItemSelected", this.applyCommand);
+        event_emitter.on("ItemDeSelected", function() {
+          var _ref;
+          console.log("toolbar ItemDelected:");
+          if ((_ref = _this.current_command) != null) {
+            _ref.unbind(_this.selected_canvas_item);
+          }
+        });
         this.toolbar_items.click(function(evt, ui) {
           var command_name, menu_item, _ref;
           menu_item = $(evt.currentTarget);

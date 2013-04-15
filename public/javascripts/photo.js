@@ -80,7 +80,7 @@
         x1 = this.item.attrs.x;
         x2 = x1 + this.item.attrs.width;
         y1 = this.item.attrs.y;
-        y2 = y1 + this.item.attrs.width;
+        y2 = y1 + this.item.attrs.height;
         return (x1 < x && x < x2) && (y1 < y && y < y2);
       };
 

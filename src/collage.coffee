@@ -27,7 +27,8 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 				cnvs_item =  @find_item(evt.offsetX,evt.offsetY)
 				
 				#currentItem exist and no 
-				if @currentItem? && cnvs_item?.length == 0
+				
+				if @currentItem? and not cnvs_item?
 					console.log("de selecting current canvas item")
 					event_emitter.emit 'ItemDeSelected', @currentItem
 					
