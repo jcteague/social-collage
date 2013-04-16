@@ -9,7 +9,13 @@
       function RotateSlider(options) {
         this.onSlide = __bind(this.onSlide, this);
         this.container = $('#rotater');
-        this.slider = $('#rotate-slider').slider({
+        this.slider = $('#rotate-slider');
+        if (this.slider.hasClass('ui-slider')) {
+          console.log("slider exists");
+          this.slider.show();
+          return;
+        }
+        this.slider.slider({
           min: -180,
           max: 180,
           slide: this.onSlide
