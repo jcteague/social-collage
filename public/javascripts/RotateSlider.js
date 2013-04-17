@@ -20,7 +20,6 @@
           max: 180,
           slide: this.onSlide
         });
-        this.rotate_value_element = $('#rotate-value').text('0');
         this.container.offset({
           top: options.top,
           left: options.left
@@ -29,7 +28,6 @@
 
       RotateSlider.prototype.onSlide = function(evt, ui) {
         console.log("slide");
-        this.rotate_value_element.text(ui.value);
         return event_emitter.emit("rotation.changed", ui.value);
       };
 

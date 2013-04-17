@@ -25,11 +25,15 @@
         return this.group.getStage().draw();
       };
 
-      Photo.prototype.loadImage = function(image_data) {
-        this.center = {
-          x: image_data.width / 2,
-          y: image_data.height / 2
+      Photo.prototype.get_center = function() {
+        return {
+          x: this.item.getX() + (this.item.getWidth() / 2),
+          y: this.item.getY() + (this.item.getHeight() / 2)
         };
+      };
+
+      Photo.prototype.loadImage = function(image_data) {
+        var center_point;
         this.item = new Kinetic.Image({
           image: this.img,
           x: image_data.x,
@@ -42,7 +46,14 @@
           strokeWidth: 2
         });
         this.group.add(this.item);
-        return this.add_corners();
+        this.add_corners();
+        center_point = new Kinetic.Circle({
+          radius: 5,
+          x: this.get_center().x,
+          y: this.get_center().y,
+          fill: "blue"
+        });
+        return this.group.add(center_point);
       };
 
       Photo.prototype.add_corners = function() {
@@ -117,16 +128,22 @@
       };
 
       Photo.prototype.rotate = function(degree) {
-        var cr, dr, new_rotation;
-        this.group.setOffset(this.center.x, this.center.y);
-        this.group.setPosition(this.center.x, this.center.y);
+        var center, cr, dr, new_rotation, original_position;
+        original_position = this.group.getPosition();
+        console.log("photo: changing offset before rotation: " + original_position.x + ", " + original_position.y);
+        center = this.get_center();
+        this.group.setOffset(center.x, center.y);
+        this.group.setPosition(center.x, center.y);
         cr = this.group.getRotationDeg();
         dr = degree - cr;
         new_rotation = cr + dr;
         console.log("photo: rotating " + new_rotation);
         this.group.setRotationDeg(new_rotation);
         this.group.getLayer().draw();
-        return this.group.setOffset(0, 0);
+        this.group.setOffset(0, 0);
+        console.log("photo: resetting after rotation, before reset: " + this.group.attrs.x + "," + this.group.attrs.y);
+        this.group.setPosition(original_position);
+        return console.log("photo: resetting after rotation: " + this.group.attrs.x + "," + this.group.attrs.y);
       };
 
       return Photo;

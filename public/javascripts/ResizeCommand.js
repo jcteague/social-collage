@@ -58,8 +58,6 @@
         });
         return _.each([tl, tr, br, bl], function(corner) {
           var _this = this;
-          console.log("displaying corner: " + corner.attrs.x + "," + corner.attrs.y);
-          console.dir(corner);
           corner.show();
           corner.on("mousedown", function() {
             console.log("tl mousedown");

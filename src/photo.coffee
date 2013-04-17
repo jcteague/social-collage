@@ -15,10 +15,14 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 		draw:	 ->
 			# @group.getLayer().draw()
 			@group.getStage().draw()
+		
+		get_center: ->
+			{
+				x: @item.getX() + (@item.getWidth()/2)
+				y: @item.getY() + (@item.getHeight()/2)
+			}
 		loadImage: (image_data) ->
-			@center = 
-					x: image_data.width /2,
-					y: image_data.height / 2
+			
 				
 				@item = new Kinetic.Image({
 					image:@img,
@@ -33,10 +37,11 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 				  
 				})
 				@group.add(@item)
-				@add_corners()	
-				# @item.on 'click', =>
-				# 	console.log('Image Clicked')
-				# 	event_emitter.emit("ItemSelected","Image",@)
+				
+				
+				@add_corners()
+				center_point = new Kinetic.Circle({radius:5,x:@get_center().x,y:@get_center().y,fill:"blue"})
+				@group.add(center_point)
 
 				
 		add_corners: ->
@@ -92,16 +97,23 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 
 
 		rotate: (degree) ->
-			@group.setOffset(@center.x,@center.y)
-			@group.setPosition(@center.x,@center.y)
+			
+			original_position = @group.getPosition()
+			console.log "photo: changing offset before rotation: #{original_position.x}, #{original_position.y}"
+			center = @get_center()
+			@group.setOffset(center.x,center.y)
+			@group.setPosition(center.x,center.y)
+			
 			cr = @group.getRotationDeg()
 			dr = (degree - cr)
 			new_rotation = cr + dr
 			console.log("photo: rotating #{new_rotation}")
-			
 			@group.setRotationDeg(new_rotation)
 			@group.getLayer().draw()
 			@group.setOffset(0,0)
+			console.log "photo: resetting after rotation, before reset: #{@group.attrs.x},#{@group.attrs.y}"
+			@group.setPosition(original_position)
+			console.log "photo: resetting after rotation: #{@group.attrs.x},#{@group.attrs.y}"
 			
 			
 

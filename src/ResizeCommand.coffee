@@ -46,8 +46,6 @@ define ['kinetic'], (Kinetic) ->
 				canvas_item.setSize(img_width,img_height)		
 
 			_.each [tl,tr,br,bl],(corner) ->
-				console.log "displaying corner: #{corner.attrs.x},#{corner.attrs.y}"
-				console.dir corner
 				corner.show()
 				corner.on "mousedown",() =>
 					console.log("tl mousedown")
@@ -59,6 +57,7 @@ define ['kinetic'], (Kinetic) ->
 				corner.on "dragmove", =>
 					collage_item.draw()
 				collage_item.draw()
+
 
 
 				
