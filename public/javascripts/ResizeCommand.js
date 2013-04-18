@@ -56,22 +56,21 @@
           canvas_item.setPosition(tl.attrs.x + 6, tl.attrs.y + 6);
           return canvas_item.setSize(img_width, img_height);
         });
-        return _.each([tl, tr, br, bl], function(corner) {
+        _.each([tl, tr, br, bl], function(corner) {
           var _this = this;
           corner.show();
           corner.on("mousedown", function() {
-            console.log("tl mousedown");
             canvas_group.setDraggable(false);
             return canvas_group.moveToTop();
           });
           corner.on("dragend", function() {
             return canvas_group.setDraggable(true);
           });
-          corner.on("dragmove", function() {
+          return corner.on("dragmove", function() {
             return collage_item.draw();
           });
-          return collage_item.draw();
         });
+        collage_item.draw();
       }
     };
   });

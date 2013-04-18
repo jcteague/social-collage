@@ -33,6 +33,7 @@
       };
 
       Photo.prototype.loadImage = function(image_data) {
+        var layer, rect;
         this.item = new Kinetic.Image({
           image: this.img,
           x: image_data.x,
@@ -40,10 +41,20 @@
           width: image_data.width,
           height: image_data.height,
           name: 'image',
-          draggagle: true,
           stroke: 'black',
           strokeWidth: 2
         });
+        rect = new Kinetic.Rect({
+          x: image_data.x,
+          y: image_data.y,
+          width: image_data.width,
+          height: image_data.height,
+          stroke: 'black',
+          strokeWidth: 2
+        });
+        layer = new Kinetic.Layer();
+        layer.add(rect);
+        this.stage.add(layer);
         this.group.add(this.item);
         return this.add_corners();
       };
@@ -119,19 +130,31 @@
         };
       };
 
+      Photo.prototype.draw = function() {
+        return this.item.getStage().draw();
+      };
+
       Photo.prototype.rotate = function(degree) {
-        var center, cr, dr, new_rotation;
+        var center, cr, dr, new_rotation, original_position;
+        original_position = {
+          x: this.item.attrs.x,
+          y: this.item.attrs.y
+        };
+        console.log("original position");
+        console.log(original_position);
+        console.dir(this.item);
         center = this.get_center();
-        this.group.setOffset(center.x, center.y);
-        this.group.setPosition(center.x, center.y);
+        console.dir(center);
+        this.item.setOffset(center.x, center.y);
+        this.draw();
         cr = this.group.getRotationDeg();
         dr = degree - cr;
         new_rotation = cr + dr;
         console.log("photo: rotating " + new_rotation);
         this.group.setRotationDeg(new_rotation);
-        console.log("photo: resetting after rotation, before reset: " + this.group.attrs.x + "," + this.group.attrs.y);
-        console.log("photo: resetting after rotation: " + this.group.attrs.x + "," + this.group.attrs.y);
-        return this.group.getLayer().draw();
+        this.draw();
+        this.item.setOffset(0, 0);
+        return this.draw();
       };
 
       return Photo;

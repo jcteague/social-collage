@@ -29,17 +29,28 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 					width: image_data.width,
 					height: image_data.height,
 					name:'image',
-					draggagle: true,
+					# draggagle: true,
 					stroke: 'black',
-					strokeWidth: 2
+					strokeWidth: 2,
+					# offset: [image_data.x + image_data.width/2,image_data.y + image_data.height/2]
 				  
 				})
-				@group.add(@item)
-				@add_corners()
+				
 				# center_point = new Kinetic.Circle({radius:5,x:@get_center().x,y:@get_center().y,fill:"blue"})
 				# @group.add(center_point)
-
-				
+				rect = new Kinetic.Rect({
+					x: image_data.x
+					y: image_data.y
+					width: image_data.width,
+					height: image_data.height,
+					stroke: 'black',
+					strokeWidth: 2,
+				})
+				layer = new Kinetic.Layer()
+				layer.add(rect)
+				@stage.add(layer)
+				@group.add(@item)
+				@add_corners()
 		add_corners: ->
 			getAnchor = (x,y,name) ->
 				return new Kinetic.Rect({
@@ -91,23 +102,37 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 			 		height: @item.getHeight()
 			 }
 
+		draw: () ->
+			@item.getStage().draw()
 
 		rotate: (degree) ->
+			original_position = 
+				x: @item.attrs.x
+				y: @item.attrs.y
+
+			console.log "original position"
+			console.log original_position
+			console.dir @item
 			center = @get_center()
-			@group.setOffset(center.x,center.y)
-			@group.setPosition(center.x,center.y)
 			
+			console.dir center
+			@item.setOffset(center.x,center.y)
+			@draw()
+			# @group.setPosition(center.x,center.y)
+			# @draw()
+
 			cr = @group.getRotationDeg()
 			dr = (degree - cr)
 			new_rotation = cr + dr
 			console.log("photo: rotating #{new_rotation}")
 			@group.setRotationDeg(new_rotation)
-			# @group.getLayer().draw()
-			# @group.setOffset(0,0)
-			console.log "photo: resetting after rotation, before reset: #{@group.attrs.x},#{@group.attrs.y}"
-			# @group.setPosition(original_position)
-			console.log "photo: resetting after rotation: #{@group.attrs.x},#{@group.attrs.y}"
-			@group.getLayer().draw()
+			@draw()
+			
+			# @item.setOffset(original_position.x,original_position.y)
+			@item.setOffset(0,0)
+			@draw()
+			# @group.setPosition(original_position.x,original_position.y)
+			# @item.getStage().draw()
 			
 
 

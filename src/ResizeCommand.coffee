@@ -49,7 +49,6 @@ define ['kinetic'], (Kinetic) ->
 			_.each [tl,tr,br,bl],(corner) ->
 				corner.show()
 				corner.on "mousedown",() =>
-					console.log("tl mousedown")
 					canvas_group.setDraggable(false);
 					canvas_group.moveToTop();
 				
@@ -57,7 +56,8 @@ define ['kinetic'], (Kinetic) ->
 					canvas_group.setDraggable(true)
 				corner.on "dragmove", =>
 					collage_item.draw()
-				collage_item.draw()
+			collage_item.draw()
+			return
 
 
 
