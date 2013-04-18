@@ -33,7 +33,6 @@
       };
 
       Photo.prototype.loadImage = function(image_data) {
-        var center_point;
         this.item = new Kinetic.Image({
           image: this.img,
           x: image_data.x,
@@ -46,14 +45,7 @@
           strokeWidth: 2
         });
         this.group.add(this.item);
-        this.add_corners();
-        center_point = new Kinetic.Circle({
-          radius: 5,
-          x: this.get_center().x,
-          y: this.get_center().y,
-          fill: "blue"
-        });
-        return this.group.add(center_point);
+        return this.add_corners();
       };
 
       Photo.prototype.add_corners = function() {

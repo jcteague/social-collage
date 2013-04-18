@@ -36,8 +36,8 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 				})
 				@group.add(@item)
 				@add_corners()
-				center_point = new Kinetic.Circle({radius:5,x:@get_center().x,y:@get_center().y,fill:"blue"})
-				@group.add(center_point)
+				# center_point = new Kinetic.Circle({radius:5,x:@get_center().x,y:@get_center().y,fill:"blue"})
+				# @group.add(center_point)
 
 				
 		add_corners: ->
