@@ -97,9 +97,6 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 
 
 		rotate: (degree) ->
-			
-			original_position = @group.getPosition()
-			console.log "photo: changing offset before rotation: #{original_position.x}, #{original_position.y}"
 			center = @get_center()
 			@group.setOffset(center.x,center.y)
 			@group.setPosition(center.x,center.y)
@@ -109,12 +106,12 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 			new_rotation = cr + dr
 			console.log("photo: rotating #{new_rotation}")
 			@group.setRotationDeg(new_rotation)
-			@group.getLayer().draw()
-			@group.setOffset(0,0)
+			# @group.getLayer().draw()
+			# @group.setOffset(0,0)
 			console.log "photo: resetting after rotation, before reset: #{@group.attrs.x},#{@group.attrs.y}"
-			@group.setPosition(original_position)
+			# @group.setPosition(original_position)
 			console.log "photo: resetting after rotation: #{@group.attrs.x},#{@group.attrs.y}"
-			
+			@group.getLayer().draw()
 			
 
 

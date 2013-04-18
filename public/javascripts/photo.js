@@ -128,9 +128,7 @@
       };
 
       Photo.prototype.rotate = function(degree) {
-        var center, cr, dr, new_rotation, original_position;
-        original_position = this.group.getPosition();
-        console.log("photo: changing offset before rotation: " + original_position.x + ", " + original_position.y);
+        var center, cr, dr, new_rotation;
         center = this.get_center();
         this.group.setOffset(center.x, center.y);
         this.group.setPosition(center.x, center.y);
@@ -139,11 +137,9 @@
         new_rotation = cr + dr;
         console.log("photo: rotating " + new_rotation);
         this.group.setRotationDeg(new_rotation);
-        this.group.getLayer().draw();
-        this.group.setOffset(0, 0);
         console.log("photo: resetting after rotation, before reset: " + this.group.attrs.x + "," + this.group.attrs.y);
-        this.group.setPosition(original_position);
-        return console.log("photo: resetting after rotation: " + this.group.attrs.x + "," + this.group.attrs.y);
+        console.log("photo: resetting after rotation: " + this.group.attrs.x + "," + this.group.attrs.y);
+        return this.group.getLayer().draw();
       };
 
       return Photo;
