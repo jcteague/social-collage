@@ -6,6 +6,7 @@ define ['jquery','EventEmitter'], ($, event_emitter) ->
 			@slider = $('#rotate-slider')
 			if(@slider.hasClass 'ui-slider')
 				console.log "slider exists"
+				@container.offset({top:options.top,left:options.left}).width(options.width)
 				@slider.show()
 				return
 

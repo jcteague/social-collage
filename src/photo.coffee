@@ -22,9 +22,7 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 				y: @item.getY() + (@item.getHeight()/2)
 			}
 		loadImage: (image_data) ->
-			
-				
-				@item = new Kinetic.Image({
+			@item = new Kinetic.Image({
 					image:@img,
 					x: image_data.x
 					y: image_data.y
@@ -37,8 +35,6 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 				  
 				})
 				@group.add(@item)
-				
-				
 				@add_corners()
 				center_point = new Kinetic.Circle({radius:5,x:@get_center().x,y:@get_center().y,fill:"blue"})
 				@group.add(center_point)

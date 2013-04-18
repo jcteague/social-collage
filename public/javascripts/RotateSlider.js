@@ -12,6 +12,10 @@
         this.slider = $('#rotate-slider');
         if (this.slider.hasClass('ui-slider')) {
           console.log("slider exists");
+          this.container.offset({
+            top: options.top,
+            left: options.left
+          }).width(options.width);
           this.slider.show();
           return;
         }
