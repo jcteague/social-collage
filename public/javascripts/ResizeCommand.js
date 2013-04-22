@@ -22,6 +22,7 @@
         item_position = canvas_item.getPosition();
         tl.on("dragmove", function() {
           var img_height, img_width;
+          console.log("tl dragmove");
           tr.attrs.y = tl.attrs.y;
           bl.attrs.x = tl.attrs.x;
           img_width = tr.attrs.x - tl.attrs.x;
@@ -60,6 +61,7 @@
           var _this = this;
           corner.show();
           corner.on("mousedown", function() {
+            console.log("corner mousedown");
             canvas_group.setDraggable(false);
             return canvas_group.moveToTop();
           });

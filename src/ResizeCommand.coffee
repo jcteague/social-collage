@@ -13,6 +13,7 @@ define ['kinetic'], (Kinetic) ->
 			item_position = canvas_item.getPosition();
 			
 			tl.on "dragmove",() =>
+				console.log "tl dragmove"
 				tr.attrs.y = tl.attrs.y;
 				bl.attrs.x = tl.attrs.x;
 				
@@ -49,6 +50,7 @@ define ['kinetic'], (Kinetic) ->
 			_.each [tl,tr,br,bl],(corner) ->
 				corner.show()
 				corner.on "mousedown",() =>
+					console.log "corner mousedown"
 					canvas_group.setDraggable(false);
 					canvas_group.moveToTop();
 				

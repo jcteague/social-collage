@@ -41,6 +41,7 @@
           width: image_data.width,
           height: image_data.height,
           name: 'image',
+          draggagle: true,
           stroke: 'black',
           strokeWidth: 2
         });
@@ -142,18 +143,21 @@
         };
         console.log("original position");
         console.log(original_position);
-        console.dir(this.item);
+        console.log("photo: changing offset before rotation: " + original_position.x + ", " + original_position.y);
         center = this.get_center();
-        console.dir(center);
-        this.item.setOffset(center.x, center.y);
+        this.group.setOffset(center.x, center.y);
+        this.draw();
+        this.group.setPosition(center.x, center.y);
         this.draw();
         cr = this.group.getRotationDeg();
         dr = degree - cr;
         new_rotation = cr + dr;
         console.log("photo: rotating " + new_rotation);
         this.group.setRotationDeg(new_rotation);
+        this.group.getLayer().draw();
         this.draw();
-        this.item.setOffset(0, 0);
+        console.log("photo: resetting after rotation, before reset: " + this.group.attrs.x + "," + this.group.attrs.y);
+        console.log("photo: resetting after rotation: " + this.group.attrs.x + "," + this.group.attrs.y);
         return this.draw();
       };
 

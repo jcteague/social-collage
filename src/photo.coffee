@@ -29,7 +29,7 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 					width: image_data.width,
 					height: image_data.height,
 					name:'image',
-					# draggagle: true,
+					draggagle: true,
 					stroke: 'black',
 					strokeWidth: 2,
 					# offset: [image_data.x + image_data.width/2,image_data.y + image_data.height/2]
@@ -51,6 +51,9 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 				@stage.add(layer)
 				@group.add(@item)
 				@add_corners()
+				# @group.setX(@item.getX())
+				# @group.setY(@item.getY())
+		
 		add_corners: ->
 			getAnchor = (x,y,name) ->
 				return new Kinetic.Rect({
@@ -112,27 +115,24 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 
 			console.log "original position"
 			console.log original_position
-			console.dir @item
+			# original_position = @group.getPosition()
+			console.log "photo: changing offset before rotation: #{original_position.x}, #{original_position.y}"
 			center = @get_center()
-			
-			console.dir center
-			@item.setOffset(center.x,center.y)
+			@group.setOffset(center.x,center.y)
 			@draw()
-			# @group.setPosition(center.x,center.y)
-			# @draw()
-
+			@group.setPosition(center.x,center.y)
+			@draw()
 			cr = @group.getRotationDeg()
 			dr = (degree - cr)
 			new_rotation = cr + dr
 			console.log("photo: rotating #{new_rotation}")
 			@group.setRotationDeg(new_rotation)
+			@group.getLayer().draw()
+			# @group.setOffset(0,0)
 			@draw()
-			
-			# @item.setOffset(original_position.x,original_position.y)
-			@item.setOffset(0,0)
+			console.log "photo: resetting after rotation, before reset: #{@group.attrs.x},#{@group.attrs.y}"
+			# @group.setPosition(original_position)
+			console.log "photo: resetting after rotation: #{@group.attrs.x},#{@group.attrs.y}"
 			@draw()
-			# @group.setPosition(original_position.x,original_position.y)
-			# @item.getStage().draw()
-			
 
 
