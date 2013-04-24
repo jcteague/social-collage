@@ -1,9 +1,5 @@
 #fb-root
 
-button(id="login") logout
-button(id="logout") logout
-
-
 .row-fluid
 	.span3
 		ul.nav.nav-list
@@ -19,36 +15,12 @@ button(id="logout") logout
 				ul#groups.nav-header
 
 	#collage-wrapper.span9
-		#slider.button-group
-			button.btn.dropdown-toggle(data-toggle="dropdown")
-				| Rotate 
-				span.caret
-			ul.dropdown-menu
-				li
-					a(href="#") Slider
-				li
-					a(href="#") Another action	
-		.navbar
-			.navbar-inner
-				.container
-					ul#collage-menu-list.nav
-						li.menu-item.active(data-action="move")
-							a(href="#") Move
-						li.menu-item(data-action="resize")
-							a(href="#") Resize
-						li.menu-item(data-action="rotate")
-							a(href="#") Rotate
+		//-.navbar
+		//- .navbar-inner
+		//- 	.container
+		//- 		ul#collage-menu-list.nav
+					
 		#sub-menu 	
 		#canvas-container
 			<canvas id="collage-canvas"></canvas>
-		#rotater
-			#rotate-slider.slider
 			
-
-
-//- script(src="javascripts/kinetic-v3.10.3.js")
-//- script(src="javascripts/eventemitter2.js")
-//- script(src="javascripts/client.js")
-
-//- script(src="javascripts/fb-init.js")
-

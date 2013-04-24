@@ -2,18 +2,7 @@
 (function() {
 
   define(['Commands'], function(commands) {
-    return {
-      resize: {
-        commandName: 'resize',
-        command: commands.resize,
-        label: 'Resize'
-      },
-      rotate: {
-        commandName: 'rotate',
-        command: commands.rotate,
-        label: 'Rotate'
-      }
-    };
+    return {};
   });
 
 }).call(this);
