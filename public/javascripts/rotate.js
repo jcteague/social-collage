@@ -4,10 +4,8 @@
   define(['underscore', 'RotateSlider'], function(_, RotateSlider) {
     return {
       bind_to: function(collage_item) {
-        var canvas_group, canvas_item, item_dimensions, item_position, sliderOptions;
+        var item_dimensions, item_position, sliderOptions;
         console.log("rotating");
-        canvas_group = collage_item.group;
-        canvas_item = collage_item.item;
         item_position = collage_item.getScreenPosition();
         item_dimensions = collage_item.getItemDimensions();
         sliderOptions = {
@@ -15,8 +13,7 @@
           left: item_position.x,
           width: item_dimensions.width
         };
-        this.slider = new RotateSlider(sliderOptions);
-        return canvas_group.getLayer().draw();
+        return this.slider = new RotateSlider(sliderOptions);
       },
       unbind: function(collage_item) {
         return this.slider.hide();

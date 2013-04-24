@@ -1,7 +1,7 @@
-define ['kinetic'], (Kinetic) ->
+define [], () ->
 	bind_to: (collage_item) ->
 		console.log "move command"
-		collage_item.group.setDraggable(true)
+		# collage_item.group.setDraggable(true)
 
 	unbind: (collage_item) ->
-		collage_item.group.setDraggable(false)
+		# collage_item.group.setDraggable(false)

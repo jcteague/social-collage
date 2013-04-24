@@ -1,11 +1,16 @@
-define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,Photo) ->
+define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Photo) ->
 	class Collage
 		constructor: (@canvas_element)->
 			@canvas = $("##{@canvas_element}")
-			@stage = new Kinetic.Stage({container:canvas_element,width:@canvas.width() ,height:@canvas.height()})
-			@layer = new Kinetic.Layer();
-			@container = new Kinetic.Container();
-			@stage.add(@layer);
+			@canvas_container = @canvas.parent()
+			@stage = new fabric.Canvas(@canvas_element)
+
+			@stage.setWidth(@canvas_container.width())
+			@stage.setHeight(@canvas_container.height())
+			# @stage = new Kinetic.Stage({container:canvas_element,width:@canvas.width() ,height:@canvas.height()})
+			# @layer = new Kinetic.Layer();
+			# @container = new Kinetic.Container();
+			# @stage.add(@layer);
 
 			@activeImage = null;
 			@collage_items = []
@@ -20,7 +25,7 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 				console.log(img_data)
 				@addFbPhoto(img_data)
 			
-			@canvas.find('canvas').droppable({drop: image_dropped})
+			@canvas.droppable({drop: image_dropped})
 
 			@canvas.on "click",(evt) =>
 				console.log "canvas clicked"
@@ -43,7 +48,10 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 				@currentItem?.rotate(value)
 				
 		dimensions: ->
-			@stage.getSize();
+			{
+				width: @stage.getWidth()
+				height: @stage.getHeight()
+			}
 
 		screenPosition: ->
 			@canvas.position();
@@ -51,9 +59,7 @@ define ['jqueryUI','kinetic','EventEmitter','Photo'], ($,Kinetic,event_emitter,P
 		addImage: (imageSrc) ->
 			console.log("adding image");
 			onImageCreated = (k_image) =>
-				@container.add(k_image)
-				@layer.add(k_image)
-				@stage.draw()
+				@stage.add(k_image)
 
 			canvas_image = new Photo(imageSrc,@stage,onImageCreated)
 			@collage_items.push(canvas_image);

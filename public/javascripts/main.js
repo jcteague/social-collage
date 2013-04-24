@@ -8,15 +8,15 @@
       "jqueryUI": "jqueryui-min",
       "bootstrap": "bootstrap",
       "EventEmitter2": "eventemitter2",
-      "kinetic": "kinetic-v4.4.1",
+      "fabric": "fabric",
       "sylvester": "sylvester"
     },
     shim: {
       underscore: {
         exports: '_'
       },
-      kinetic: {
-        exports: 'Kinetic'
+      fabric: {
+        exports: 'fabric'
       },
       jqueryUI: {
         exports: '$',
@@ -32,7 +32,7 @@
     return $(function() {
       var app, userPhotos;
       userPhotos = new UserPhotos();
-      app = new App('canvas-container');
+      app = new App('collage-canvas');
       return console.log("loading dependencies");
     });
   });

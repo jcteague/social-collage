@@ -1,80 +1,28 @@
-define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
+define ['jquery','fabric','EventEmitter'], ($,fabric,event_emitter) ->
 	class Photo 
 
 		constructor: (image_data,@stage, onImageLoaded) ->
-			@itemType = 'Photo'
-			@deSelectSteps = []
-			@img = new Image()
-			@group = new Kinetic.Group({draggagle:true})
+			@itemType = 'Photo'	
+			@loadImage(image_data,onImageLoaded)
 			
-			@img.onload = () =>
-				@loadImage(image_data)
-				onImageLoaded(@group)
-			
-			@img.src = image_data.src;
-		draw:	 ->
-			# @group.getLayer().draw()
-			@group.getStage().draw()
-		
 		get_center: ->
 			{
 				x: @item.getX() + (@item.getWidth()/2)
 				y: @item.getY() + (@item.getHeight()/2)
 			}
-		loadImage: (image_data) ->
-			@item = new Kinetic.Image({
-					image:@img,
-					x: image_data.x
-					y: image_data.y
+		loadImage: (image_data, loaded_cb) ->
+			console.log "photo loadImage: "
+			console.log image_data
+			@item = new fabric.Image.fromURL(image_data.src, loaded_cb,
+				{
+					left: image_data.x
+					top: image_data.y
 					width: image_data.width,
 					height: image_data.height,
-					name:'image',
-					draggagle: true,
-					stroke: 'black',
-					strokeWidth: 2,
-					# offset: [image_data.x + image_data.width/2,image_data.y + image_data.height/2]
+				}
 				  
-				})
-				
-				# center_point = new Kinetic.Circle({radius:5,x:@get_center().x,y:@get_center().y,fill:"blue"})
-				# @group.add(center_point)
-				rect = new Kinetic.Rect({
-					x: image_data.x
-					y: image_data.y
-					width: image_data.width,
-					height: image_data.height,
-					stroke: 'black',
-					strokeWidth: 2,
-				})
-				layer = new Kinetic.Layer()
-				layer.add(rect)
-				@stage.add(layer)
-				@group.add(@item)
-				@add_corners()
-				# @group.setX(@item.getX())
-				# @group.setY(@item.getY())
+			)
 		
-		add_corners: ->
-			getAnchor = (x,y,name) ->
-				return new Kinetic.Rect({
-					x:x,
-					y:y,
-					name:name,
-					fill:'#000000',
-					width: 12,
-					height: 12,
-					visible:false
-					draggable:true
-				});
-			item_position = @item.getPosition();
-			@corners = 
-				tl: getAnchor(item_position.x-6,item_position.y-6,'topLeft');
-				tr: getAnchor(item_position.x+@item.getWidth()-6,item_position.y-6,'topRight');
-				bl: getAnchor(item_position.x-6,item_position.y-6+@item.getHeight(),'bottomRight');
-				br: getAnchor(item_position.x+@item.getWidth()-6,item_position.y-6+@item.getHeight(),'bottomLeft');
-			
-			
-			@group.add(v) for k,v of @corners
 
 		intersects: (x,y)->
 			x1 = @item.attrs.x
@@ -86,11 +34,11 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 
 		noLongerActive: ->
 			corner.hide() for x, corner of @corners
-			@group.setDraggable(true)
-			@group.getLayer().draw()
+			# @group.setDraggable(true)
+			# @group.getLayer().draw()
 
 		getCanvasPosition: ->
-			@item.getOffset()
+			# @item.getOffset()
 
 		getScreenPosition: ->
 			cnvs_position = $(@item.getCanvas().element).offset()
@@ -104,35 +52,4 @@ define ['jquery','kinetic','EventEmitter'], ($,Kinetic,event_emitter) ->
 			 		width: @item.getWidth()
 			 		height: @item.getHeight()
 			 }
-
-		draw: () ->
-			@item.getStage().draw()
-
-		rotate: (degree) ->
-			original_position = 
-				x: @item.attrs.x
-				y: @item.attrs.y
-
-			console.log "original position"
-			console.log original_position
-			# original_position = @group.getPosition()
-			console.log "photo: changing offset before rotation: #{original_position.x}, #{original_position.y}"
-			center = @get_center()
-			@group.setOffset(center.x,center.y)
-			@draw()
-			@group.setPosition(center.x,center.y)
-			@draw()
-			cr = @group.getRotationDeg()
-			dr = (degree - cr)
-			new_rotation = cr + dr
-			console.log("photo: rotating #{new_rotation}")
-			@group.setRotationDeg(new_rotation)
-			@group.getLayer().draw()
-			# @group.setOffset(0,0)
-			@draw()
-			console.log "photo: resetting after rotation, before reset: #{@group.attrs.x},#{@group.attrs.y}"
-			# @group.setPosition(original_position)
-			console.log "photo: resetting after rotation: #{@group.attrs.x},#{@group.attrs.y}"
-			@draw()
-
 
