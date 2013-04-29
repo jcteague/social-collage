@@ -1,17 +1,54 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html{
+	position: relative;
+	min-height: 100%;
 }
 
+body {
+  margin: 0 0 50px;
+  padding-top: 60px;
+  
+}
+
+#photo-menu{
+	position: absolute;
+	left:0;
+	bottom:0;
+	height:100px;
+	width:100%;
+}
 a {
   color: #00B7FF;
 }
+ul.thumbnails{
+	
+	list-style: none;
+}
 #canvas-container{
 	border: solid 1px black;
-	height:800px;
-	width:600px;
+	height:600px;
+	width:800px;
 }
 #collage-canvas{
 	width:100%;
 	height: 100%
 }
+#collage-workspace{
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	
+}
+#photo-menu{
+	height:40px;
+}
+#facebook-photo-content{
+	position:absolute;
+	z-index: 10000;
+	height:400px;
+	top:500px;
+	background-color:rgba(54,54,54,.5);
+	border: solid 1px;
+	display:none;
+
+}
+

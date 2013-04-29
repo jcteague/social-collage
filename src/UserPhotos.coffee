@@ -8,13 +8,43 @@ define ['jqueryUI','underscore'], ($,_)->
 			FB.login (response) ->
 				if response.authResponse then
 					#loadUser()
+		loadPhotoCollection: (content, source, cb) ->
+			if(content == 'facebook')
+				@load_fb_photo_collection(source, cb)
 
+		onLoadPhotosCompleted: (albums) ->
+			console.log "all photos loaded"
+			return
+		load_fb_photo_collection: (source, cb) ->
+			if(source == 'albums')
+				FB.api '/me/albums?fields=id,name,cover_photo', (albums) =>
+					album_data = albums.data					
+					for i in [0..album_data.length-1]
+						k = 0
+						FB.api "/#{album_data[i].cover_photo}", (cover_response) =>
+							console.log "cover image for #{k}"
+							console.log cover_response.picture
+							album_data[k].cover_photo_url = cover_response.picture
+							if(k == album_data.length-1)
+								cb album_data
+								return
+							k++
+							return
+					return
+				return
+
+							
+						
+					
+					
+		
 		show_fb_photos: (authResponse)->
 			console.log("initializing photos")
+
 			FB.api '/me/photos',(response)->
 				pics = $('#your-pics')
 				_.each response.data, (item) ->
-					img_el = $("<img src='#{item.picture}' class='picture thumbnail'>")
+					img_el = $("<li class='span2'><img src='#{item.picture}' class='picture thumbnail'></li>")
 					img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
 					img_el.data('img_data',item)
 					pics.append(img_el);  

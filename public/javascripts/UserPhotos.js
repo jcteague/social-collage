@@ -17,6 +17,39 @@
         });
       };
 
+      UserPhotos.prototype.loadPhotoCollection = function(content, source, cb) {
+        if (content === 'facebook') {
+          return this.load_fb_photo_collection(source, cb);
+        }
+      };
+
+      UserPhotos.prototype.onLoadPhotosCompleted = function(albums) {
+        console.log("all photos loaded");
+      };
+
+      UserPhotos.prototype.load_fb_photo_collection = function(source, cb) {
+        var _this = this;
+        if (source === 'albums') {
+          FB.api('/me/albums?fields=id,name,cover_photo', function(albums) {
+            var album_data, i, k, _i, _ref;
+            album_data = albums.data;
+            for (i = _i = 0, _ref = album_data.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+              k = 0;
+              FB.api("/" + album_data[i].cover_photo, function(cover_response) {
+                console.log("cover image for " + k);
+                console.log(cover_response.picture);
+                album_data[k].cover_photo_url = cover_response.picture;
+                if (k === album_data.length - 1) {
+                  cb(album_data);
+                  return;
+                }
+                k++;
+              });
+            }
+          });
+        }
+      };
+
       UserPhotos.prototype.show_fb_photos = function(authResponse) {
         console.log("initializing photos");
         return FB.api('/me/photos', function(response) {
@@ -24,7 +57,7 @@
           pics = $('#your-pics');
           return _.each(response.data, function(item) {
             var img_el;
-            img_el = $("<img src='" + item.picture + "' class='picture thumbnail'>");
+            img_el = $("<li class='span2'><img src='" + item.picture + "' class='picture thumbnail'></li>");
             img_el.draggable({
               cursor: 'move',
               cursorAt: {
