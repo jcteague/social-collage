@@ -19,12 +19,18 @@
 
       UserPhotos.prototype.loadPhotoCollection = function(content, source, cb) {
         if (content === 'facebook') {
-          return this.load_fb_photo_collection(source, cb);
+          this.load_fb_photo_collection(source, cb);
         }
       };
 
-      UserPhotos.prototype.onLoadPhotosCompleted = function(albums) {
-        console.log("all photos loaded");
+      UserPhotos.prototype.getCollectionPhotos = function(content, source, id, cb) {
+        if (content === 'facebook') {
+          return this.get_facebook_collection_photos(source, id, cb);
+        }
+      };
+
+      UserPhotos.prototype.get_facebook_collection_photos = function(source, id, cb) {
+        return FB.api("/" + id + "/photos", cb);
       };
 
       UserPhotos.prototype.load_fb_photo_collection = function(source, cb) {

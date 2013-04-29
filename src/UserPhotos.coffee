@@ -11,10 +11,14 @@ define ['jqueryUI','underscore'], ($,_)->
 		loadPhotoCollection: (content, source, cb) ->
 			if(content == 'facebook')
 				@load_fb_photo_collection(source, cb)
+				return
+		getCollectionPhotos: (content, source, id, cb) ->
+			if(content == 'facebook')
+				@get_facebook_collection_photos source, id, cb
 
-		onLoadPhotosCompleted: (albums) ->
-			console.log "all photos loaded"
-			return
+		get_facebook_collection_photos: (source, id, cb) ->
+			FB.api "/#{id}/photos", cb
+		
 		load_fb_photo_collection: (source, cb) ->
 			if(source == 'albums')
 				FB.api '/me/albums?fields=id,name,cover_photo', (albums) =>

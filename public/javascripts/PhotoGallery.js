@@ -14,25 +14,55 @@
           direction: 'down'
         }, 1000);
       });
-      return $('.photo-submenu a').click(function() {
-        var active_menu, content_source, current_pics, el, list, photo_source;
+      $('.photo-submenu a').click(function() {
+        var active_menu, collection_template, content_source, current_pics, el, list, photo_source;
         el = $(this);
         list = $($(this).parents('ul')[0]);
         active_menu = list.find('.active');
         current_pics = $('#your-pics');
         content_source = list.data('contentsource');
         photo_source = $(this).data('photosource');
+        collection_template = _.template("<li class='span2 album'>\n	<a class=\"photo-collection-link\" \n		href=# \n		data-collectionid=\"<%=id%>\" \n		data-contentsource=\"<%=contentsource%>\"\n		data-photosource=\"<%=photosource%>\"\n		>\n		<img src=\"<%= cover_photo_url%>\" class='picture thumbnail' />\n		<span class=\"photo-collection-label\"><%=name%></span>\n	</a>\n</li>");
         userPhotos.loadPhotoCollection(content_source, photo_source, function(result) {
           current_pics.empty();
           return _.each(result, function(datum) {
-            var content_el, li;
-            li = $("<li class='span2 album'>");
-            li.data('albumid', datum.id);
-            content_el = $("<img src='" + datum.cover_photo_url + "' class='picture thumbnail'>");
-            li.append(content_el);
-            current_pics.append(li);
+            var template_data;
+            template_data = {
+              id: datum.id,
+              name: datum.name,
+              cover_photo_url: datum.cover_photo_url,
+              "contentsource": content_source,
+              "photosource": photo_source
+            };
+            current_pics.append(collection_template(template_data));
             active_menu.removeClass('active');
             return el.addClass('active');
+          });
+        });
+      });
+      return $('body').on('click', '.photo-collection-link', function(ev) {
+        var collection_id, content_souce, el, photo_source, pics;
+        el = $(this);
+        pics = $('#your-pics');
+        content_souce = el.data('contentsource');
+        photo_source = el.data('photosource');
+        collection_id = el.data('collectionid');
+        return userPhotos.getCollectionPhotos(content_souce, photo_source, collection_id, function(photo_data) {
+          pics.empty();
+          return _.each(photo_data.data, function(item) {
+            var img_el;
+            img_el = $("<li class='span2'><img src='" + item.picture + "' class='picture thumbnail'></li>");
+            img_el.draggable({
+              cursor: 'move',
+              cursorAt: {
+                top: 0,
+                left: 0
+              },
+              revert: 'invalid',
+              helper: 'clone'
+            });
+            img_el.data('img_data', item);
+            return pics.append(img_el);
           });
         });
       });
