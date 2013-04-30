@@ -2,7 +2,7 @@
 (function() {
 
   define(['jqueryUI', 'underscore', 'UserPhotos', 'EventEmitter'], function($, _, UserPhotos, event_emitter) {
-    var getPhotoCollection, handlePhotoCollectionClick, handlePhotoSourceClick, handlePhotoSubMenuClick, showImageCollection, showImages, userPhotos;
+    var getPhotoCollection, handlePhotoCollectionClick, handlePhotoSourceClick, handlePhotoSubMenuClick, showImageCollection, showImages, togglePhotoContent, userPhotos;
     userPhotos = new UserPhotos();
     $(function() {
       event_emitter.on('facebook:connected', function() {
@@ -11,6 +11,15 @@
       handlePhotoSourceClick();
       handlePhotoSubMenuClick();
       return handlePhotoCollectionClick();
+    });
+    $('.close-photo-content').hover(function() {
+      return $(this).removeClass('icon-remove-circle').addClass('icon-remove-sign');
+    }, function() {
+      return $(this).removeClass('icon-remove-sign').addClass('icon-remove-circle');
+    }).click(function() {
+      var content_el;
+      content_el = $($(this).parent().parent());
+      return togglePhotoContent(content_el);
     });
     handlePhotoSubMenuClick = function() {
       return $('.photo-submenu a').click(function() {
@@ -28,14 +37,23 @@
     };
     handlePhotoSourceClick = function() {
       return $('.photo-source').click(function() {
-        var content_el, source;
+        var content_el, photo_menu, source, top_position;
+        photo_menu = $('#photo-menu');
         source = $(this).data('source');
         content_el = $("#" + source + "-photo-content");
-        return content_el.toggle('slide', {
-          easing: 'easeOutQuint',
-          direction: 'down'
-        }, 1000);
+        top_position = photo_menu.position().top - content_el.height();
+        console.log(top_position);
+        content_el.css({
+          top: top_position
+        });
+        return togglePhotoContent(content_el);
       });
+    };
+    togglePhotoContent = function(content_el) {
+      return content_el.toggle('slide', {
+        easing: 'easeOutQuint',
+        direction: 'down'
+      }, 1000);
     };
     handlePhotoCollectionClick = function() {
       return $('body').on('click', '.photo-collection', function(ev) {

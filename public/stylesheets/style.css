@@ -52,10 +52,16 @@ img.thumbnail{
 	position:absolute;
 	z-index: 10000;
 	height:400px;
+	width: 100%;
 	top:500px;
 	background-color:rgba(54,54,54,.5);
 	border: solid 1px;
 	display:none;
 
+}
+
+.close-photo-content{
+	padding-left:.5em;
+	padding-right:.95em;
 }
 

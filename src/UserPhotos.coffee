@@ -18,13 +18,13 @@ define ['jqueryUI','underscore','EventEmitter'], ($,_,event_emitter)->
 				@get_facebook_collection_photos source, id, cb
 
 		get_facebook_collection_photos: (source, id, cb) ->
-			FB.api "/#{id}/photos", cb
+			FB.api "/#{id}/photos", (result) ->
+					console.log result
+					cb result
 		
 		load_fb_photo_collection: (source, cb) ->
 			if source == 'me'
 				@load_fb_user_photos cb
-				
-
 			if(source == 'albums')
 				@load_fb_albums cb
 

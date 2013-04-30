@@ -31,7 +31,10 @@
       };
 
       UserPhotos.prototype.get_facebook_collection_photos = function(source, id, cb) {
-        return FB.api("/" + id + "/photos", cb);
+        return FB.api("/" + id + "/photos", function(result) {
+          console.log(result);
+          return cb(result);
+        });
       };
 
       UserPhotos.prototype.load_fb_photo_collection = function(source, cb) {

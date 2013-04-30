@@ -6,7 +6,16 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 		handlePhotoSubMenuClick()		
 		handlePhotoCollectionClick()
 
-		
+	$('.close-photo-content')
+		.hover(
+			()->$(this).removeClass('icon-remove-circle')
+								 .addClass('icon-remove-sign'),
+			()->$(this).removeClass('icon-remove-sign')
+								 .addClass('icon-remove-circle'))
+		.click ()->
+			content_el = $($(this).parent().parent())
+			togglePhotoContent(content_el)
+
 	
 	handlePhotoSubMenuClick = () ->
 		$('.photo-submenu a').click () ->
@@ -23,10 +32,16 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 
 	handlePhotoSourceClick = ()->
 		$('.photo-source').click ()->
+			photo_menu = $('#photo-menu')
 			source = $(this).data('source')
 			content_el = $("##{source}-photo-content")
-			content_el.toggle('slide',{easing:'easeOutQuint',direction:'down'},1000)
+			top_position = photo_menu.position().top - content_el.height()
+			console.log top_position
+			content_el.css({top: top_position})
+			togglePhotoContent(content_el)
 
+	togglePhotoContent = (content_el) ->
+		content_el.toggle('slide',{easing:'easeOutQuint',direction:'down'},1000)
 	handlePhotoCollectionClick = ()->
 		$('body').on 'click', '.photo-collection', (ev) ->
 			el = $(this)
