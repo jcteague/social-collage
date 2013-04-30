@@ -6,12 +6,11 @@ requirejs.config(
 			"jqueryUI": "jqueryui-min",
 			"bootstrap": "bootstrap",
 			"EventEmitter2": "eventemitter2",
-			# "kinetic": "kinetic-v4.4.1",
+			
 			"fabric": "fabric"
 			"sylvester": "sylvester"
 		shim:
 			underscore:{exports:'_'},
-			# kinetic:{exports:'Kinetic'},
 			fabric: {exports:'fabric'}
 			jqueryUI:{exports:'$',deps:['jquery']}
 			EventEmitter2: {exports:"EventEmitter2"}

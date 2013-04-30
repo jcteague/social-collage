@@ -1,26 +1,55 @@
 #fb-root
 
-.row-fluid
-	.span3
-		ul.nav.nav-list
-			.pics-you
-				|Your Pictures
-				ul#your-pics.thumbnails
-			.pics-friends
-			ul#albums.nav-header	
-				|Albums
-				.pics-friends
-			ul#friends.nav-header 
-				|Friends
-				ul#groups.nav-header
-
-	#collage-wrapper.span9
+#collage-workspace.row-fluid
+	h2
+		| Build Your Collage
+	#collage-wrapper
 		//-.navbar
 		//- .navbar-inner
 		//- 	.container
 		//- 		ul#collage-menu-list.nav
-					
 		#sub-menu 	
 		#canvas-container
 			<canvas id="collage-canvas"></canvas>
-			
+
+#facebook-photo-content
+	
+	h3
+		em.close-photo-content.icon.icon-remove-circle
+		| Facebook Photos
+	ul#facebook-menu.photo-submenu.nav.nav-pills(data-contentsource="facebook")
+		li.active
+			a(href="#",data-photosource="me")
+				| You
+		li
+			a(href="#",data-photosource="albums")
+				| Albums
+		li
+			a(href="#",data-photosource="friends")
+				| Friends
+		li
+			a(href="#",data-photosource="groups")
+				| Groups
+
+	ul#your-pics.thumbnails
+
+
+#photo-menu
+	.navbar
+		.navbar-inner
+			.container
+				.brand
+					| Select Photos:
+				ul#photo-sources.nav
+					li
+						a.photo-source(data-source="facebook", href='#facebook-photos' )
+							| Facebook
+					li
+						a.photo-source(data-source="facebook")(href='#google-photos')
+							| Google
+					li
+						a.photo-source(data-source="facebook")a(href='#flickr-photos')
+							| Flickr
+	
+
+
