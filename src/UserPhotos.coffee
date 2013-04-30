@@ -1,6 +1,5 @@
-define ['jqueryUI','underscore'], ($,_)->
-	class UserPhotos
-	
+define ['jqueryUI','underscore','EventEmitter'], ($,_,event_emitter)->
+	class UserPhotos	
 		constructor: ->
 			@fb_init()
 
@@ -9,9 +8,11 @@ define ['jqueryUI','underscore'], ($,_)->
 				if response.authResponse then
 					#loadUser()
 		loadPhotoCollection: (content, source, cb) ->
+			console.log "load collection: #{content}, #{source}"
 			if(content == 'facebook')
 				@load_fb_photo_collection(source, cb)
 				return
+		
 		getCollectionPhotos: (content, source, id, cb) ->
 			if(content == 'facebook')
 				@get_facebook_collection_photos source, id, cb
@@ -20,41 +21,49 @@ define ['jqueryUI','underscore'], ($,_)->
 			FB.api "/#{id}/photos", cb
 		
 		load_fb_photo_collection: (source, cb) ->
+			if source == 'me'
+				@load_fb_user_photos cb
+				
+
 			if(source == 'albums')
-				FB.api '/me/albums?fields=id,name,cover_photo', (albums) =>
-					album_data = albums.data					
-					for i in [0..album_data.length-1]
-						k = 0
-						FB.api "/#{album_data[i].cover_photo}", (cover_response) =>
-							console.log "cover image for #{k}"
-							console.log cover_response.picture
-							album_data[k].cover_photo_url = cover_response.picture
-							if(k == album_data.length-1)
-								cb album_data
-								return
-							k++
-							return
-					return
-				return
+				@load_fb_albums cb
 
-							
+		load_fb_user_photos: (cb) ->
+			console.log "load fb_user"
+			FB.api 'me/photos', (response) ->
+			 user_images =  _.map response.data, (img)->
+					{
+						id: img.id
+						photo_url: img.picture
+						images: img.images
+					}
+					
+				cb {images: user_images}
+
+		load_fb_albums: (cb) ->
+			
+			FB.api '/me/albums?fields=id,name,cover_photo', (albums) =>
+				album_data = _.map albums.data, (alb) ->
+					{
+						id: alb.id
+						name: alb.name
+					}
+									
+				for i in [0..album_data.length-1]
+					k = 0
+					FB.api "/#{albums.data[i].cover_photo}", (cover_response) =>
+						album_data[k].cover_url =  cover_response.picture		
 						
-					
-					
-		
-		show_fb_photos: (authResponse)->
-			console.log("initializing photos")
-
-			FB.api '/me/photos',(response)->
-				pics = $('#your-pics')
-				_.each response.data, (item) ->
-					img_el = $("<li class='span2'><img src='#{item.picture}' class='picture thumbnail'></li>")
-					img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
-					img_el.data('img_data',item)
-					pics.append(img_el);  
+						if(k == album_data.length-1)
+							cb {"collection":album_data}
+							return
+						k++
+						return
+				return
+			return
 
 		fb_init: ->
-			show_photos = @show_fb_photos
+			
 			fbLogin = @fbLogin
 			window.fbAsyncInit  = ->
 					FB.init(
@@ -67,7 +76,7 @@ define ['jqueryUI','underscore'], ($,_)->
 					FB.getLoginStatus((response)->
 						if response.status is 'connected'
 							console.log("facebook connected")
-							show_photos()
+							event_emitter.emit('facebook:connected')
 						else
 							fbLogin();
 					)

@@ -19,9 +19,16 @@ body {
 a {
   color: #00B7FF;
 }
+a.photo-collection-link{
+	border-width:0px;
+}
 ul.thumbnails{
 	
 	list-style: none;
+}
+img.thumbnail{
+	width:140px;
+	height:106px;
 }
 #canvas-container{
 	border: solid 1px black;
