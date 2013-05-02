@@ -6,7 +6,7 @@ requirejs.config(
 			"jqueryUI": "jqueryui-min",
 			"bootstrap": "bootstrap",
 			"EventEmitter2": "eventemitter2",
-			
+			"async": "async"			
 			"fabric": "fabric"
 			"sylvester": "sylvester"
 		shim:
@@ -14,6 +14,7 @@ requirejs.config(
 			fabric: {exports:'fabric'}
 			jqueryUI:{exports:'$',deps:['jquery']}
 			EventEmitter2: {exports:"EventEmitter2"}
+			async: {exports:"async"}
 		
 	}
 	

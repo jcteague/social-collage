@@ -79,6 +79,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			img_el.data('img_data',item)
 			pics.append(img_el);  
 
+
 	showImageCollection = (content_source, photo_source, collection) ->
 		console.log "show image collection"
 		collection_template = _.template """
@@ -97,7 +98,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			template_data = 
 				id:datum.id,
 				name:datum.name,
-				cover_url: datum.cover_url,
+				cover_url: datum.cover_url ? '/images/placeholder.jpg',
 				"contentsource":content_source
 				"photosource": photo_source
 			current_pics.append(collection_template(template_data))

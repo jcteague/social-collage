@@ -57,6 +57,7 @@ img.thumbnail{
 	background-color:rgba(54,54,54,.5);
 	border: solid 1px;
 	display:none;
+	overflow: auto;
 
 }
 

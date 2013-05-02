@@ -1,4 +1,4 @@
-define ['jqueryUI','underscore','EventEmitter'], ($,_,event_emitter)->
+define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, async)->
 	class UserPhotos	
 		constructor: ->
 			@fb_init()
@@ -27,6 +27,25 @@ define ['jqueryUI','underscore','EventEmitter'], ($,_,event_emitter)->
 				@load_fb_user_photos cb
 			if(source == 'albums')
 				@load_fb_albums cb
+			if(source == 'friends')
+				console.log "friends"
+				@load_fb_friend_collection cb		
+
+		load_fb_friend_collection: (cb) ->
+				friend_collection = _.map @fb_user.friends.data, 
+					(f) -> {id:f.id,name:f.name,cover_url: f.picture.data.url}
+
+				cb {"collection": friend_collection}
+
+			# 	FB.api "/#{friend.id}?fields=cover", (result)->
+			# 		console.log "friend result"
+			# 		console.log result
+			# 		friend.cover_url = result.cover?.source
+			# 		callback(null, friend)
+
+
+			# async.map @fb_user.friends.data, get_fb_friend_cover_photo,(err,results)->cb {"collection":results}
+		
 
 		load_fb_user_photos: (cb) ->
 			console.log "load fb_user"
@@ -42,30 +61,41 @@ define ['jqueryUI','underscore','EventEmitter'], ($,_,event_emitter)->
 
 		load_fb_albums: (cb) ->
 			
+			process_album = (album, callback) ->
+				FB.api "/#{album.cover_photo}", (cover)->
+					album =
+						id: album.id
+						name: album.name
+						cover_url: cover.picture
+					callback(null, album)
+			
 			FB.api '/me/albums?fields=id,name,cover_photo', (albums) =>
-				album_data = _.map albums.data, (alb) ->
-					{
-						id: alb.id
-						name: alb.name
-					}
+				
+				async.map albums.data, process_album,(err,result)->cb ({"collection":result})
+
+			# 	album_data = _.map albums.data, (alb) ->
+			# 		{
+			# 			id: alb.id
+			# 			name: alb.name
+			# 		}
 									
-				for i in [0..album_data.length-1]
-					k = 0
-					FB.api "/#{albums.data[i].cover_photo}", (cover_response) =>
-						album_data[k].cover_url =  cover_response.picture		
+			# 	for i in [0..album_data.length-1]
+			# 		k = 0
+			# 		FB.api "/#{albums.data[i].cover_photo}", (cover_response) =>
+			# 			album_data[k].cover_url =  cover_response.picture		
 						
-						if(k == album_data.length-1)
-							cb {"collection":album_data}
-							return
-						k++
-						return
-				return
-			return
+			# 			if(k == album_data.length-1)
+			# 				cb {"collection":album_data}
+			# 				return
+			# 			k++
+			# 			return
+			# 	return
+			# return
 
 		fb_init: ->
-			
+			userPhotos = @
 			fbLogin = @fbLogin
-			window.fbAsyncInit  = ->
+			window.fbAsyncInit  =->
 					FB.init(
 						appId      : '236634053108854', # App ID
 						channelUrl : '//localhost/channel.html', # Channel File
@@ -73,10 +103,19 @@ define ['jqueryUI','underscore','EventEmitter'], ($,_,event_emitter)->
 						cookie     : true, # enable cookies to allow the server to access the session
 						xfbml      : true  # parse XFBML
 					)
-					FB.getLoginStatus((response)->
+					FB.getLoginStatus((response) ->
 						if response.status is 'connected'
 							console.log("facebook connected")
 							event_emitter.emit('facebook:connected')
+							async.series [
+								FB.api( '/me?fields=id,name,picture', (result) -> userPhotos.fb_user = result),
+								FB.api('/me/friends?fields=id,name,picture', (friends) -> userPhotos.fb_user.friends = friends),
+								event_emitter.emit 'facebook:userloaded'
+
+							]
+							
+								
+							
 						else
 							fbLogin();
 					)
@@ -91,6 +130,8 @@ define ['jqueryUI','underscore','EventEmitter'], ($,_,event_emitter)->
 				js.src = '//connect.facebook.net/en_US/all.js'
 				ref.parentNode.insertBefore js, ref
 			)(document)
+
+
 	
 		
 

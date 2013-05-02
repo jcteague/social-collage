@@ -123,11 +123,11 @@
       current_pics = $('#your-pics');
       current_pics.empty();
       _.each(collection, function(datum) {
-        var template_data;
+        var template_data, _ref;
         template_data = {
           id: datum.id,
           name: datum.name,
-          cover_url: datum.cover_url,
+          cover_url: (_ref = datum.cover_url) != null ? _ref : '/images/placeholder.jpg',
           "contentsource": content_source,
           "photosource": photo_source
         };

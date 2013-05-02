@@ -8,6 +8,7 @@
       "jqueryUI": "jqueryui-min",
       "bootstrap": "bootstrap",
       "EventEmitter2": "eventemitter2",
+      "async": "async",
       "fabric": "fabric",
       "sylvester": "sylvester"
     },
@@ -24,6 +25,9 @@
       },
       EventEmitter2: {
         exports: "EventEmitter2"
+      },
+      async: {
+        exports: "async"
       }
     }
   });
