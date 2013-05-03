@@ -58,8 +58,11 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 
 		addImage: (imageSrc) ->
 			console.log("adding image");
-			onImageCreated = (k_image) =>
-				@stage.add(k_image)
+			console.log imageSrc
+			onImageCreated = (cnvs_image) =>
+				console.log cnvs_image
+				@stage.add(cnvs_image)
+
 
 			canvas_image = new Photo(imageSrc,@stage,onImageCreated)
 			@collage_items.push(canvas_image);
@@ -76,8 +79,8 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 					src:'/images?src='+imageToAdd.source,
 					width:imageToAdd.width,
 					height:imageToAdd.height,
-					x:image_data.offsetX,
-					y:image_data.offsetY
+					x:image_data.offsetX + (imageToAdd.width/2),
+					y:image_data.offsetY + (imageToAdd.height/2)
 				}
 			)
 	

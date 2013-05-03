@@ -22,6 +22,9 @@ a {
 a.photo-collection-link{
 	border-width:0px;
 }
+li.ui-draggable img{
+	z-index: 12000;
+}
 ul.thumbnails{
 	
 	list-style: none;
@@ -32,8 +35,8 @@ img.thumbnail{
 }
 #canvas-container{
 	border: solid 1px black;
-	height:600px;
-	width:800px;
+	height:800px;
+	width:1040px;
 }
 #collage-canvas{
 	width:100%;
