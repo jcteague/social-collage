@@ -10,7 +10,9 @@
       "EventEmitter2": "eventemitter2",
       "async": "async",
       "fabric": "fabric",
-      "sylvester": "sylvester"
+      "sylvester": "sylvester",
+      "wijmoUtil": "jquery.wijmo.wijutil.min",
+      "wijmoSplitter": "jquery.wijmo.wijsplitter.min"
     },
     shim: {
       underscore: {
@@ -28,11 +30,19 @@
       },
       async: {
         exports: "async"
+      },
+      wijmoUtil: {
+        exports: "wijmoUtil",
+        deps: ["jquery"]
+      },
+      wijmoSplitter: {
+        exports: "wijmoSplitter",
+        deps: ["jqueryUI", "wijmoUtil"]
       }
     }
   });
 
-  require(['jquery', 'UserPhotos', 'App'], function($, UserPhotos, App) {
+  require(['jquery', 'UserPhotos', 'App', "wijmoSplitter"], function($, UserPhotos, App, spliter) {
     return $(function() {
       var app, userPhotos;
       userPhotos = new UserPhotos();

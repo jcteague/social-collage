@@ -6,15 +6,15 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 		handlePhotoSubMenuClick()		
 		handlePhotoCollectionClick()
 
-	$('.close-photo-content')
-		.hover(
-			()->$(this).removeClass('icon-remove-circle')
-								 .addClass('icon-remove-sign'),
-			()->$(this).removeClass('icon-remove-sign')
-								 .addClass('icon-remove-circle'))
-		.click ()->
-			content_el = $($(this).parent().parent())
-			togglePhotoContent(content_el)
+	# $('.close-photo-content')
+	# 	.hover(
+	# 		()->$(this).removeClass('icon-remove-circle')
+	# 							 .addClass('icon-remove-sign'),
+	# 		()->$(this).removeClass('icon-remove-sign')
+	# 							 .addClass('icon-remove-circle'))
+	# 	.click ()->
+	# 		content_el = $($(this).parent().parent())
+	# 		togglePhotoContent(content_el)
 
 	
 	handlePhotoSubMenuClick = () ->
@@ -52,7 +52,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			userPhotos.getCollectionPhotos content_souce, photo_source, collection_id,(photo_data)->
 				pics.empty()
 				_.each photo_data.data, (item) ->
-					img_el = $("<li class='span2'><img src='#{item.picture}' class='picture thumbnail'></li>")
+					img_el = $("<li class=''><img src='#{item.picture}' class='picture thumbnail'></li>")
 					img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
 					img_el.data('img_data',item)
 					pics.append(img_el);  	
@@ -74,7 +74,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 		pics = $('#your-pics')
 		pics.empty()
 		_.each images, (item) ->
-			img_el = $("<li class='span2'><img src='#{item.photo_url}' class='picture thumbnail'></li>")
+			img_el = $("<li class=''><img src='#{item.photo_url}' class='picture thumbnail'></li>")
 			img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
 			img_el.data('img_data',item)
 			pics.append(img_el);  
@@ -83,7 +83,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 	showImageCollection = (content_source, photo_source, collection) ->
 		console.log "show image collection"
 		collection_template = _.template """
-				<li class='span2 album'>
+				<li class=' album'>
 					<img src="<%= cover_url%>" 
 						class='picture thumbnail photo-collection' 
 						data-collectionid="<%=id%>" 

@@ -5,22 +5,23 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 			@canvas_container = @canvas.parent()
 			@stage = new fabric.Canvas(@canvas_element)
 
+
 			@stage.setWidth(@canvas_container.width())
 			@stage.setHeight(@canvas_container.height())
-			# @stage = new Kinetic.Stage({container:canvas_element,width:@canvas.width() ,height:@canvas.height()})
-			# @layer = new Kinetic.Layer();
-			# @container = new Kinetic.Container();
-			# @stage.add(@layer);
-
+			@enableDiagnostics()
 			@activeImage = null;
 			@collage_items = []
 			
 			image_dropped = (evt,ui) =>
 				console.log("photo image dropped")
+				console.log "event position"
+				console.log ui.position
+				console.log "fabric mouse position"
+				mouse_position =  @stage.getPointer()
 				img = $(ui.draggable)
 				img_data =
-				  offsetX:  evt.offsetX
-				  offsetY: evt.offsetY
+				  x: mouse_position.x
+				  y: mouse_position.y
 				  data: img.data('img_data')
 				console.log(img_data)
 				@addFbPhoto(img_data)
@@ -79,10 +80,15 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 					src:'/images?src='+imageToAdd.source,
 					width:imageToAdd.width,
 					height:imageToAdd.height,
-					x:image_data.offsetX + (imageToAdd.width/2),
-					y:image_data.offsetY + (imageToAdd.height/2)
+					x:image_data.x + (imageToAdd.width/2),
+					y:image_data.y + (imageToAdd.height/2)
 				}
 			)
+		enableDiagnostics: ->
+			@stage.on("mouse:move",(evt)->
+				
+				event_emitter.emit "canvas:mousemove",{x:evt.e.offsetX,y:evt.e.offsetY})
+
 	
 
 	

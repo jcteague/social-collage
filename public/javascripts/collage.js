@@ -14,15 +14,20 @@
         this.stage = new fabric.Canvas(this.canvas_element);
         this.stage.setWidth(this.canvas_container.width());
         this.stage.setHeight(this.canvas_container.height());
+        this.enableDiagnostics();
         this.activeImage = null;
         this.collage_items = [];
         image_dropped = function(evt, ui) {
-          var img, img_data;
+          var img, img_data, mouse_position;
           console.log("photo image dropped");
+          console.log("event position");
+          console.log(ui.position);
+          console.log("fabric mouse position");
+          mouse_position = _this.stage.getPointer();
           img = $(ui.draggable);
           img_data = {
-            offsetX: evt.offsetX,
-            offsetY: evt.offsetY,
+            x: mouse_position.x,
+            y: mouse_position.y,
             data: img.data('img_data')
           };
           console.log(img_data);
@@ -102,8 +107,17 @@
           src: '/images?src=' + imageToAdd.source,
           width: imageToAdd.width,
           height: imageToAdd.height,
-          x: image_data.offsetX + (imageToAdd.width / 2),
-          y: image_data.offsetY + (imageToAdd.height / 2)
+          x: image_data.x + (imageToAdd.width / 2),
+          y: image_data.y + (imageToAdd.height / 2)
+        });
+      };
+
+      Collage.prototype.enableDiagnostics = function() {
+        return this.stage.on("mouse:move", function(evt) {
+          return event_emitter.emit("canvas:mousemove", {
+            x: evt.e.offsetX,
+            y: evt.e.offsetY
+          });
         });
       };
 

@@ -12,15 +12,6 @@
       handlePhotoSubMenuClick();
       return handlePhotoCollectionClick();
     });
-    $('.close-photo-content').hover(function() {
-      return $(this).removeClass('icon-remove-circle').addClass('icon-remove-sign');
-    }, function() {
-      return $(this).removeClass('icon-remove-sign').addClass('icon-remove-circle');
-    }).click(function() {
-      var content_el;
-      content_el = $($(this).parent().parent());
-      return togglePhotoContent(content_el);
-    });
     handlePhotoSubMenuClick = function() {
       return $('.photo-submenu a').click(function() {
         var active_menu, content_source, current_pics, el, list, photo_source;
@@ -67,7 +58,7 @@
           pics.empty();
           return _.each(photo_data.data, function(item) {
             var img_el;
-            img_el = $("<li class='span2'><img src='" + item.picture + "' class='picture thumbnail'></li>");
+            img_el = $("<li class=''><img src='" + item.picture + "' class='picture thumbnail'></li>");
             img_el.draggable({
               cursor: 'move',
               cursorAt: {
@@ -102,7 +93,7 @@
       pics.empty();
       return _.each(images, function(item) {
         var img_el;
-        img_el = $("<li class='span2'><img src='" + item.photo_url + "' class='picture thumbnail'></li>");
+        img_el = $("<li class=''><img src='" + item.photo_url + "' class='picture thumbnail'></li>");
         img_el.draggable({
           cursor: 'move',
           cursorAt: {
@@ -119,7 +110,7 @@
     return showImageCollection = function(content_source, photo_source, collection) {
       var collection_template, current_pics;
       console.log("show image collection");
-      collection_template = _.template("<li class='span2 album'>\n	<img src=\"<%= cover_url%>\" \n		class='picture thumbnail photo-collection' \n		data-collectionid=\"<%=id%>\" \n		data-contentsource=\"<%=contentsource%>\"\n		data-photosource=\"<%=photosource%>\" />\n		<span class=\"photo-collection-label\"><%=name%></span>\n	\n</li>");
+      collection_template = _.template("<li class=' album'>\n	<img src=\"<%= cover_url%>\" \n		class='picture thumbnail photo-collection' \n		data-collectionid=\"<%=id%>\" \n		data-contentsource=\"<%=contentsource%>\"\n		data-photosource=\"<%=photosource%>\" />\n		<span class=\"photo-collection-label\"><%=name%></span>\n	\n</li>");
       current_pics = $('#your-pics');
       current_pics.empty();
       _.each(collection, function(datum) {
