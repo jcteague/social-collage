@@ -10,7 +10,9 @@ requirejs.config(
 			"fabric": "fabric",
 			"sylvester": "sylvester",
 			"wijmoUtil": "jquery.wijmo.wijutil.min",
-			"wijmoSplitter": "jquery.wijmo.wijsplitter.min"
+			"wijmoSplitter": "jquery.wijmo.wijsplitter.min",
+			"ToolbarItem-remove": "RemoveToolbarItem",
+			"ToolbarItem-crop": "CropToolbarItem"
 	    
 			
 		shim:

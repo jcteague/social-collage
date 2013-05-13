@@ -44,6 +44,9 @@
           console.log("object selection cleared");
           return console.log(evt);
         });
+        event_emitter.on("ItemRemoved", function(item) {
+          return _this.collage_items.splice(item.id, 1);
+        });
       }
 
       Collage.prototype.dimensions = function() {
@@ -62,7 +65,7 @@
           _this = this;
         console.log("adding image");
         console.log(imageSrc);
-        photo_id = this.collage_items.length + 1;
+        photo_id = this.collage_items.length;
         return this.collage_items.push(new Photo(photo_id, imageSrc, this.stage, function(cnvs_image) {
           console.log(cnvs_image);
           _this.stage.add(cnvs_image);

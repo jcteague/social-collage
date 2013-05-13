@@ -1,4 +1,4 @@
-define "crop-submenu", ['jquery','EventEmitter'], ($,event_emitter) ->
+define ['jquery','EventEmitter'], ($,event_emitter) ->
 		class CropSubMenu
 		
 			constructor: (top_menu, on_close)->

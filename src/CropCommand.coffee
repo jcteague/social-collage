@@ -1,4 +1,4 @@
-define "crop-command", ['fabric','EventEmitter'], (fabric,event_emitter)->
+define ['fabric','EventEmitter'], (fabric,event_emitter)->
 	class CropCommand
 		constructor: (@on_applied, @on_deactivate) ->
 

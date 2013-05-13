@@ -1,13 +1,14 @@
-define ['jquery','underscore','EventEmitter','commands','CropSubMenu','ToolbarItem'],($,_,event_emitter,commands,CropSubMenu,ToolbarItem) ->
-	class ToolBar extends Module
+define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emitter) ->
+	class ToolBar
 		constructor: (toolbar, default_command) ->
 			@toolbar = $(toolbar)
 			@menu_items = {}
 			@toolbar.find('li').each (idx, item) =>
 				li = $(item)
 				command_name = li.data "commandname"
-				menu_item = new ToolbarItem(@,command_name)
-				@menu_items[command_name] = menu_item
+				require ["ToolbarItem-#{command_name}"], (ToolbarItem) =>
+					menu_item = new ToolbarItem(@)
+					@menu_items[command_name] = menu_item
 
 			@toolbar_items = @toolbar.find('li')
 			

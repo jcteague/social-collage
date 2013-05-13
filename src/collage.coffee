@@ -36,6 +36,9 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 				console.log "object selection cleared"
 				console.log evt
 
+			event_emitter.on "ItemRemoved", (item) =>
+				@collage_items.splice(item.id,1)
+			
 
 			# @stage.on "mouse:up",(evt) =>
 			# 	console.log "canvas clicked"
@@ -69,7 +72,7 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 		addImage: (imageSrc) ->
 			console.log("adding image");
 			console.log imageSrc
-			photo_id = @collage_items.length+1
+			photo_id = @collage_items.length
 			@collage_items.push(new Photo photo_id, imageSrc,@stage,(cnvs_image) =>
 				console.log cnvs_image
 				@stage.add(cnvs_image)
