@@ -32,6 +32,9 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
+app.get('/crop', function(req, res){
+   res.render('crop-test', { title: 'crop' })
+});
 app.get('/images', function(req, res,next){
   var src = req.query.src;
   request.get(req.query.src).pipe(res)

@@ -5,10 +5,33 @@ h2
 	#collage-workspace.span8
 		
 		#collage-wrapper
-			//-.navbar
-			//- .navbar-inner
-			//- 	.container
-			//- 		ul#collage-menu-list.nav
+			.navbar
+				.navbar-inner
+					.container
+						ul#collage-menu-list.nav
+							li(data-commandname="crop")
+								a(href="#")
+									| Crop
+								#crop-submenu.submenu
+									| Crop: 
+									button#crop-apply(class="btn btn-primary submenu-button", data-event="submenu.apply.crop")
+										| Apply
+									button#crop-cancel(class="btn btn-danger submenu-button", data-event="submenu.cancel.crop")
+										| Cancel
+							//- li
+							//- 	a(href="#",data-action="text")
+							//- 		| Text
+							//- 	#text-submenu.submenu
+							//- 		| Text: 
+							//- 		button(class="btn btn-primary submenu-button", data-event="text:apply")
+							//- 			| Apply
+							//- 		button(class="btn btn-danger submenu-button", data-event="text:cancel")
+							//- 			| Cancel
+
+
+
+							
+								
 			#canvas-container
 				<canvas id="collage-canvas"></canvas>
 

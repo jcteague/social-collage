@@ -26,27 +26,36 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 				console.log(img_data)
 				@addFbPhoto(img_data)
 			
-			@canvas.droppable({drop: image_dropped})
+			@canvas.droppable({drop: 	image_dropped})
+		# 	 observe('selection:cleared');
+  # observe('selection:created');
+			@stage.on "selection:created", (evt) =>
+				console.log "object selected"
+				console.log evt
+			@stage.on "selection:cleared", (evt) =>
+				console.log "object selection cleared"
+				console.log evt
 
-			@canvas.on "click",(evt) =>
-				console.log "canvas clicked"
-				cnvs_item =  @find_item(evt.offsetX,evt.offsetY)
+
+			# @stage.on "mouse:up",(evt) =>
+			# 	console.log "canvas clicked"
+			# 	console.log evt
+			# 	cnvs_item =  @find_item(evt.offsetX,evt.offsetY)
 				
-				#currentItem exist and no 
+			# 	#currentItem exist and no 
 				
-				if @currentItem? and not cnvs_item?
-					console.log("de selecting current canvas item")
-					event_emitter.emit 'ItemDeSelected', @currentItem
+			# 	if @currentItem? and not cnvs_item?
+			# 		console.log("de selecting current canvas item")
+			# 		event_emitter.emit 'ItemDeSelected', @currentItem
 					
-					@currentItem = null
-				else
-					console.log("collage item selected")
-					console.log(cnvs_item)
-					@currentItem = cnvs_item
-					event_emitter.emit "ItemSelected", @currentItem
+			# 		@currentItem = null
+			# 	else
+			# 		console.log("collage item selected")
+			# 		console.log(cnvs_item)
+			# 		@currentItem = cnvs_item
+			# 		event_emitter.emit "ItemSelected", @currentItem
 
-			event_emitter.on "rotation.changed", (value) =>
-				@currentItem?.rotate(value)
+			
 				
 		dimensions: ->
 			{
@@ -60,13 +69,13 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 		addImage: (imageSrc) ->
 			console.log("adding image");
 			console.log imageSrc
-			onImageCreated = (cnvs_image) =>
+			photo_id = @collage_items.length+1
+			@collage_items.push(new Photo photo_id, imageSrc,@stage,(cnvs_image) =>
 				console.log cnvs_image
 				@stage.add(cnvs_image)
+				return)
 
-
-			canvas_image = new Photo(imageSrc,@stage,onImageCreated)
-			@collage_items.push(canvas_image);
+			
 
 		find_item: (x,y) ->
 			(i for i in @collage_items when i.intersects(x,y))[0]

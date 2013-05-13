@@ -1,19 +1,19 @@
-# moduleKeywords = ['extended', 'included']
+moduleKeywords = ['extended', 'included']
 
-# window.Module = class Module
-#   @extend: (obj) ->
-#     for key, value of obj when key not in moduleKeywords
-#       @[key] = value
+window.Module = class Module
+  @extend: (obj) ->
+    for key, value of obj when key not in moduleKeywords
+      @[key] = value
 
-#     obj.extended?.apply(@)
-#     this
+    obj.extended?.apply(@)
+    this
 
-#   @include: (obj) ->
-#     for key, value of obj when key not in moduleKeywords
-#       # Assign properties to the prototype
-#       @::[key] = value
+  @include: (obj) ->
+    for key, value of obj when key not in moduleKeywords
+      # Assign properties to the prototype
+      @::[key] = value
 
-#     obj.included?.apply(@)
-#     this
+    obj.included?.apply(@)
+    this
 
 

@@ -25,16 +25,10 @@ requirejs.config(
 	}
 	
 )
-require ['jquery','UserPhotos','App',"wijmoSplitter"],($, UserPhotos,App, spliter)->
+require ['jquery','UserPhotos','App'],($, UserPhotos,App)->
 	$ ->
 		userPhotos = new UserPhotos()
 		app = new App('collage-canvas')
 		console.log("loading dependencies")
-		# $('#page-splitter').wijsplitter({
-		# 	spliterDistance:600,
-		# 	resizable:true,
-		# 	orientation:"vertical",
-		# 	panel2:{maxSize:400}
-		# 	collapsingPanel:"panel2",
-		# 	fullSplit:true})
+		
 		

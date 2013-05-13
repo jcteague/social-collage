@@ -58,7 +58,7 @@
           pics.empty();
           return _.each(photo_data.data, function(item) {
             var img_el;
-            img_el = $("<li class=''><img src='" + item.picture + "' class='picture thumbnail'></li>");
+            img_el = $("<li class=''><img src='" + item.picture + "' id='" + id + "' class='picture thumbnail'></li>");
             img_el.draggable({
               cursor: 'move',
               cursorAt: {
@@ -93,7 +93,7 @@
       pics.empty();
       return _.each(images, function(item) {
         var img_el;
-        img_el = $("<li class=''><img src='" + item.photo_url + "' class='picture thumbnail'></li>");
+        img_el = $("<li class=''><img src='" + item.photo_url + "' id='" + item.id + "' class='picture thumbnail'></li>");
         img_el.draggable({
           cursor: 'move',
           cursorAt: {
@@ -110,7 +110,7 @@
     return showImageCollection = function(content_source, photo_source, collection) {
       var collection_template, current_pics;
       console.log("show image collection");
-      collection_template = _.template("<li class=' album'>\n	<img src=\"<%= cover_url%>\" \n		class='picture thumbnail photo-collection' \n		data-collectionid=\"<%=id%>\" \n		data-contentsource=\"<%=contentsource%>\"\n		data-photosource=\"<%=photosource%>\" />\n		<span class=\"photo-collection-label\"><%=name%></span>\n	\n</li>");
+      collection_template = _.template("<li class=' album'>\n	<img src=\"<%= cover_url%>\" \n	  id='<%= id %>'\n		class='picture thumbnail photo-collection' \n		data-collectionid=\"<%=id%>\" \n		data-contentsource=\"<%=contentsource%>\"\n		data-photosource=\"<%=photosource%>\" />\n		<span class=\"photo-collection-label\"><%=name%></span>\n	\n</li>");
       current_pics = $('#your-pics');
       current_pics.empty();
       _.each(collection, function(datum) {

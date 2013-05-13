@@ -9,7 +9,7 @@
         var diagnostics;
         this.canvas_element = canvas_element;
         this.collage = new Collage(this.canvas_element);
-        this.toolbar = new Toolbar('#collage-menu-list .menu-item', "move");
+        this.toolbar = new Toolbar('#collage-menu-list');
         diagnostics = $('<div>', {
           id: "diagnostics"
         });

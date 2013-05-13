@@ -12178,11 +12178,6 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
       else if (key === 'width' || key === 'height') {
         this.minScaleLimit = toFixed(Math.min(0.1, 1/Math.max(this.width, this.height)), 2);
       }
-      if (key === 'active'){
-        if(this.active && value === false){
-         this.fire("selected:cleared",{ target: this})   
-        }
-      }
 
       this[key] = value;
 

@@ -1,7 +1,7 @@
 define ['jquery','fabric','EventEmitter'], ($,fabric,event_emitter) ->
 	class Photo 
 
-		constructor: (image_data,@stage, onImageLoaded) ->
+		constructor: (@id, image_data,@stage, onImageLoaded) ->
 			@itemType = 'Photo'	
 			@loadImage(image_data,onImageLoaded)
 			
@@ -13,15 +13,26 @@ define ['jquery','fabric','EventEmitter'], ($,fabric,event_emitter) ->
 		loadImage: (image_data, loaded_cb) ->
 			console.log "photo loadImage: "
 			console.log image_data
-			@item = new fabric.Image.fromURL(image_data.src, loaded_cb,
-				{
+			new fabric.Image.fromURL(image_data.src, 
+				(f_img) =>
+					@item = f_img
+					@item.on "selected", (evt) =>
+						console.log "photo selected"
+						console.log evt
+						event_emitter.emit "ItemSelected", @
+					loaded_cb @item
+					@item.on "selected:cleared", (evt) =>
+						console.log  "photo selected cleared"
+						event_emitter.emit 'ItemDeSelected', @
+				
+				,{
 					left: image_data.x
 					top: image_data.y
 					width: image_data.width,
 					height: image_data.height,
 				}
-				  
 			)
+			
 		
 
 		intersects: (x,y)->

@@ -2,7 +2,7 @@ define ['EventEmitter','Collage','Toolbar','PhotoGallery'],(event_emitter,Collag
 	class App
 		constructor: (@canvas_element) ->
 			@collage = new Collage(@canvas_element)
-			@toolbar = new Toolbar('#collage-menu-list .menu-item',"move")
+			@toolbar = new Toolbar('#collage-menu-list')
 
 			diagnostics = $('<div>',{id:"diagnostics"})
 			diagnostics.append """

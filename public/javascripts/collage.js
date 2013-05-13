@@ -36,24 +36,13 @@
         this.canvas.droppable({
           drop: image_dropped
         });
-        this.canvas.on("click", function(evt) {
-          var cnvs_item;
-          console.log("canvas clicked");
-          cnvs_item = _this.find_item(evt.offsetX, evt.offsetY);
-          if ((_this.currentItem != null) && !(cnvs_item != null)) {
-            console.log("de selecting current canvas item");
-            event_emitter.emit('ItemDeSelected', _this.currentItem);
-            return _this.currentItem = null;
-          } else {
-            console.log("collage item selected");
-            console.log(cnvs_item);
-            _this.currentItem = cnvs_item;
-            return event_emitter.emit("ItemSelected", _this.currentItem);
-          }
+        this.stage.on("selection:created", function(evt) {
+          console.log("object selected");
+          return console.log(evt);
         });
-        event_emitter.on("rotation.changed", function(value) {
-          var _ref;
-          return (_ref = _this.currentItem) != null ? _ref.rotate(value) : void 0;
+        this.stage.on("selection:cleared", function(evt) {
+          console.log("object selection cleared");
+          return console.log(evt);
         });
       }
 
@@ -69,16 +58,15 @@
       };
 
       Collage.prototype.addImage = function(imageSrc) {
-        var canvas_image, onImageCreated,
+        var photo_id,
           _this = this;
         console.log("adding image");
         console.log(imageSrc);
-        onImageCreated = function(cnvs_image) {
+        photo_id = this.collage_items.length + 1;
+        return this.collage_items.push(new Photo(photo_id, imageSrc, this.stage, function(cnvs_image) {
           console.log(cnvs_image);
-          return _this.stage.add(cnvs_image);
-        };
-        canvas_image = new Photo(imageSrc, this.stage, onImageCreated);
-        return this.collage_items.push(canvas_image);
+          _this.stage.add(cnvs_image);
+        }));
       };
 
       Collage.prototype.find_item = function(x, y) {

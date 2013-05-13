@@ -42,7 +42,7 @@
     }
   });
 
-  require(['jquery', 'UserPhotos', 'App', "wijmoSplitter"], function($, UserPhotos, App, spliter) {
+  require(['jquery', 'UserPhotos', 'App'], function($, UserPhotos, App) {
     return $(function() {
       var app, userPhotos;
       userPhotos = new UserPhotos();

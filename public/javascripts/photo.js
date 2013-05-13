@@ -5,7 +5,8 @@
     var Photo;
     return Photo = (function() {
 
-      function Photo(image_data, stage, onImageLoaded) {
+      function Photo(id, image_data, stage, onImageLoaded) {
+        this.id = id;
         this.stage = stage;
         this.itemType = 'Photo';
         this.loadImage(image_data, onImageLoaded);
@@ -19,9 +20,22 @@
       };
 
       Photo.prototype.loadImage = function(image_data, loaded_cb) {
+        var _this = this;
         console.log("photo loadImage: ");
         console.log(image_data);
-        return this.item = new fabric.Image.fromURL(image_data.src, loaded_cb, {
+        return new fabric.Image.fromURL(image_data.src, function(f_img) {
+          _this.item = f_img;
+          _this.item.on("selected", function(evt) {
+            console.log("photo selected");
+            console.log(evt);
+            return event_emitter.emit("ItemSelected", _this);
+          });
+          loaded_cb(_this.item);
+          return _this.item.on("selected:cleared", function(evt) {
+            console.log("photo selected cleared");
+            return event_emitter.emit('ItemDeSelected', _this);
+          });
+        }, {
           left: image_data.x,
           top: image_data.y,
           width: image_data.width,

@@ -56,7 +56,9 @@ img.thumbnail{
 	height: auto !important;
 	height: 100%;
 	
-	
+}
+#collage-menu-list .submenu{
+	display:none
 }
 #photo-menu{
 	height:40px;
