@@ -2,6 +2,7 @@ define "ToolbarItem-crop", ["ToolbarItem","CropCommand","CropSubMenu"],(ToolbarI
 	class CropToolbarItem extends ToolbarItem
 		constructor: (@toolbar) ->
 			super @toolbar
-			@command = new CropCommand(@hide_submenu, @hide_submenu)
 			@submenu = new CropSubMenu()
+			@command = new CropCommand(@hide_submenu, @hide_submenu)
+			
 

@@ -11,8 +11,11 @@ requirejs.config(
 			"sylvester": "sylvester",
 			"wijmoUtil": "jquery.wijmo.wijutil.min",
 			"wijmoSplitter": "jquery.wijmo.wijsplitter.min",
+			"ColorPicker": "bootstrap-colorpicker"
+
 			"ToolbarItem-remove": "RemoveToolbarItem",
-			"ToolbarItem-crop": "CropToolbarItem"
+			"ToolbarItem-crop": "CropToolbarItem",
+			"ToolbarItem-border": "BorderToolbarItem"
 	    
 			
 		shim:
@@ -23,14 +26,16 @@ requirejs.config(
 			async: {exports:"async"},
 			wijmoUtil: {exports: "wijmoUtil", deps:["jquery"]},
 			wijmoSplitter: { exports: "wijmoSplitter", deps:["jqueryUI","wijmoUtil"]}
+			ColorPicker: {exports:"ColorPicker", deps:["jquery","bootstrap"]}
 		
 	}
 	
 )
-require ['jquery','UserPhotos','App'],($, UserPhotos,App)->
+require ['jquery','ColorPicker','UserPhotos','App'],($, ColorPicker, UserPhotos,App)->
 	$ ->
 		userPhotos = new UserPhotos()
 		app = new App('collage-canvas')
 		console.log("loading dependencies")
+		$('.color').colorpicker()
 		
 		

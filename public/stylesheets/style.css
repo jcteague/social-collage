@@ -67,9 +67,28 @@ img.thumbnail{
 	overflow: auto;
 
 }
+#border-submenu form
+{
+	margin-bottom: 0px;
+}
+#border-submenu span{
+	margin-right:8px;
+}
+#border-submenu input
+{
+	margin-left:8px;
 
-.close-photo-content{
-	padding-left:.5em;
-	padding-right:.95em;
+}
+#border-color-picker-input{
+	display: none;
+}
+
+#border-color-picker-box{
+	border-radius: 3px 3px 3px 3px;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	-moz-border-radius:3px 3px 3px 3px;
+	padding:5px 5px;
+	height:auto;
+	margin-left: 5px;
 }
 

@@ -12,8 +12,8 @@
       function CropToolbarItem(toolbar) {
         this.toolbar = toolbar;
         CropToolbarItem.__super__.constructor.call(this, this.toolbar);
-        this.command = new CropCommand(this.hide_submenu, this.hide_submenu);
         this.submenu = new CropSubMenu();
+        this.command = new CropCommand(this.hide_submenu, this.hide_submenu);
       }
 
       return CropToolbarItem;

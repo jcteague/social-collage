@@ -21,6 +21,28 @@ h2
 										| Apply
 									button#crop-cancel(class="btn btn-danger submenu-button", data-event="submenu.cancel.crop")
 										| Cancel
+							li(data-commandname="border")
+								a(href="#")
+									| Border
+								#border-submenu.submenu
+									//- ul#border-submenu-list
+									//- 	li
+									form.nav-form.inline-form
+										span
+											| Border Size:
+											input#border-size(style="width:25px")
+										span
+											| Color:
+											span#border-color-picker.input-append.color(data-color="rgb(255,255,255)", data-color-format="rgb")
+												input#border-color-picker-input.span2(type="text")
+												span#border-color-picker-box.add-on
+													i(style="background-color:rgb(255,255,255)")
+										span
+											button#border-apply(class="btn btn-primary submenu-button", data-event="submenu.apply.border")
+												| Apply
+											button#border-cancel(class="btn btn-danger submenu-button", data-event="submenu.cancel.border")
+												| Cancel
+
 							//- li
 							//- 	a(href="#",data-action="text")
 							//- 		| Text

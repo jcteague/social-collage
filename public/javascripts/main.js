@@ -13,8 +13,10 @@
       "sylvester": "sylvester",
       "wijmoUtil": "jquery.wijmo.wijutil.min",
       "wijmoSplitter": "jquery.wijmo.wijsplitter.min",
+      "ColorPicker": "bootstrap-colorpicker",
       "ToolbarItem-remove": "RemoveToolbarItem",
-      "ToolbarItem-crop": "CropToolbarItem"
+      "ToolbarItem-crop": "CropToolbarItem",
+      "ToolbarItem-border": "BorderToolbarItem"
     },
     shim: {
       underscore: {
@@ -40,16 +42,21 @@
       wijmoSplitter: {
         exports: "wijmoSplitter",
         deps: ["jqueryUI", "wijmoUtil"]
+      },
+      ColorPicker: {
+        exports: "ColorPicker",
+        deps: ["jquery", "bootstrap"]
       }
     }
   });
 
-  require(['jquery', 'UserPhotos', 'App'], function($, UserPhotos, App) {
+  require(['jquery', 'ColorPicker', 'UserPhotos', 'App'], function($, ColorPicker, UserPhotos, App) {
     return $(function() {
       var app, userPhotos;
       userPhotos = new UserPhotos();
       app = new App('collage-canvas');
-      return console.log("loading dependencies");
+      console.log("loading dependencies");
+      return $('.color').colorpicker();
     });
   });
 
