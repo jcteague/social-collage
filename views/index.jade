@@ -2,7 +2,7 @@
 h2
 	| Build Your Collage
 #page-splitter.row-fluid
-	#collage-workspace.span8
+	#collage-workspace.span10
 		
 		#collage-wrapper
 			.navbar
@@ -42,7 +42,9 @@ h2
 												| Apply
 											button#border-cancel(class="btn btn-danger submenu-button", data-event="submenu.cancel.border")
 												| Cancel
-
+							li(data-commandname="shadow")
+								a(href="#")
+									| Shadow
 							//- li
 							//- 	a(href="#",data-action="text")
 							//- 		| Text
@@ -60,7 +62,7 @@ h2
 			#canvas-container
 				<canvas id="collage-canvas"></canvas>
 
-	#facebook-photo-content.span4
+	#facebook-photo-content.span2
 		h3
 			| Facebook Photos
 		ul#facebook-menu.photo-submenu.nav.nav-pills(data-contentsource="facebook")

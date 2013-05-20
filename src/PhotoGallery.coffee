@@ -52,7 +52,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			userPhotos.getCollectionPhotos content_souce, photo_source, collection_id,(photo_data)->
 				pics.empty()
 				_.each photo_data.data, (item) ->
-					img_el = $("<li class=''><img src='#{item.picture}' id='#{id}' class='picture thumbnail'></li>")
+					img_el = $("<li class=''><img src='#{item.picture}' class='picture thumbnail'></li>")
 					img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
 					img_el.data('img_data',item)
 					pics.append(img_el);  	

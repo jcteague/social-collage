@@ -51,17 +51,20 @@ define ['fabric','EventEmitter'], (fabric,event_emitter)->
 					
 					crop_x =  Math.round(crop_bounds.left - crop_image_bounds.left)
 					crop_y =  Math.round(crop_bounds.top - crop_image_bounds.top)
-					crop_width = crop_bounds.width
-					crop_height = crop_bounds.height
+					crop_width = Math.round crop_bounds.width 
+					crop_height = Math.round crop_bounds.height
 					
 
-					
+					console.log "imag bounds"
+					console.log crop_image_bounds
 					console.log "cropping"
 					console.log crop_image
 					@stage.remove @cropping_rect
 					@reset_img crop_image
-					@stage.crop(crop_image, {x: crop_x, y: crop_y, width: crop_width,height:crop_height })
-					# @stage.crop(f_img, {x: 50, y: 50, width: 100,height:100 })
+					crop_dimensions = {x: crop_x, y: crop_y, width: crop_width,height:crop_height }
+					console.log crop_dimensions
+					@stage.crop(crop_image, crop_dimensions)
+					# @stage.crop(f_img, {x: 178, y: 134, width: 541.4563,height:405.53436 })
 					
 					# @canvas_item.item.set 'angle', img_angle
 					

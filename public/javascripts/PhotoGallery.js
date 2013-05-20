@@ -58,7 +58,7 @@
           pics.empty();
           return _.each(photo_data.data, function(item) {
             var img_el;
-            img_el = $("<li class=''><img src='" + item.picture + "' id='" + id + "' class='picture thumbnail'></li>");
+            img_el = $("<li class=''><img src='" + item.picture + "' class='picture thumbnail'></li>");
             img_el.draggable({
               cursor: 'move',
               cursorAt: {

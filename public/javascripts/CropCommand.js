@@ -52,25 +52,29 @@
         this.stage.add(this.cropping_rect);
         this.stage.setActiveObject(this.cropping_rect);
         event_emitter.on('submenu.apply.crop', function() {
-          var crop_bounds, crop_height, crop_image, crop_image_bounds, crop_width, crop_x, crop_y, img_angle;
+          var crop_bounds, crop_dimensions, crop_height, crop_image, crop_image_bounds, crop_width, crop_x, crop_y, img_angle;
           crop_image = _this.canvas_item.item;
           crop_image_bounds = crop_image.getBoundingRect();
           img_angle = f_img.get('angle');
           crop_bounds = _this.cropping_rect.getBoundingRect();
           crop_x = Math.round(crop_bounds.left - crop_image_bounds.left);
           crop_y = Math.round(crop_bounds.top - crop_image_bounds.top);
-          crop_width = crop_bounds.width;
-          crop_height = crop_bounds.height;
+          crop_width = Math.round(crop_bounds.width);
+          crop_height = Math.round(crop_bounds.height);
+          console.log("imag bounds");
+          console.log(crop_image_bounds);
           console.log("cropping");
           console.log(crop_image);
           _this.stage.remove(_this.cropping_rect);
           _this.reset_img(crop_image);
-          _this.stage.crop(crop_image, {
+          crop_dimensions = {
             x: crop_x,
             y: crop_y,
             width: crop_width,
             height: crop_height
-          });
+          };
+          console.log(crop_dimensions);
+          _this.stage.crop(crop_image, crop_dimensions);
           return _this.on_applied();
         });
         return event_emitter.on('submenu.cancel.crop', function() {

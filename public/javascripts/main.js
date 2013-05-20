@@ -16,7 +16,8 @@
       "ColorPicker": "bootstrap-colorpicker",
       "ToolbarItem-remove": "RemoveToolbarItem",
       "ToolbarItem-crop": "CropToolbarItem",
-      "ToolbarItem-border": "BorderToolbarItem"
+      "ToolbarItem-border": "BorderToolbarItem",
+      "ToolbarItem-shadow": "ShadowToolbarItem"
     },
     shim: {
       underscore: {

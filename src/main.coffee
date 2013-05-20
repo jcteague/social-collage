@@ -15,7 +15,8 @@ requirejs.config(
 
 			"ToolbarItem-remove": "RemoveToolbarItem",
 			"ToolbarItem-crop": "CropToolbarItem",
-			"ToolbarItem-border": "BorderToolbarItem"
+			"ToolbarItem-border": "BorderToolbarItem",
+			"ToolbarItem-shadow": "ShadowToolbarItem",
 	    
 			
 		shim:
