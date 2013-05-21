@@ -5,8 +5,28 @@
   define(['jqueryUI', 'underscore', 'EventEmitter', 'async'], function($, _, event_emitter, async) {
     var UserPhotos;
     return UserPhotos = (function() {
+      var Pager;
+
+      Pager = (function() {
+
+        function Pager(context, page_func) {
+          this.context = context;
+          this.page_func = page_func;
+        }
+
+        Pager.prototype.nextResult = function(page_cb) {
+          return this.page_func(this.context, page_cb);
+        };
+
+        return Pager;
+
+      })();
 
       function UserPhotos() {
+        this.load_user_photos = __bind(this.load_user_photos, this);
+
+        this.load_fb_friends = __bind(this.load_fb_friends, this);
+
         this.get_facebook_collection_photos = __bind(this.get_facebook_collection_photos, this);
         this.fb_init();
       }
@@ -35,7 +55,7 @@
       UserPhotos.prototype.get_facebook_collection_photos = function(source, id, cb) {
         var collection_url,
           _this = this;
-        collection_url = "/" + id + "/photos";
+        collection_url = "/" + id + "/photos?limit=5";
         return FB.api(collection_url, function(result) {
           var output;
           console.log(result);
@@ -43,25 +63,6 @@
             data: result.data
           };
           if (result.paging) {
-            output.getNext = function(cb) {
-              return _this.get_fb_next_results(result.paging.next, cb);
-            };
-          }
-          return cb(output);
-        });
-      };
-
-      UserPhotos.prototype.get_fb_next_results = function(collection_url, cb) {
-        console.log(collection_url);
-        return FB.api(collection_url, function(result) {
-          var output,
-            _this = this;
-          console.log("paging result");
-          console.log(result);
-          output = {
-            data: result.data
-          };
-          if (result.paging.next) {
             output.getNext = function(cb) {
               return _this.get_fb_next_results(result.paging.next, cb);
             };
@@ -83,10 +84,30 @@
         }
       };
 
-      UserPhotos.prototype.load_fb_friends = function(url, cb) {
+      UserPhotos.prototype.get_fb_next_results = function(collection_url, cb) {
+        console.log(collection_url);
+        return FB.api(collection_url, function(result) {
+          var output, _ref,
+            _this = this;
+          console.log("paging result");
+          console.log(result);
+          output = {
+            data: result.data
+          };
+          if ((_ref = result.paging) != null ? _ref.next : void 0) {
+            output.getNext = function(cb) {
+              return _this.get_fb_next_results(result.paging.next, cb);
+            };
+          }
+          return cb(output);
+        });
+      };
+
+      UserPhotos.prototype.load_fb_friends = function(context, cb) {
         var _this = this;
-        return FB.api(url, function(friends) {
-          var friend_collection, output;
+        console.log("loading friends");
+        return FB.api(context.url, function(friends) {
+          var friend_collection, output, _ref;
           console.log("friends");
           friend_collection = _.map(friends.data, function(f) {
             return {
@@ -98,10 +119,10 @@
           output = {
             collection: friend_collection
           };
-          if (friends.paging.next) {
-            output.getNext = function(page_cb) {
-              return _this.load_fb_friends(friends.paging.next, page_cb);
-            };
+          if ((_ref = friends.paging) != null ? _ref.next : void 0) {
+            output.pager = new Pager({
+              url: friends.paging.next
+            }, _this.load_fb_friends);
           }
           return cb(output);
         });
@@ -110,13 +131,16 @@
       UserPhotos.prototype.load_fb_friend_collection = function(cb) {
         var url;
         url = '/me/friends?limit=20&fields=id,name,picture';
-        return this.load_fb_friends(url, cb);
+        return this.load_fb_friends({
+          url: url
+        }, cb);
       };
 
-      UserPhotos.prototype.load_fb_user_photos = function(cb) {
-        console.log("load fb_user");
-        return FB.api('me/photos', function(response) {
-          var user_images;
+      UserPhotos.prototype.load_user_photos = function(context, cb) {
+        var _this = this;
+        console.log("getting user photos");
+        return FB.api(context.url, function(response) {
+          var result, user_images, _ref;
           user_images = _.map(response.data, function(img) {
             return {
               id: img.id,
@@ -124,10 +148,25 @@
               images: img.images
             };
           });
-          return cb({
+          result = {
             images: user_images
-          });
+          };
+          if ((_ref = response.paging) != null ? _ref.next : void 0) {
+            result.pager = new Pager({
+              url: response.paging.next
+            }, _this.load_user_photos);
+          }
+          return cb(result);
         });
+      };
+
+      UserPhotos.prototype.load_fb_user_photos = function(cb) {
+        var url;
+        console.log("load fb_user");
+        url = '/me/photos?limit=5';
+        return this.load_user_photos({
+          url: url
+        }, cb);
       };
 
       UserPhotos.prototype.load_fb_albums = function(cb) {

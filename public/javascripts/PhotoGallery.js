@@ -26,6 +26,17 @@
         return el.addClass('active');
       });
     };
+    getPhotoCollection = function(content_source, photo_source) {
+      return userPhotos.loadPhotoCollection(content_source, photo_source, function(result) {
+        console.log("load photo collection");
+        console.log(result);
+        if (result.images) {
+          return showImages(content_source, photo_source, result);
+        } else {
+          return showImageCollection(content_source, photo_source, result);
+        }
+      });
+    };
     handlePhotoSourceClick = function() {
       return $('.photo-source').click(function() {
         var content_el, photo_menu, source, top_position;
@@ -70,12 +81,14 @@
             img_el.data('img_data', item);
             return pics.append(img_el);
           });
-          if (photos.getNext) {
+          if (photos.pager) {
+            $('#more-images').show();
+            $('#more-images').unbind('click');
             return $('#more-images').on('click', function() {
-              return photos.getNext(function(photos) {
-                return append_images(photos);
-              });
+              return photos.pager.nextResult(append_images);
             });
+          } else {
+            return $('#more-images');
           }
         };
         return userPhotos.getCollectionPhotos(content_souce, photo_source, collection_id, function(photo_data) {
@@ -84,38 +97,39 @@
         });
       });
     };
-    getPhotoCollection = function(content_source, photo_source) {
-      return userPhotos.loadPhotoCollection(content_source, photo_source, function(result) {
-        console.log("load photo collection");
-        console.log(result);
-        if (result.images) {
-          return showImages(content_source, photo_source, result.images);
-        } else {
-          return showImageCollection(content_source, photo_source, result);
-        }
-      });
-    };
     showImages = function(content_source, photo_source, images) {
-      var pics;
+      var append_photos, pics;
       console.log("showing images");
       console.log(images);
       pics = $('#your-pics');
-      pics.empty();
-      return _.each(images, function(item) {
-        var img_el;
-        img_el = $("<li class=''><img src='" + item.photo_url + "' id='" + item.id + "' class='picture thumbnail'></li>");
-        img_el.draggable({
-          cursor: 'move',
-          cursorAt: {
-            top: 0,
-            left: 0
-          },
-          revert: 'invalid',
-          helper: 'clone'
+      append_photos = function(photos) {
+        _.each(photos.images, function(item) {
+          var img_el;
+          img_el = $("<li class=''><img src='" + item.photo_url + "' id='" + item.id + "' class='picture thumbnail'></li>");
+          img_el.draggable({
+            cursor: 'move',
+            cursorAt: {
+              top: 0,
+              left: 0
+            },
+            revert: 'invalid',
+            helper: 'clone'
+          });
+          img_el.data('img_data', item);
+          return pics.append(img_el);
         });
-        img_el.data('img_data', item);
-        return pics.append(img_el);
-      });
+        if (photos.pager) {
+          $('#more-images').show();
+          $('#more-images').unbind('click');
+          return $('#more-images').on('click', function() {
+            return photos.pager.nextResult(append_photos);
+          });
+        } else {
+          return $('#more-images').hide();
+        }
+      };
+      pics.empty();
+      return append_photos(images);
     };
     return showImageCollection = function(content_source, photo_source, data) {
       var append_photos, collection_template, current_pics;
@@ -133,10 +147,14 @@
           };
           return current_pics.append(collection_template(template_data));
         });
-        if (photos.getNext) {
+        if (photos.pager) {
+          $('#more-images').show();
+          $('#more-images').unbind('click');
           return $('#more-images').on("click", function() {
-            return data.getNext(append_photos);
+            return photos.pager.nextResult(append_photos);
           });
+        } else {
+          return $('#more-images').hide();
         }
       };
       current_pics = $('#your-pics');

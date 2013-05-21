@@ -6,16 +6,6 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 		handlePhotoSubMenuClick()		
 		handlePhotoCollectionClick()
 
-	# $('.close-photo-content')
-	# 	.hover(
-	# 		()->$(this).removeClass('icon-remove-circle')
-	# 							 .addClass('icon-remove-sign'),
-	# 		()->$(this).removeClass('icon-remove-sign')
-	# 							 .addClass('icon-remove-circle'))
-	# 	.click ()->
-	# 		content_el = $($(this).parent().parent())
-	# 		togglePhotoContent(content_el)
-
 	
 	handlePhotoSubMenuClick = () ->
 		$('.photo-submenu a').click () ->
@@ -30,6 +20,17 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			active_menu.removeClass('active')
 			el.addClass('active')
 
+	getPhotoCollection = (content_source, photo_source) ->
+		userPhotos.loadPhotoCollection content_source,photo_source, (result) ->
+			console.log "load photo collection"
+			console.log result
+			if result.images
+				showImages content_source, photo_source, result
+			else
+				showImageCollection content_source, photo_source, result
+			
+
+
 	handlePhotoSourceClick = ()->
 		$('.photo-source').click ()->
 			photo_menu = $('#photo-menu')
@@ -42,6 +43,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 
 	togglePhotoContent = (content_el) ->
 		content_el.toggle('slide',{easing:'easeOutQuint',direction:'down'},1000)
+
 	handlePhotoCollectionClick = ()->
 		$('body').on 'click', '.photo-collection', (ev) ->
 			el = $(this)
@@ -55,10 +57,13 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 					img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
 					img_el.data('img_data',item)
 					pics.append(img_el);
-				if(photos.getNext)
+				if(photos.pager)
+					$('#more-images').show()
+					$('#more-images').unbind('click')
 					$('#more-images').on 'click', ->
-						photos.getNext (photos) ->
-							append_images photos
+						photos.pager.nextResult append_images
+				else
+					$('#more-images')
 
 			userPhotos.getCollectionPhotos content_souce, photo_source, collection_id,(photo_data)->
 				pics.empty()
@@ -66,28 +71,27 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 				
 							
 
-
-
-	getPhotoCollection = (content_source, photo_source) ->
-		userPhotos.loadPhotoCollection content_source,photo_source, (result) ->
-			console.log "load photo collection"
-			console.log result
-			if result.images
-				showImages content_source, photo_source, result.images
-			else
-				showImageCollection content_source, photo_source, result
-			
-
 	showImages = (content_source, photo_source, images) ->
 		console.log "showing images"
 		console.log images
 		pics = $('#your-pics')
+		append_photos = (photos) ->
+			_.each photos.images, (item) ->
+				img_el = $("<li class=''><img src='#{item.photo_url}' id='#{item.id}' class='picture thumbnail'></li>")
+				img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
+				img_el.data('img_data',item)
+				pics.append(img_el);  
+			
+			if(photos.pager)
+				$('#more-images').show()
+				$('#more-images').unbind('click')
+				$('#more-images').on 'click', ->
+					photos.pager.nextResult append_photos
+			else
+				$('#more-images').hide()
+					
 		pics.empty()
-		_.each images, (item) ->
-			img_el = $("<li class=''><img src='#{item.photo_url}' id='#{item.id}' class='picture thumbnail'></li>")
-			img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
-			img_el.data('img_data',item)
-			pics.append(img_el);  
+		append_photos images
 
 
 	showImageCollection = (content_source, photo_source, data) ->
@@ -113,9 +117,15 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 					"contentsource":content_source
 					"photosource": photo_source
 				current_pics.append(collection_template(template_data))
-			if photos.getNext
+			if photos.pager
+				$('#more-images').show()
+				$('#more-images').unbind('click')
 				$('#more-images').on "click", () ->
-					data.getNext append_photos
+					photos.pager.nextResult append_photos
+
+					
+			else
+				$('#more-images').hide()
 		current_pics = $('#your-pics')
 		current_pics.empty()
 		append_photos data
