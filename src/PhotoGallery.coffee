@@ -63,7 +63,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 					$('#more-images').on 'click', ->
 						photos.pager.nextResult append_images
 				else
-					$('#more-images')
+					$('#more-images').hide()
 
 			userPhotos.getCollectionPhotos content_souce, photo_source, collection_id,(photo_data)->
 				pics.empty()
@@ -122,8 +122,6 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 				$('#more-images').unbind('click')
 				$('#more-images').on "click", () ->
 					photos.pager.nextResult append_photos
-
-					
 			else
 				$('#more-images').hide()
 		current_pics = $('#your-pics')

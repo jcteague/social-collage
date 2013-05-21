@@ -27,6 +27,8 @@
 
         this.load_fb_friends = __bind(this.load_fb_friends, this);
 
+        this.get_fb_next_results = __bind(this.get_fb_next_results, this);
+
         this.get_facebook_collection_photos = __bind(this.get_facebook_collection_photos, this);
         this.fb_init();
       }
@@ -55,17 +57,17 @@
       UserPhotos.prototype.get_facebook_collection_photos = function(source, id, cb) {
         var collection_url,
           _this = this;
-        collection_url = "/" + id + "/photos?limit=5";
+        collection_url = "/" + id + "/photos?limit=20";
         return FB.api(collection_url, function(result) {
-          var output;
+          var output, _ref;
           console.log(result);
           output = {
             data: result.data
           };
-          if (result.paging) {
-            output.getNext = function(cb) {
-              return _this.get_fb_next_results(result.paging.next, cb);
-            };
+          if ((_ref = result.paging) != null ? _ref.next : void 0) {
+            output.pager = new Pager({
+              url: result.paging.next
+            }, _this.get_fb_next_results);
           }
           return cb(output);
         });
@@ -84,20 +86,19 @@
         }
       };
 
-      UserPhotos.prototype.get_fb_next_results = function(collection_url, cb) {
-        console.log(collection_url);
-        return FB.api(collection_url, function(result) {
-          var output, _ref,
-            _this = this;
+      UserPhotos.prototype.get_fb_next_results = function(context, cb) {
+        var _this = this;
+        return FB.api(context.url, function(result) {
+          var output, _ref;
           console.log("paging result");
           console.log(result);
           output = {
             data: result.data
           };
           if ((_ref = result.paging) != null ? _ref.next : void 0) {
-            output.getNext = function(cb) {
-              return _this.get_fb_next_results(result.paging.next, cb);
-            };
+            output.pager = new Pager({
+              url: result.paging.next
+            }, _this.get_fb_next_results);
           }
           return cb(output);
         });

@@ -88,7 +88,7 @@
               return photos.pager.nextResult(append_images);
             });
           } else {
-            return $('#more-images');
+            return $('#more-images').hide();
           }
         };
         return userPhotos.getCollectionPhotos(content_souce, photo_source, collection_id, function(photo_data) {

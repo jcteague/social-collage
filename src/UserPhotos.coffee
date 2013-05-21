@@ -24,14 +24,14 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 
 		get_facebook_collection_photos: (source, id, cb) =>
 			
-			collection_url = "/#{id}/photos?limit=5"
+			collection_url = "/#{id}/photos?limit=20"
 			FB.api collection_url, (result) =>
 					console.log result
 					output = 
 						data: result.data
-					if result.paging
-						output.getNext = (cb) =>
-							@get_fb_next_results(result.paging.next, cb)
+					if result.paging?.next
+						output.pager = new Pager({url:result.paging.next},@get_fb_next_results)
+						
 					cb output
 		
 		load_fb_photo_collection: (source, cb) ->
@@ -44,16 +44,16 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 				@load_fb_friend_collection cb		
 
 
-		get_fb_next_results: (collection_url, cb) ->
-			console.log collection_url
-			FB.api collection_url, (result) ->
+		get_fb_next_results: (context, cb) =>
+			
+			FB.api context.url, (result) =>
 				console.log "paging result"
 				console.log result
 				output = 
 						data: result.data
 				if result.paging?.next
-					output.getNext = (cb) =>
-						@get_fb_next_results(result.paging.next, cb)
+					output.pager = new Pager({url:result.paging.next}, @get_fb_next_results)
+			
 				cb output
 		
 		load_fb_friends: (context, cb) =>
