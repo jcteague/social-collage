@@ -48,15 +48,14 @@
     };
     handlePhotoCollectionClick = function() {
       return $('body').on('click', '.photo-collection', function(ev) {
-        var collection_id, content_souce, el, photo_source, pics;
+        var append_images, collection_id, content_souce, el, photo_source, pics;
         el = $(this);
         pics = $('#your-pics');
         content_souce = el.data('contentsource');
         photo_source = el.data('photosource');
         collection_id = el.data('collectionid');
-        return userPhotos.getCollectionPhotos(content_souce, photo_source, collection_id, function(photo_data) {
-          pics.empty();
-          return _.each(photo_data.data, function(item) {
+        append_images = function(photos) {
+          _.each(photos.data, function(item) {
             var img_el;
             img_el = $("<li class=''><img src='" + item.picture + "' class='picture thumbnail'></li>");
             img_el.draggable({
@@ -71,6 +70,17 @@
             img_el.data('img_data', item);
             return pics.append(img_el);
           });
+          if (photos.getNext) {
+            return $('#more-images').on('click', function() {
+              return photos.getNext(function(photos) {
+                return append_images(photos);
+              });
+            });
+          }
+        };
+        return userPhotos.getCollectionPhotos(content_souce, photo_source, collection_id, function(photo_data) {
+          pics.empty();
+          return append_images(photo_data);
         });
       });
     };
@@ -81,7 +91,7 @@
         if (result.images) {
           return showImages(content_source, photo_source, result.images);
         } else {
-          return showImageCollection(content_source, photo_source, result.collection);
+          return showImageCollection(content_source, photo_source, result);
         }
       });
     };
@@ -107,23 +117,31 @@
         return pics.append(img_el);
       });
     };
-    return showImageCollection = function(content_source, photo_source, collection) {
-      var collection_template, current_pics;
+    return showImageCollection = function(content_source, photo_source, data) {
+      var append_photos, collection_template, current_pics;
       console.log("show image collection");
       collection_template = _.template("<li class=' album'>\n	<img src=\"<%= cover_url%>\" \n	  id='<%= id %>'\n		class='picture thumbnail photo-collection' \n		data-collectionid=\"<%=id%>\" \n		data-contentsource=\"<%=contentsource%>\"\n		data-photosource=\"<%=photosource%>\" />\n		<span class=\"photo-collection-label\"><%=name%></span>\n	\n</li>");
+      append_photos = function(photos) {
+        _.each(photos.collection, function(datum) {
+          var template_data, _ref;
+          template_data = {
+            id: datum.id,
+            name: datum.name,
+            cover_url: (_ref = datum.cover_url) != null ? _ref : '/images/placeholder.jpg',
+            "contentsource": content_source,
+            "photosource": photo_source
+          };
+          return current_pics.append(collection_template(template_data));
+        });
+        if (photos.getNext) {
+          return $('#more-images').on("click", function() {
+            return data.getNext(append_photos);
+          });
+        }
+      };
       current_pics = $('#your-pics');
       current_pics.empty();
-      _.each(collection, function(datum) {
-        var template_data, _ref;
-        template_data = {
-          id: datum.id,
-          name: datum.name,
-          cover_url: (_ref = datum.cover_url) != null ? _ref : '/images/placeholder.jpg',
-          "contentsource": content_source,
-          "photosource": photo_source
-        };
-        return current_pics.append(collection_template(template_data));
-      });
+      append_photos(data);
     };
   });
 

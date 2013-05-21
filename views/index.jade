@@ -1,8 +1,10 @@
 #fb-root
+button#logout.btn
+	| Logout
 h2
 	| Build Your Collage
 #page-splitter.row-fluid
-	#collage-workspace.span10
+	#collage-workspace.span8
 		
 		#collage-wrapper
 			.navbar
@@ -62,7 +64,7 @@ h2
 			#canvas-container
 				<canvas id="collage-canvas"></canvas>
 
-	#facebook-photo-content.span2
+	#facebook-photo-content.span4
 		h3
 			| Facebook Photos
 		ul#facebook-menu.photo-submenu.nav.nav-pills(data-contentsource="facebook")
@@ -75,11 +77,12 @@ h2
 			li
 				a(href="#",data-photosource="friends")
 					| Friends
-			li
-				a(href="#",data-photosource="groups")
-					| Groups
 		#photos.span10
+			#photo-header
 			ul#your-pics.thumbnails
+			#photo-footer.span4.center
+				button#more-images.btn.btn-small
+					| More
 
 
 //- #photo-menu

@@ -17,11 +17,31 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 			if(content == 'facebook')
 				@get_facebook_collection_photos source, id, cb
 
-		get_facebook_collection_photos: (source, id, cb) ->
-			FB.api "/#{id}/photos", (result) ->
+		get_facebook_collection_photos: (source, id, cb) =>
+			
+			collection_url = "/#{id}/photos"
+			FB.api collection_url, (result) =>
 					console.log result
-					cb result
+					output = 
+						data: result.data
+					if result.paging
+						output.getNext = (cb) =>
+							@get_fb_next_results(result.paging.next, cb)
+					cb output
 		
+
+
+		get_fb_next_results: (collection_url, cb) ->
+			console.log collection_url
+			FB.api collection_url, (result) ->
+				console.log "paging result"
+				console.log result
+				output = 
+						data: result.data
+				if result.paging.next
+					output.getNext = (cb) =>
+						@get_fb_next_results(result.paging.next, cb)
+				cb output
 		load_fb_photo_collection: (source, cb) ->
 			if source == 'me'
 				@load_fb_user_photos cb
@@ -31,11 +51,23 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 				console.log "friends"
 				@load_fb_friend_collection cb		
 
-		load_fb_friend_collection: (cb) ->
-				friend_collection = _.map @fb_user.friends.data, 
-					(f) -> {id:f.id,name:f.name,cover_url: f.picture.data.url}
+		load_fb_friends: (url, cb) ->
+			FB.api url , (friends) => 
+				console.log "friends"
+				friend_collection = _.map friends.data, (f) -> {id:f.id,name:f.name,cover_url: f.picture.data.url}
+				
+				output = 
+					collection: friend_collection
+				if friends.paging.next
+					output.getNext = (page_cb) =>
+						@load_fb_friends friends.paging.next, page_cb
+				
+				cb output
 
-				cb {"collection": friend_collection}
+		load_fb_friend_collection: (cb) ->
+				url = '/me/friends?limit=20&fields=id,name,picture'
+				@load_fb_friends url, cb
+				
 
 			# 	FB.api "/#{friend.id}?fields=cover", (result)->
 			# 		console.log "friend result"
@@ -107,9 +139,10 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 						if response.status is 'connected'
 							console.log("facebook connected")
 							event_emitter.emit('facebook:connected')
+							FB.api( '/me?fields=id,name,picture', (result) -> userPhotos.fb_user = result)
 							async.series [
 								FB.api( '/me?fields=id,name,picture', (result) -> userPhotos.fb_user = result),
-								FB.api('/me/friends?fields=id,name,picture', (friends) -> userPhotos.fb_user.friends = friends),
+								
 								event_emitter.emit 'facebook:userloaded'
 
 							]

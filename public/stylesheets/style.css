@@ -63,6 +63,14 @@ img.thumbnail{
 #photo-menu{
 	height:40px;
 }
+
+#photo-footer{
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
 #facebook-photo-content{
 	overflow: auto;
 

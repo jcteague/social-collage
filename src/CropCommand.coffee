@@ -44,9 +44,7 @@ define ['fabric','EventEmitter'], (fabric,event_emitter)->
 					crop_image = @canvas_item.item
 					crop_image_bounds = crop_image.getBoundingRect()
 					img_angle = f_img.get 'angle'
-					# @canvas_item.item.set 'angle', 0
-					# @cropping_rect.set 'angle', 0
-					# @stage.renderAll()
+					
 					crop_bounds = @cropping_rect.getBoundingRect()
 					
 					crop_x =  Math.round(crop_bounds.left - crop_image_bounds.left)
@@ -66,9 +64,7 @@ define ['fabric','EventEmitter'], (fabric,event_emitter)->
 					@stage.crop(crop_image, crop_dimensions)
 					# @stage.crop(f_img, {x: 178, y: 134, width: 541.4563,height:405.53436 })
 					
-					# @canvas_item.item.set 'angle', img_angle
 					
-					# @stage.renderAll()	
 					@on_applied()
 				event_emitter.on 'submenu.cancel.crop', () =>
 					@deactivate()

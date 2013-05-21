@@ -49,13 +49,23 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			content_souce = el.data('contentsource')
 			photo_source = el.data('photosource')
 			collection_id = el.data('collectionid')
-			userPhotos.getCollectionPhotos content_souce, photo_source, collection_id,(photo_data)->
-				pics.empty()
-				_.each photo_data.data, (item) ->
+			append_images = (photos) ->
+				_.each photos.data, (item) ->
 					img_el = $("<li class=''><img src='#{item.picture}' class='picture thumbnail'></li>")
 					img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
 					img_el.data('img_data',item)
-					pics.append(img_el);  	
+					pics.append(img_el);
+				if(photos.getNext)
+					$('#more-images').on 'click', ->
+						photos.getNext (photos) ->
+							append_images photos
+
+			userPhotos.getCollectionPhotos content_souce, photo_source, collection_id,(photo_data)->
+				pics.empty()
+				append_images(photo_data)
+				
+							
+
 
 
 	getPhotoCollection = (content_source, photo_source) ->
@@ -65,7 +75,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			if result.images
 				showImages content_source, photo_source, result.images
 			else
-				showImageCollection content_source, photo_source, result.collection
+				showImageCollection content_source, photo_source, result
 			
 
 	showImages = (content_source, photo_source, images) ->
@@ -80,7 +90,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			pics.append(img_el);  
 
 
-	showImageCollection = (content_source, photo_source, collection) ->
+	showImageCollection = (content_source, photo_source, data) ->
 		console.log "show image collection"
 		collection_template = _.template """
 				<li class=' album'>
@@ -93,17 +103,23 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 						<span class="photo-collection-label"><%=name%></span>
 					
 				</li>"""
+		
+		append_photos = (photos) ->
+			_.each photos.collection, (datum) ->
+				template_data = 
+					id:datum.id,
+					name:datum.name,
+					cover_url: datum.cover_url ? '/images/placeholder.jpg',
+					"contentsource":content_source
+					"photosource": photo_source
+				current_pics.append(collection_template(template_data))
+			if photos.getNext
+				$('#more-images').on "click", () ->
+					data.getNext append_photos
 		current_pics = $('#your-pics')
 		current_pics.empty()
-		_.each collection, (datum) ->
-			template_data = 
-				id:datum.id,
-				name:datum.name,
-				cover_url: datum.cover_url ? '/images/placeholder.jpg',
-				"contentsource":content_source
-				"photosource": photo_source
-			current_pics.append(collection_template(template_data))
-			
+		append_photos data
+	
 		return
 
 

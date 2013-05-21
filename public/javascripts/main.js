@@ -57,7 +57,10 @@
       userPhotos = new UserPhotos();
       app = new App('collage-canvas');
       console.log("loading dependencies");
-      return $('.color').colorpicker();
+      $('.color').colorpicker();
+      return $('#logout').click(function() {
+        return FB.logout();
+      });
     });
   });
 
