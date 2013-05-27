@@ -5,7 +5,19 @@
   define(['jqueryUI', 'underscore', 'EventEmitter', 'async'], function($, _, event_emitter, async) {
     var UserPhotos;
     return UserPhotos = (function() {
-      var Pager;
+      var Pager, PhotoCollection;
+
+      PhotoCollection = (function() {
+
+        function PhotoCollection(title, photos, submenu) {
+          this.title = title;
+          this.photos = photos;
+          this.submenu = submenu;
+        }
+
+        return PhotoCollection;
+
+      })();
 
       Pager = (function() {
 
@@ -58,17 +70,25 @@
         var collection_url,
           _this = this;
         collection_url = "/" + id + "/photos?limit=20";
+        console.log("collection " + id);
         return FB.api(collection_url, function(result) {
-          var output, _ref;
+          var output;
           console.log(result);
-          output = {
-            data: result.data
-          };
-          if ((_ref = result.paging) != null ? _ref.next : void 0) {
-            output.pager = new Pager({
-              url: result.paging.next
-            }, _this.get_fb_next_results);
+          output = _this.format_fb_image_response(result);
+          if (source === "friends") {
+            output.subCollections = [
+              {
+                title: "Albums",
+                ownerid: id,
+                get: function(collection_id, cb) {
+                  return _this.load_fb_albums({
+                    url: "/" + collection_id + "/albums"
+                  }, cb);
+                }
+              }
+            ];
           }
+          console.log("collection owner id: " + output.ownerid);
           return cb(output);
         });
       };
@@ -78,7 +98,9 @@
           this.load_fb_user_photos(cb);
         }
         if (source === 'albums') {
-          this.load_fb_albums(cb);
+          this.load_fb_albums({
+            url: "/me/albums"
+          }, cb);
         }
         if (source === 'friends') {
           console.log("friends");
@@ -104,6 +126,27 @@
         });
       };
 
+      UserPhotos.prototype.format_fb_image_response = function(response) {
+        var result, user_images, _ref;
+        user_images = _.map(response.data, function(img) {
+          return {
+            id: img.id,
+            photo_url: img.picture,
+            images: img.images
+          };
+        });
+        result = {
+          title: "Pictures of You",
+          images: user_images
+        };
+        if ((_ref = response.paging) != null ? _ref.next : void 0) {
+          result.pager = new Pager({
+            url: response.paging.next
+          }, this.load_user_photos);
+        }
+        return result;
+      };
+
       UserPhotos.prototype.load_fb_friends = function(context, cb) {
         var _this = this;
         console.log("loading friends");
@@ -118,7 +161,9 @@
             };
           });
           output = {
-            collection: friend_collection
+            title: "Friends",
+            collection: friend_collection,
+            owner: _this.fb_user
           };
           if ((_ref = friends.paging) != null ? _ref.next : void 0) {
             output.pager = new Pager({
@@ -141,22 +186,8 @@
         var _this = this;
         console.log("getting user photos");
         return FB.api(context.url, function(response) {
-          var result, user_images, _ref;
-          user_images = _.map(response.data, function(img) {
-            return {
-              id: img.id,
-              photo_url: img.picture,
-              images: img.images
-            };
-          });
-          result = {
-            images: user_images
-          };
-          if ((_ref = response.paging) != null ? _ref.next : void 0) {
-            result.pager = new Pager({
-              url: response.paging.next
-            }, _this.load_user_photos);
-          }
+          var result;
+          result = _this.format_fb_image_response(response);
           return cb(result);
         });
       };
@@ -170,7 +201,7 @@
         }, cb);
       };
 
-      UserPhotos.prototype.load_fb_albums = function(cb) {
+      UserPhotos.prototype.load_fb_albums = function(context, cb) {
         var process_album,
           _this = this;
         process_album = function(album, callback) {
@@ -178,15 +209,18 @@
             album = {
               id: album.id,
               name: album.name,
-              cover_url: cover.picture
+              cover_url: cover.picture,
+              owner: album.from
             };
             return callback(null, album);
           });
         };
-        return FB.api('/me/albums?fields=id,name,cover_photo', function(albums) {
+        return FB.api("" + context.url + "?fields=id,name,cover_photo,from", function(albums) {
+          console.log(albums);
           return async.map(albums.data, process_album, function(err, result) {
             return cb({
-              "collection": result
+              "collection": result,
+              title: "Your Albums"
             });
           });
         });

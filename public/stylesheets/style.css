@@ -15,8 +15,11 @@ body {
 }
 #photos{
 	height: 800px;
-	overflow: auto;
+	
 }
+#photo-list{ 
+	height: inherit;
+	overflow: auto;}
 #photo-menu{
 	position: absolute;
 	left:0;
@@ -71,10 +74,11 @@ img.thumbnail{
 
 }
 
-#facebook-photo-content{
+/*#facebook-photo-content{
 	overflow: auto;
 
 }
+*/
 #border-submenu form
 {
 	margin-bottom: 0px;

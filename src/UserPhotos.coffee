@@ -1,5 +1,8 @@
 define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, async)->
 	class UserPhotos
+		class PhotoCollection
+			constructor: (@title, @photos, @submenu) ->
+
 		class Pager
 			constructor: (@context,@page_func) ->
 			nextResult: (page_cb) ->
@@ -25,20 +28,26 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 		get_facebook_collection_photos: (source, id, cb) =>
 			
 			collection_url = "/#{id}/photos?limit=20"
+			console.log "collection #{id}"
 			FB.api collection_url, (result) =>
 					console.log result
-					output = 
-						data: result.data
-					if result.paging?.next
-						output.pager = new Pager({url:result.paging.next},@get_fb_next_results)
-						
+					output = @format_fb_image_response result
+					if source == "friends"
+						output.subCollections = [
+							{
+								title: "Albums", 
+								ownerid: id,
+								get: (collection_id, cb)=> @load_fb_albums({url:"/#{collection_id}/albums"}, cb) 
+							}
+						]
+					console.log "collection owner id: #{output.ownerid}"
 					cb output
 		
 		load_fb_photo_collection: (source, cb) ->
 			if source == 'me'
 				@load_fb_user_photos cb
 			if(source == 'albums')
-				@load_fb_albums cb
+				@load_fb_albums {url:"/me/albums"}, cb
 			if(source == 'friends')
 				console.log "friends"
 				@load_fb_friend_collection cb		
@@ -55,6 +64,18 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 					output.pager = new Pager({url:result.paging.next}, @get_fb_next_results)
 			
 				cb output
+
+		format_fb_image_response: (response) ->
+			user_images =  _.map response.data, (img) -> {id: img.id, photo_url: img.picture,images: img.images}
+				
+			result =
+				title: "Pictures of You"
+				images:user_images
+			
+			if response.paging?.next
+				result.pager = new Pager({url:response.paging.next},@load_user_photos)
+			return result
+
 		
 		load_fb_friends: (context, cb) =>
 			console.log "loading friends"
@@ -63,7 +84,10 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 				friend_collection = _.map friends.data, (f) -> {id:f.id,name:f.name,cover_url: f.picture.data.url}
 				
 				output = 
+					title: "Friends"
 					collection: friend_collection
+					owner: @fb_user
+
 				if friends.paging?.next
 					output.pager = new Pager({url:friends.paging.next},@load_fb_friends)
 					
@@ -76,13 +100,7 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 		load_user_photos: (context, cb) =>
 			console.log "getting user photos"
 			FB.api context.url, (response) =>
-				user_images =  _.map response.data, (img) -> {id: img.id, photo_url: img.picture,images: img.images}
-				
-				result =
-					images:user_images
-				
-				if response.paging?.next
-					result.pager = new Pager({url:response.paging.next},@load_user_photos)
+				result = @format_fb_image_response response
 				cb result
 
 		load_fb_user_photos: (cb) ->
@@ -91,7 +109,7 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 			@load_user_photos {url:url}, cb
 			
 
-		load_fb_albums: (cb) ->
+		load_fb_albums: (context, cb) ->
 			
 			process_album = (album, callback) ->
 				FB.api "/#{album.cover_photo}", (cover)->
@@ -99,10 +117,12 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 						id: album.id
 						name: album.name
 						cover_url: cover.picture
+						owner: album.from
 					callback(null, album)
 			
-			FB.api '/me/albums?fields=id,name,cover_photo', (albums) =>
-				async.map albums.data, process_album,(err,result)->cb ({"collection":result})
+			FB.api "#{context.url}?fields=id,name,cover_photo,from", (albums) =>
+				console.log albums
+				async.map albums.data, process_album,(err,result)->cb ({"collection":result, title:"Your Albums"})
 
 		fb_init: ->
 			userPhotos = @
