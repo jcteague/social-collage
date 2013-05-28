@@ -27,7 +27,7 @@ var config_values = {
 	},
 	host_name:{
 		production: 'http://broowd.herokuapp.com',
-		development: 'http://localhost:3000'
+		development: 'http://localhost:5000'
 	}
 	
 
