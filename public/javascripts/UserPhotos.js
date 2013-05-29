@@ -42,7 +42,7 @@
         this.get_fb_next_results = __bind(this.get_fb_next_results, this);
 
         this.get_facebook_collection_photos = __bind(this.get_facebook_collection_photos, this);
-        this.fb_init();
+
       }
 
       UserPhotos.prototype.fbLogin = function() {

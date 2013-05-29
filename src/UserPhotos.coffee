@@ -9,7 +9,7 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 				@page_func @context, page_cb
 
 		constructor: ->
-			@fb_init()
+			# @fb_init()
 
 		fbLogin: ->
 			FB.login (response) ->
