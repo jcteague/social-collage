@@ -78,11 +78,12 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', {failureRedirect: '/login'}),
   function(req,res){
+    
     res.redirect('/')
   }
 
 );
-
+//login  
 app.get('/login', function(req,res){
   
   res.render('login',{title:'login'})

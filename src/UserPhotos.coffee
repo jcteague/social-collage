@@ -124,6 +124,8 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 				console.log albums
 				async.map albums.data, process_album,(err,result)->cb ({"collection":result, title:"Your Albums"})
 
+
+
 		fb_init: ->
 			userPhotos = @
 			fbLogin = @fbLogin
@@ -138,12 +140,12 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 					FB.getLoginStatus((response) ->
 						if response.status is 'connected'
 							console.log("facebook connected")
-							event_emitter.emit('facebook:connected')
+							event_emitter.emit('facebook.connected')
 							FB.api( '/me?fields=id,name,picture', (result) -> userPhotos.fb_user = result)
 							async.series [
 								FB.api( '/me?fields=id,name,picture', (result) -> userPhotos.fb_user = result),
 								
-								event_emitter.emit 'facebook:userloaded'
+								event_emitter.emit 'facebook.userloaded'
 
 							]
 						else

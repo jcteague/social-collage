@@ -16,6 +16,10 @@
     "mocha": "*",
     "should": "*",
     "sinon": "*",
-    "grunt": "*"
+    "grunt": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-mocha-test": "*",
+    "grunt-contrib-watch": "~0.4.4"
   }
 }
+	
