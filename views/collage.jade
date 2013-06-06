@@ -1,0 +1,108 @@
+button#logout.btn
+	| Logout
+h2
+	| Build Your Collage
+#page-splitter.row-fluid
+	#collage-workspace.span8
+		
+		#collage-wrapper
+			.navbar
+				.navbar-inner
+					.container
+						ul#collage-menu-list.nav
+							li(data-commandname="remove")
+								a(href="#")
+									| Remove
+							li(data-commandname="crop")
+								a(href="#")
+									| Crop
+								#crop-submenu.submenu
+									| Crop: 
+									button#crop-apply(class="btn btn-primary submenu-button", data-event="submenu.apply.crop")
+										| Apply
+									button#crop-cancel(class="btn btn-danger submenu-button", data-event="submenu.cancel.crop")
+										| Cancel
+							li(data-commandname="border")
+								a(href="#")
+									| Border
+								#border-submenu.submenu
+									//- ul#border-submenu-list
+									//- 	li
+									form.nav-form.inline-form
+										span
+											| Border Size:
+											input#border-size(style="width:25px")
+										span
+											| Color:
+											span#border-color-picker.input-append.color(data-color="rgb(255,255,255)", data-color-format="rgb")
+												input#border-color-picker-input.span2(type="text")
+												span#border-color-picker-box.add-on
+													i(style="background-color:rgb(255,255,255)")
+										span
+											button#border-apply(class="btn btn-primary submenu-button", data-event="submenu.apply.border")
+												| Apply
+											button#border-cancel(class="btn btn-danger submenu-button", data-event="submenu.cancel.border")
+												| Cancel
+							li(data-commandname="shadow")
+								a(href="#")
+									| Shadow
+							//- li
+							//- 	a(href="#",data-action="text")
+							//- 		| Text
+							//- 	#text-submenu.submenu
+							//- 		| Text: 
+							//- 		button(class="btn btn-primary submenu-button", data-event="text:apply")
+							//- 			| Apply
+							//- 		button(class="btn btn-danger submenu-button", data-event="text:cancel")
+							//- 			| Cancel
+
+
+
+							
+								
+			#canvas-container
+				<canvas id="collage-canvas"></canvas>
+
+	#facebook-photo-content.span4
+		h3
+			| Facebook Photos
+		ul#facebook-menu.photo-submenu.nav.nav-pills(data-contentsource="facebook")
+			li.active
+				a(href="#",data-photosource="me")
+					| You
+			li
+				a(href="#",data-photosource="albums")
+					| Albums
+			li
+				a(href="#",data-photosource="friends")
+					| Friends
+		#photos.span10
+			#photo-header
+				h3#collection-title
+				ul#collection-sub-menu.nav.nav-pills
+			#photo-list
+				ul#image-list.thumbnails
+			#photo-footer.span4.center
+				button#more-images.btn.btn-small
+					| More
+
+
+//- #photo-menu
+//- 	.navbar
+//- 		.navbar-inner
+//- 			.container
+//- 				.brand
+//- 					| Select Photos:
+//- 				ul#photo-sources.nav
+//- 					li
+//- 						a.photo-source(data-source="facebook", href='#facebook-photos' )
+//- 							| Facebook
+//- 					li
+//- 						a.photo-source(data-source="facebook")(href='#google-photos')
+//- 							| Google
+//- 					li
+//- 						a.photo-source(data-source="facebook")a(href='#flickr-photos')
+//- 							| Flickr
+	
+
+script(src="/javascripts/require-full.js",data-main="javascripts/main.js")

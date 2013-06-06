@@ -1,0 +1,8 @@
+- var title = "My Collages";
+form#create-collage-form.form(action="/create", method="POST")
+	fieldset
+		.span2
+			input#collageName.input-large.span2(placeholder="Collage Name", type="text")
+		.span2
+			button#create-collage-btn.btn.btn-primary.btn-large
+				| Create New Collage 
