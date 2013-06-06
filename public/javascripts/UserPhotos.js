@@ -42,7 +42,7 @@
         this.get_fb_next_results = __bind(this.get_fb_next_results, this);
 
         this.get_facebook_collection_photos = __bind(this.get_facebook_collection_photos, this);
-        this.fb_init();
+
       }
 
       UserPhotos.prototype.fbLogin = function() {
@@ -241,14 +241,14 @@
           return FB.getLoginStatus(function(response) {
             if (response.status === 'connected') {
               console.log("facebook connected");
-              event_emitter.emit('facebook:connected');
+              event_emitter.emit('facebook.connected');
               FB.api('/me?fields=id,name,picture', function(result) {
                 return userPhotos.fb_user = result;
               });
               return async.series([
                 FB.api('/me?fields=id,name,picture', function(result) {
                   return userPhotos.fb_user = result;
-                }), event_emitter.emit('facebook:userloaded')
+                }), event_emitter.emit('facebook.userloaded')
               ]);
             } else {
               return fbLogin();

@@ -1,1 +1,0 @@
-command ui not showing when switching back and forth
