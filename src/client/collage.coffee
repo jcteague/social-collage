@@ -58,7 +58,10 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 			# 		@currentItem = cnvs_item
 			# 		event_emitter.emit "ItemSelected", @currentItem
 
-			
+					
+		getPreviewImage: ->
+			@stage.toDataURLWithMultiplier("jpeg",.25, .8)
+	
 				
 		dimensions: ->
 			{

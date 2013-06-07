@@ -55,6 +55,9 @@ h2
 							//- 			| Apply
 							//- 		button(class="btn btn-danger submenu-button", data-event="text:cancel")
 							//- 			| Cancel
+							.pull-right
+								button#publish.btn.btn-large.btn-primary
+									| Publish to Facebook
 
 
 
@@ -86,23 +89,22 @@ h2
 				button#more-images.btn.btn-small
 					| More
 
+#publishModal(class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="publishModalLabel", aria-hidden="true")
+	.modal-header
+		button.close( type="button", class="close", data-dismiss="modal", aria-hidden="true")
+			| ×
+		h3#publishModalLabe
+			| Publish Collage
 
-//- #photo-menu
-//- 	.navbar
-//- 		.navbar-inner
-//- 			.container
-//- 				.brand
-//- 					| Select Photos:
-//- 				ul#photo-sources.nav
-//- 					li
-//- 						a.photo-source(data-source="facebook", href='#facebook-photos' )
-//- 							| Facebook
-//- 					li
-//- 						a.photo-source(data-source="facebook")(href='#google-photos')
-//- 							| Google
-//- 					li
-//- 						a.photo-source(data-source="facebook")a(href='#flickr-photos')
-//- 							| Flickr
+	.modal-body
+		img#collage-preview
+		textbox#post-comments
+	.modal-footer
+		button.btn( data-dismiss="modal", aria-hidden="true")
+			| Close
+		button.btn.btn-primary
+			| Save changes
+
 	
 
-script(src="/javascripts/require-full.js",data-main="javascripts/main.js")
+script(src="/javascripts/require-full.js",data-main="/javascripts/main.js")

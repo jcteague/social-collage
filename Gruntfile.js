@@ -19,13 +19,14 @@ module.exports = function(grunt){
 					flatten:true,
 					cwd: 'src/client',
 					src: ['*.coffee'],
-					dest: 'public/javascripts'
+					dest: 'public/javascripts',
+					ext: '.js'
 				
 			}
 		},
 		watch:{
 			
-				files:['**/*.js'],
+				files:['**/*.js', '**/*.coffee'],
 				tasks: ['mochaTest', 'coffee']
 		},
 

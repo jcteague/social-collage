@@ -49,9 +49,9 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			
 			# content_souce = el.data('contentsource')
 			photo_source = el.data('photosource')
-			collection_id = el.data('collectionid')
-			collection_name = el.data('collectionname')
-			collection_owner = el.data('collectionowner')
+			collection_id = el.attr('data-collectionid')
+			collection_name = el.attr('data-collectionname')
+			collection_owner = el.attr('data-collectionowner')
 			console.log "#{photo_source}, #{collection_id}, #{collection_name}, #{collection_owner}"
 			
 			# @set_current_collection_owner(photo_source, collection_id, collection_name)
@@ -131,7 +131,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 							class='picture thumbnail photo-collection' 
 							data-collectionid="<%=id%>"
 							data-collectionname="<%=name%>"
-							data-collectionowner="<%=owner%>"
+							
 							data-photosource="<%=photosource%>" />
 							<span class="photo-collection-label"><%=name%></span>
 					</li>"""
@@ -155,8 +155,6 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			
 			@image_list.empty()
 			append_photos data
-
-
 
 
 

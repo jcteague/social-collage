@@ -8,8 +8,9 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 			nextResult: (page_cb) ->
 				@page_func @context, page_cb
 
+		
 		constructor: ->
-			# @fb_init()
+			@fb_init()
 
 		fbLogin: ->
 			FB.login (response) ->
@@ -42,6 +43,7 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 						]
 					console.log "collection owner id: #{output.ownerid}"
 					cb output
+
 		
 		load_fb_photo_collection: (source, cb) ->
 			if source == 'me'
@@ -119,8 +121,9 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 						cover_url: cover.picture
 						owner: album.from
 					callback(null, album)
-			
-			FB.api "#{context.url}?fields=id,name,cover_photo,from", (albums) =>
+			album_url = "#{context.url}?fields=id,name,cover_photo,from"
+			console.log album_url
+			FB.api album_url, (albums) =>
 				console.log albums
 				async.map albums.data, process_album,(err,result)->cb ({"collection":result, title:"Your Albums"})
 
