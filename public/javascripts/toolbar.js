@@ -6,9 +6,14 @@
     return ToolBar = (function() {
       function ToolBar(toolbar, default_command) {
         this.applyCommand = __bind(this.applyCommand, this);
+        this.on_publish_click = __bind(this.on_publish_click, this);
         this.on_toolbar_item_click = __bind(this.on_toolbar_item_click, this);
         var _this = this;
-        this.toolbar = $(toolbar);
+        this.edit_toolbar = $('#edit-toolbar');
+        this.toolbar = $(toolbar).find('#collage-menu-list');
+        this.publishBtn = $('#publish');
+        this.publish_toolbar = $('#publish-toolbar');
+        this.publishBtn.click(this.on_publish_click);
         this.menu_items = {};
         this.toolbar.find('li').each(function(idx, item) {
           var command_name, li;
@@ -50,6 +55,11 @@
         previous_menu_item = this.current_menu_item;
         this.current_menu_item = this.menu_items[command_name];
         return this.current_menu_item.activate(this.selected_canvas_item);
+      };
+
+      ToolBar.prototype.on_publish_click = function(evt) {
+        console.log("publish click");
+        return event_emitter.emit("PublishCollageClicked");
       };
 
       ToolBar.prototype.set_initial_active = function() {

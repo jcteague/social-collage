@@ -1,7 +1,12 @@
 define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emitter) ->
 	class ToolBar
 		constructor: (toolbar, default_command) ->
-			@toolbar = $(toolbar)
+			@edit_toolbar = $('#edit-toolbar')
+			@toolbar = $(toolbar).find('#collage-menu-list')
+
+			@publishBtn = $('#publish')
+			@publish_toolbar =  $('#publish-toolbar')
+			@publishBtn.click @on_publish_click
 			@menu_items = {}
 			@toolbar.find('li').each (idx, item) =>
 				li = $(item)
@@ -48,7 +53,11 @@ define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emit
 
 			# 	sub_menu.show()
 
-
+		on_publish_click: (evt) =>
+			console.log "publish click"
+			# @edit_toolbar.hide()
+			# @publish_toolbar.show()
+			event_emitter.emit "PublishCollageClicked"
 			
 			
 
