@@ -17,7 +17,7 @@ define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emit
 					menu_item = new ToolbarItem(@)
 					@menu_items[command_name] = menu_item
 
-			@toolbar_items = @toolbar.find('li')
+			
 			
 			event_emitter.on "ItemSelected", (selected_item) => 
 				@selected_canvas_item = selected_item
@@ -26,7 +26,7 @@ define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emit
 				console.log "toolbar ItemDelected:"
 				@current_command?.unbind @selected_canvas_item
 				return
-			@toolbar_items.find('a').click @on_toolbar_item_click
+			@toolbar.find('a').click @on_toolbar_item_click
 
 		hide_menu: () ->
 			@toolbar.find('a').hide()

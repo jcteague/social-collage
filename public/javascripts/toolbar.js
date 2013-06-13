@@ -33,7 +33,6 @@
             return _this.menu_items[command_name] = menu_item;
           });
         });
-        this.toolbar_items = this.toolbar.find('li');
         event_emitter.on("ItemSelected", function(selected_item) {
           return _this.selected_canvas_item = selected_item;
         });
@@ -44,7 +43,7 @@
             _ref.unbind(_this.selected_canvas_item);
           }
         });
-        this.toolbar_items.find('a').click(this.on_toolbar_item_click);
+        this.toolbar.find('a').click(this.on_toolbar_item_click);
       }
 
       ToolBar.prototype.hide_menu = function() {

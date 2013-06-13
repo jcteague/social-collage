@@ -15,9 +15,11 @@ define ['jquery','EventEmitter','SubMenu'], ($,event_emitter, SubMenu) ->
 					event_emitter.emit "submenu.border.colorSet", {color:ev.color.toRGB()}
 
 				$('#border-apply').on 'click',(evt) =>
+					evt.preventDefault()
 					event_emitter.emit "submenu.apply.border"
 
 				$('#border-cancel').on 'click',(evt) =>
+					evt.preventDefault()
 					event_emitter.emit "submenu.cancel.border"
 
 			setBorderWidth: (width) =>

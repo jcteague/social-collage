@@ -35,9 +35,11 @@
           });
         });
         $('#border-apply').on('click', function(evt) {
+          evt.preventDefault();
           return event_emitter.emit("submenu.apply.border");
         });
         $('#border-cancel').on('click', function(evt) {
+          evt.preventDefault();
           return event_emitter.emit("submenu.cancel.border");
         });
       }
