@@ -1,8 +1,9 @@
 define ['EventEmitter','Collage','Toolbar','PhotoGallery','PublishDialog'],(event_emitter,Collage,Toolbar, photoGallery, publishDialog) ->
+	
 	class App
 		constructor: (@canvas_element) ->
 			@collage = new Collage(@canvas_element)
-			@toolbar = new Toolbar('#toolbar')
+			@toolbar = new Toolbar()
 
 			# diagnostics = $('<div>',{id:"diagnostics"})
 			# diagnostics.append """
@@ -14,7 +15,7 @@ define ['EventEmitter','Collage','Toolbar','PhotoGallery','PublishDialog'],(even
 			event_emitter.on "canvas:mousemove",(evt) ->
 				$('#canvas-mouse-x').text(evt.x)
 				$('#canvas-mouse-y').text(evt.y)
-			event_emitter.on "PublishCollageClicked", =>
+			event_emitter.on "ShowPublishDialogClicked", =>
 				publishDialog(@collage)
 
 

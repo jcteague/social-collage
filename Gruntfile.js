@@ -10,7 +10,7 @@ module.exports = function(grunt){
 		pkg: grunt.file.readJSON('package.json'),
 		
 		jshint:{
-			all:['**/*.js']
+			all:['src/**/*.js']
 		},
 		coffee:{
 			glob_to_multiple:{
@@ -26,7 +26,7 @@ module.exports = function(grunt){
 		},
 		watch:{
 			
-				files:['**/*.js', '**/*.coffee'],
+				files:['src/**/*.js', 'src/**/*.coffee'],
 				tasks: ['mochaTest', 'coffee']
 		},
 

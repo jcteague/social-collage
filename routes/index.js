@@ -1,6 +1,8 @@
 var CollageService = require("../src/collage");
 var UserService = require("../src/user");
+
 var userService = new UserService();
+var photos = require("../src/photo");
 var collageService = new CollageService();
 
 /*
@@ -23,7 +25,7 @@ exports.create = function(req,res){
 	
 }
 exports.collage = function(req, res){
-	res.render('collage');
+	res.render('collage',{locals:{id:req.params.id}});
 }
 
 exports.userCollages = function(req,res){
@@ -36,6 +38,21 @@ exports.userCollages = function(req,res){
 			return;
 		}
 		res.render('mycollages',{collages: result});	
+	});
+
+}
+
+exports.savePhoto = function(req,res){
+	photo_data = req.body;
+
+	var base_path = "public/images/user_content";
+	
+	photos.save(base_path, photo_data.photoId, photo_data.imageContent, function(error, filename){
+		// console.log(res);
+		console.log(req.headers);
+		img_url = [req.headers.origin, base_path, filename].join("/");
+		res.json({url:img_url});
+
 	});
 
 }

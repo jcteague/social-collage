@@ -1,12 +1,14 @@
 define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emitter) ->
 	class ToolBar
-		constructor: (toolbar, default_command) ->
+		constructor: () ->
 			@edit_toolbar = $('#edit-toolbar')
-			@toolbar = $(toolbar).find('#collage-menu-list')
+			@toolbar = $('#collage-menu-list')
 
-			@publishBtn = $('#publish')
+			@publish_dialog_btn = $('#show-publish-dialog')
 			@publish_toolbar =  $('#publish-toolbar')
-			@publishBtn.click @on_publish_click
+			@publish_dialog_btn.click => 
+				console.log "show publish dialog"
+				event_emitter.emit "ShowPublishDialogClicked"
 			@menu_items = {}
 			@toolbar.find('li').each (idx, item) =>
 				li = $(item)
@@ -31,6 +33,7 @@ define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emit
 		show_menu: () ->
 			@toolbar.find('a').show()
 		on_toolbar_item_click: (evt, ui) =>
+
 			menu_item = $(evt.currentTarget).parent()
 			command_name = menu_item.data 'commandname'
 			console.log "selected action: #{command_name}"

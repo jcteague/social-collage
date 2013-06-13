@@ -49,6 +49,7 @@ passport.use(new FaceBookStrategy(
         console.log(error);
         return;
       }
+      user.accessToken = accessToken
       return done(null, user);
     })
     
@@ -110,8 +111,12 @@ app.get('/images', function(req, res,next){
   request.get(req.query.src).pipe(res)
 });
 app.get('/collages',ensureAuthenticated, routes.userCollages)
+//change the route to just post: /collage
 app.post('/create',ensureAuthenticated, routes.create);
+app.post('/photo',ensureAuthenticated, routes.savePhoto);
 app.get('/collage/:id',ensureAuthenticated,routes.collage);
+
+
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });

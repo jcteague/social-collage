@@ -34,11 +34,8 @@ requirejs.config(
 )
 require ['jquery','ColorPicker','UserPhotos','App'],($, ColorPicker, UserPhotos,App)->
 	$ ->
-		userPhotos = new UserPhotos()
 		app = new App('collage-canvas')
 		console.log("loading dependencies")
 		$('.color').colorpicker()
-		$('#logout').click () ->
-			FB.logout()
 		
 		

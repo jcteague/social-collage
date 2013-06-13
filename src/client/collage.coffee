@@ -1,4 +1,4 @@
-define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Photo) ->
+define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,event_emitter,Photo) ->
 	class Collage
 		constructor: (@canvas_element)->
 			@canvas = $("##{@canvas_element}")
@@ -38,6 +38,7 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 
 			event_emitter.on "ItemRemoved", (item) =>
 				@collage_items.splice(item.id,1)
+			event_emitter.on "PublishCollageClicked", @createImage
 			
 
 			# @stage.on "mouse:up",(evt) =>
@@ -58,9 +59,16 @@ define ['jqueryUI','fabric','EventEmitter','Photo'], ($,fabric,event_emitter,Pho
 			# 		@currentItem = cnvs_item
 			# 		event_emitter.emit "ItemSelected", @currentItem
 
-					
+		createImage: (opts) =>
+			data = @stage.toDataURL("jpeg")
+			console.log data
+			opts = _.extend(opts,{imageData:data})
+			event_emitter.emit "ImageCreated", opts	
+		
 		getPreviewImage: ->
-			@stage.toDataURLWithMultiplier("jpeg",.25, .8)
+			data = @stage.toDataURLWithMultiplier("jpeg",.25, .8)
+			console.log data
+			return data
 	
 				
 		dimensions: ->
