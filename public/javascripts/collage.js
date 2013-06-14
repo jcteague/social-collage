@@ -62,6 +62,14 @@
           console.log("loading.photo.completed");
           return $('canvas').css("cursor", "auto");
         });
+        event_emitter.on("backgroundColor.changed", function(val) {
+          var color_val;
+          console.log("background color changed");
+          console.log(val.color);
+          color_val = "rgba(" + val.color.r + "," + val.color.g + "," + val.color.b + "," + val.color.a + ")";
+          _this.stage.backgroundColor = color_val;
+          return _this.stage.renderAll();
+        });
       }
 
       Collage.prototype.createImage = function(opts) {

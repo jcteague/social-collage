@@ -111,10 +111,11 @@ ul.thumbnails{
 	margin-left:8px;
 
 }
+#background-color-picker-input,
 #border-color-picker-input{
 	display: none;
 }
-
+#background-color-picker-box,
 #border-color-picker-box{
 	border-radius: 3px 3px 3px 3px;
 	-webkit-border-radius: 3px 3px 3px 3px;

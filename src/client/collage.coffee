@@ -43,6 +43,12 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 			event_emitter.on "loading.photo.completed", =>
 				console.log "loading.photo.completed"
 				$('canvas').css "cursor", "auto"
+			event_emitter.on "backgroundColor.changed", (val) =>
+				console.log "background color changed"
+				console.log val.color
+				color_val = "rgba(#{val.color.r},#{val.color.g},#{val.color.b},#{val.color.a})"
+				@stage.backgroundColor = color_val
+				@stage.renderAll()
 
 			# @stage.on "mouse:up",(evt) =>
 			# 	console.log "canvas clicked"

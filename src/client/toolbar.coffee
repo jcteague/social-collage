@@ -17,6 +17,9 @@ define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emit
 					menu_item = new ToolbarItem(@)
 					@menu_items[command_name] = menu_item
 
+			@color_picker = $('#background-color-picker').colorpicker()
+			@color_picker.on "changeColor", (ev) =>
+				event_emitter.emit "backgroundColor.changed", {color:ev.color.toRGB()}
 			
 			
 			event_emitter.on "ItemSelected", (selected_item) => 

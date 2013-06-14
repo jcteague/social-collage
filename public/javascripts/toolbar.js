@@ -33,6 +33,12 @@
             return _this.menu_items[command_name] = menu_item;
           });
         });
+        this.color_picker = $('#background-color-picker').colorpicker();
+        this.color_picker.on("changeColor", function(ev) {
+          return event_emitter.emit("backgroundColor.changed", {
+            color: ev.color.toRGB()
+          });
+        });
         event_emitter.on("ItemSelected", function(selected_item) {
           return _this.selected_canvas_item = selected_item;
         });
