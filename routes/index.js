@@ -50,7 +50,7 @@ exports.savePhoto = function(req,res){
 	photos.save(base_path, photo_data.photoId, photo_data.imageContent, function(error, filename){
 		// console.log(res);
 		console.log(req.headers);
-		img_url = [req.headers.origin, base_path, filename].join("/");
+		img_url = [req.headers.origin, 'images/user_content', filename].join("/");
 		res.json({url:img_url});
 
 	});
