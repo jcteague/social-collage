@@ -11,9 +11,18 @@ define ["fabric","EventEmitter"], (fabric, event_emitter) ->
 				offsetY: 10
 				blur: 20
 				affectStroke:true
-			item.setShadow(shadow)
+			if @has_shadow(item)
+				item.setShadow(null)
+			else
+				item.setShadow(shadow)
 			stage.renderAll()
-			
+		has_shadow: (item) ->
+			shadow = item.shadow
+			if shadow == null
+				return false
+			if shadow.color == 'rgb(0,0,0)'
+				return false
+			return true
 
 
 		deactivate: (@collage_item) ->

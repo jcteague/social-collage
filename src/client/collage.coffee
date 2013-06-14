@@ -3,8 +3,7 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 		constructor: (@canvas_element)->
 			@canvas = $("##{@canvas_element}")
 			@canvas_container = @canvas.parent()
-			@stage = new fabric.Canvas(@canvas_element)
-			@stage.backgroundColor = 'rgba(255,255,255,0)'
+			@stage = new fabric.Canvas(@canvas_element,{backgroundColor: 'rgba(255,255,255,1)'})
 			@stage.setWidth(@canvas_container.width())
 			@stage.setHeight(@canvas_container.height())
 			@stage.renderAll()

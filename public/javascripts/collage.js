@@ -14,8 +14,9 @@
 
         this.canvas = $("#" + this.canvas_element);
         this.canvas_container = this.canvas.parent();
-        this.stage = new fabric.Canvas(this.canvas_element);
-        this.stage.backgroundColor = 'rgba(255,255,255,0)';
+        this.stage = new fabric.Canvas(this.canvas_element, {
+          backgroundColor: 'rgba(255,255,255,1)'
+        });
         this.stage.setWidth(this.canvas_container.width());
         this.stage.setHeight(this.canvas_container.height());
         this.stage.renderAll();

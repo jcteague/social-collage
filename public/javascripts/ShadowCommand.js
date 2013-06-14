@@ -21,8 +21,24 @@
           blur: 20,
           affectStroke: true
         };
-        item.setShadow(shadow);
+        if (this.has_shadow(item)) {
+          item.setShadow(null);
+        } else {
+          item.setShadow(shadow);
+        }
         return stage.renderAll();
+      };
+
+      ShadowCommand.prototype.has_shadow = function(item) {
+        var shadow;
+        shadow = item.shadow;
+        if (shadow === null) {
+          return false;
+        }
+        if (shadow.color === 'rgb(0,0,0)') {
+          return false;
+        }
+        return true;
       };
 
       ShadowCommand.prototype.deactivate = function(collage_item) {
