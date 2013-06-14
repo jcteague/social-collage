@@ -4,10 +4,10 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 			@canvas = $("##{@canvas_element}")
 			@canvas_container = @canvas.parent()
 			@stage = new fabric.Canvas(@canvas_element)
-
-
+			@stage.backgroundColor = 'rgba(255,255,255,0)'
 			@stage.setWidth(@canvas_container.width())
 			@stage.setHeight(@canvas_container.height())
+			@stage.renderAll()
 			@enableDiagnostics()
 			@activeImage = null;
 			@collage_items = []
@@ -27,8 +27,6 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 				@addFbPhoto(img_data)
 			
 			@canvas.droppable({drop: 	image_dropped})
-		# 	 observe('selection:cleared');
-  # observe('selection:created');
 			@stage.on "selection:created", (evt) =>
 				console.log "object selected"
 				console.log evt
@@ -66,7 +64,7 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 			# 		event_emitter.emit "ItemSelected", @currentItem
 
 		createImage: (opts) =>
-			data = @stage.toDataURL("jpeg")
+			data = @stage.toDataURL("imaga/jpeg")
 			console.log data
 			opts = _.extend(opts,{imageData:data})
 			event_emitter.emit "ImageCreated", opts	

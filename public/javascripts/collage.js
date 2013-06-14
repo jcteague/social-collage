@@ -15,8 +15,10 @@
         this.canvas = $("#" + this.canvas_element);
         this.canvas_container = this.canvas.parent();
         this.stage = new fabric.Canvas(this.canvas_element);
+        this.stage.backgroundColor = 'rgba(255,255,255,0)';
         this.stage.setWidth(this.canvas_container.width());
         this.stage.setHeight(this.canvas_container.height());
+        this.stage.renderAll();
         this.enableDiagnostics();
         this.activeImage = null;
         this.collage_items = [];
@@ -63,7 +65,7 @@
 
       Collage.prototype.createImage = function(opts) {
         var data;
-        data = this.stage.toDataURL("jpeg");
+        data = this.stage.toDataURL("imaga/jpeg");
         console.log(data);
         opts = _.extend(opts, {
           imageData: data
