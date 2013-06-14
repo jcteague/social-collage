@@ -23,6 +23,7 @@
         var _this = this;
         console.log("photo loadImage: ");
         console.log(image_data);
+        event_emitter.emit("loading.photo.started");
         return new fabric.Image.fromURL(image_data.src, function(f_img) {
           _this.item = f_img;
           _this.item.on("selected", function(evt) {
@@ -31,6 +32,7 @@
             return event_emitter.emit("ItemSelected", _this);
           });
           loaded_cb(_this.item);
+          event_emitter.emit("loading.photo.completed");
           return _this.item.on("selected:cleared", function(evt) {
             console.log("photo selected cleared");
             return event_emitter.emit('ItemDeSelected', _this);

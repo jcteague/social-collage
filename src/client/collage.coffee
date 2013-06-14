@@ -39,7 +39,13 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 			event_emitter.on "ItemRemoved", (item) =>
 				@collage_items.splice(item.id,1)
 			event_emitter.on "PublishCollageClicked", @createImage
-			
+
+			event_emitter.on "loading.photo.started", =>
+				console.log "loading photo started"
+				$('canvas').css "cursor", "progress"
+			event_emitter.on "loading.photo.completed", =>
+				console.log "loading.photo.completed"
+				$('canvas').css "cursor", "auto"
 
 			# @stage.on "mouse:up",(evt) =>
 			# 	console.log "canvas clicked"

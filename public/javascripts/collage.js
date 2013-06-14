@@ -51,6 +51,14 @@
           return _this.collage_items.splice(item.id, 1);
         });
         event_emitter.on("PublishCollageClicked", this.createImage);
+        event_emitter.on("loading.photo.started", function() {
+          console.log("loading photo started");
+          return $('canvas').css("cursor", "progress");
+        });
+        event_emitter.on("loading.photo.completed", function() {
+          console.log("loading.photo.completed");
+          return $('canvas').css("cursor", "auto");
+        });
       }
 
       Collage.prototype.createImage = function(opts) {

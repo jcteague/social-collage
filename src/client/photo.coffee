@@ -13,6 +13,7 @@ define ['jquery','fabric','EventEmitter'], ($,fabric,event_emitter) ->
 		loadImage: (image_data, loaded_cb) ->
 			console.log "photo loadImage: "
 			console.log image_data
+			event_emitter.emit "loading.photo.started"
 			new fabric.Image.fromURL(image_data.src, 
 				(f_img) =>
 					@item = f_img
@@ -21,6 +22,7 @@ define ['jquery','fabric','EventEmitter'], ($,fabric,event_emitter) ->
 						console.log evt
 						event_emitter.emit "ItemSelected", @
 					loaded_cb @item
+					event_emitter.emit "loading.photo.completed"
 					@item.on "selected:cleared", (evt) =>
 						console.log  "photo selected cleared"
 						event_emitter.emit 'ItemDeSelected', @
