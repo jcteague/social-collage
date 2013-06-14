@@ -111,6 +111,12 @@ ul.thumbnails{
 	margin-left:8px;
 
 }
+/*#background-color label
+{
+	display: inline;
+	padding-top: 9px;
+}
+*/
 #background-color-picker-input,
 #border-color-picker-input{
 	display: none;
