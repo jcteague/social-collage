@@ -20,6 +20,7 @@ define ['EventEmitter','Collage','Toolbar','PhotoGallery','PublishDialog'],(even
 
 
 
+
 					
 
 			

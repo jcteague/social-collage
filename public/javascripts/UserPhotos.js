@@ -73,13 +73,21 @@
       UserPhotos.prototype.loadPhotoCollection = function(content, source, cb) {
         console.log("load collection: " + content + ", " + source);
         if (content === 'facebook') {
-          this.load_fb_photo_collection(source, cb);
+          event_emitter.emit("loading.photoCollection.started");
+          this.load_fb_photo_collection(source, function(output) {
+            cb(output);
+            return event_emitter.emit("loading.photoCollection.completed");
+          });
         }
       };
 
       UserPhotos.prototype.getCollectionPhotos = function(content, source, id, cb) {
         if (content === 'facebook') {
-          return this.get_facebook_collection_photos(source, id, cb);
+          event_emitter.emit("loading.photoCollection.started");
+          return this.get_facebook_collection_photos(source, id, function(output) {
+            cb(output);
+            return event_emitter.emit("loading.photoCollection.completed");
+          });
         }
       };
 
@@ -234,13 +242,15 @@
         };
         album_url = "" + context.url + "?fields=id,name,cover_photo,from";
         console.log(album_url);
+        event_emitter.emit("loading.photoCollection.started");
         return FB.api(album_url, function(albums) {
           console.log(albums);
           return async.map(albums.data, process_album, function(err, result) {
-            return cb({
+            cb({
               "collection": result,
               title: "Your Albums"
             });
+            return event_emitter.emit("loading.photoCollection.completed");
           });
         });
       };

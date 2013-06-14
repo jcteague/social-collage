@@ -16,41 +16,27 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			
 		wire_events: ->
 			event_emitter.on 'facebook.connected', ()=> @getPhotoCollection('me')
+			event_emitter.on "loading.photoCollection.started", (evt) =>
+				if @image_list.is(':visible')
+					@image_list.hide()
+					@image_list.parent().append '''<div id="loader" class="">
+							<i class="icon-spinner icon-spin icon-large"></i>
+							Loading ...
+							</div>'''
+				
+			event_emitter.on "loading.photoCollection.completed", (evt) =>
+				$('#loader').remove()
+				@image_list.show()
+
 			$('.photo-submenu a').click @handlePhotoMenuClick
 			$('body').on 'click', '.photo-collection', @handlePhotoCollectionClick
 			
 			
 
-		resize_thumbnails: ->
-			@image_list.find('img').each (x,img) ->
-				_img = $(img)
-				max_width = _img.width();
-				max_height = _img.height();
-				_img.removeClass('thumbnail')
-				ratio = 0;  #Used for aspect ratio
-				width = _img.width();    # Current image width
-				height = _img.height();  # Current image height
-
-				# Check if the current width is larger than the max
-				if(width > max_width)
-					ratio = max_width / width;   # get ratio for scaling image
-					$(this).css("width", max_width); # Set new width
-					$(this).css("height", height * ratio);  # Scale height based on ratio
-					height = height * ratio;    # Reset height to match scaled image
-					width = width * ratio;    # Reset width to match scaled image
-
-
-				# Check if current height is larger than max
-				if(height > max_height)
-					ratio = max_height / height; # get ratio for scaling image
-					$(this).css("height", max_height);   # Set new height
-					$(this).css("width", width * ratio);    # Scale width based on ratio
-					width = width * ratio;    # Reset width to match scaled image
-				_img.addClass 'thumbnail'
-				console.log "#{_img.width()}, #{_img.height()}"
 		
 		getPhotoCollection: (photo_source) ->
 			console.log 'getting photo collection: #{photo_source}'
+			# event_emitter.emit "loading.photoCollection.started"
 			@userPhotos.loadPhotoCollection @content_source, photo_source, (result) =>
 				console.log "load photo collection"
 				console.log result
@@ -60,6 +46,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 					@showImages result
 				else
 					@showImageCollection photo_source, result
+				# event_emitter.emit "loading.photoCollection.completed"
 
 		handlePhotoMenuClick: (ev) =>
 			console.log "handle photo menu click"
@@ -139,14 +126,16 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 		append_images: (images) =>
 			image_element_template = _.template """
 				<li class=''>
-					<img src='<%= photo_url%>' id='<%=id%>' class='picture thumbnail' />
+					<div id='<%=id%>' style="background-image:url('<%= photo_url %>')" class='img-placeholder picture thumbnail'></div>
+					<div class="photo-collection-label"></div>
+					<!--<img src='<%= photo_url%>' id='<%=id%>' class='picture thumbnail' /> -->
 				</li>"""
 			_.each images.images, (item) =>
 				img_el = $(image_element_template(item))
 				img_el.draggable({cursor:'move',cursorAt:{top:0,left:0},revert:'invalid',helper:'clone'})
 				img_el.data('img_data',item)
 				@image_list.append(img_el);
-				@resize_thumbnails()
+
 			
 			if(images.pager)
 				@image_pager_btn.show().unbind().on "click", ->
@@ -158,14 +147,14 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 			console.log "show image collection"
 			collection_template = _.template """
 					<li class=' album'>
-						<img src="<%= cover_url%>" 
+						<div style="background-image:url('<%= cover_url%>')" 
 						  id='<%= id %>'
-							class='picture thumbnail photo-collection' 
+							class='img-placeholder picture thumbnail photo-collection' 
 							data-collectionid="<%=id%>"
 							data-collectionname="<%=name%>"
 							
-							data-photosource="<%=photosource%>" />
-							<span class="photo-collection-label"><%=name%></span>
+							data-photosource="<%=photosource%>"></div>
+							<div class="photo-collection-label"><%=name%></div>
 					</li>"""
 			
 			append_photos = (photos) =>
@@ -179,7 +168,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 						"photosource": photo_source,
 						owner: JSON.stringify datum.owner
 					@image_list.append(collection_template(template_data))
-					@resize_thumbnails()
+
 				if(photos.pager)
 					@image_pager_btn.show().unbind().on "click", ->
 						photos.pager.nextResult append_photos

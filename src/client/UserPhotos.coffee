@@ -52,12 +52,18 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 		loadPhotoCollection: (content, source, cb) ->
 			console.log "load collection: #{content}, #{source}"
 			if(content == 'facebook')
-				@load_fb_photo_collection(source, cb)
+				event_emitter.emit "loading.photoCollection.started"
+				@load_fb_photo_collection source, (output) ->
+					cb output
+					event_emitter.emit "loading.photoCollection.completed"
 				return
 		
 		getCollectionPhotos: (content, source, id, cb) ->
 			if(content == 'facebook')
-				@get_facebook_collection_photos source, id, cb
+				event_emitter.emit "loading.photoCollection.started"
+				@get_facebook_collection_photos source, id, (output) ->
+					cb (output)
+					event_emitter.emit "loading.photoCollection.completed"
 
 		get_facebook_collection_photos: (source, id, cb) =>
 			
@@ -156,9 +162,12 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 					callback(null, album)
 			album_url = "#{context.url}?fields=id,name,cover_photo,from"
 			console.log album_url
+			event_emitter.emit "loading.photoCollection.started"
 			FB.api album_url, (albums) =>
 				console.log albums
-				async.map albums.data, process_album,(err,result)->cb ({"collection":result, title:"Your Albums"})
+				async.map albums.data, process_album,(err,result) ->
+					cb ({"collection":result, title:"Your Albums"})
+					event_emitter.emit "loading.photoCollection.completed"
 
 
 

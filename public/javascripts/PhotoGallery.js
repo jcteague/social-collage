@@ -36,36 +36,18 @@
         event_emitter.on('facebook.connected', function() {
           return _this.getPhotoCollection('me');
         });
+        event_emitter.on("loading.photoCollection.started", function(evt) {
+          if (_this.image_list.is(':visible')) {
+            _this.image_list.hide();
+            return _this.image_list.parent().append('<div id="loader" class="">\n<i class="icon-spinner icon-spin icon-large"></i>\nLoading ...\n</div>');
+          }
+        });
+        event_emitter.on("loading.photoCollection.completed", function(evt) {
+          $('#loader').remove();
+          return _this.image_list.show();
+        });
         $('.photo-submenu a').click(this.handlePhotoMenuClick);
         return $('body').on('click', '.photo-collection', this.handlePhotoCollectionClick);
-      };
-
-      PhotoGallery.prototype.resize_thumbnails = function() {
-        return this.image_list.find('img').each(function(x, img) {
-          var height, max_height, max_width, ratio, width, _img;
-          _img = $(img);
-          max_width = _img.width();
-          max_height = _img.height();
-          _img.removeClass('thumbnail');
-          ratio = 0;
-          width = _img.width();
-          height = _img.height();
-          if (width > max_width) {
-            ratio = max_width / width;
-            $(this).css("width", max_width);
-            $(this).css("height", height * ratio);
-            height = height * ratio;
-            width = width * ratio;
-          }
-          if (height > max_height) {
-            ratio = max_height / height;
-            $(this).css("height", max_height);
-            $(this).css("width", width * ratio);
-            width = width * ratio;
-          }
-          _img.addClass('thumbnail');
-          return console.log("" + (_img.width()) + ", " + (_img.height()));
-        });
       };
 
       PhotoGallery.prototype.getPhotoCollection = function(photo_source) {
@@ -158,7 +140,7 @@
       PhotoGallery.prototype.append_images = function(images) {
         var image_element_template,
           _this = this;
-        image_element_template = _.template("<li class=''>\n	<img src='<%= photo_url%>' id='<%=id%>' class='picture thumbnail' />\n</li>");
+        image_element_template = _.template("<li class=''>\n	<div id='<%=id%>' style=\"background-image:url('<%= photo_url %>')\" class='img-placeholder picture thumbnail'></div>\n	<div class=\"photo-collection-label\"></div>\n	<!--<img src='<%= photo_url%>' id='<%=id%>' class='picture thumbnail' /> -->\n</li>");
         _.each(images.images, function(item) {
           var img_el;
           img_el = $(image_element_template(item));
@@ -172,8 +154,7 @@
             helper: 'clone'
           });
           img_el.data('img_data', item);
-          _this.image_list.append(img_el);
-          return _this.resize_thumbnails();
+          return _this.image_list.append(img_el);
         });
         if (images.pager) {
           return this.image_pager_btn.show().unbind().on("click", function() {
@@ -188,7 +169,7 @@
         var append_photos, collection_template,
           _this = this;
         console.log("show image collection");
-        collection_template = _.template("<li class=' album'>\n	<img src=\"<%= cover_url%>\" \n	  id='<%= id %>'\n		class='picture thumbnail photo-collection' \n		data-collectionid=\"<%=id%>\"\n		data-collectionname=\"<%=name%>\"\n		\n		data-photosource=\"<%=photosource%>\" />\n		<span class=\"photo-collection-label\"><%=name%></span>\n</li>");
+        collection_template = _.template("<li class=' album'>\n	<div style=\"background-image:url('<%= cover_url%>')\" \n	  id='<%= id %>'\n		class='img-placeholder picture thumbnail photo-collection' \n		data-collectionid=\"<%=id%>\"\n		data-collectionname=\"<%=name%>\"\n		\n		data-photosource=\"<%=photosource%>\"></div>\n		<div class=\"photo-collection-label\"><%=name%></div>\n</li>");
         append_photos = function(photos) {
           _.each(photos.collection, function(datum) {
             var template_data, _ref;
@@ -199,8 +180,7 @@
               "photosource": photo_source,
               owner: JSON.stringify(datum.owner)
             };
-            _this.image_list.append(collection_template(template_data));
-            return _this.resize_thumbnails();
+            return _this.image_list.append(collection_template(template_data));
           });
           if (photos.pager) {
             return _this.image_pager_btn.show().unbind().on("click", function() {
