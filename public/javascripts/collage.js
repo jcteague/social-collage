@@ -29,7 +29,7 @@
           console.log("event position");
           console.log(ui.position);
           console.log("fabric mouse position");
-          mouse_position = _this.stage.getPointer();
+          mouse_position = _this.stage.getPointer(evt);
           img = $(ui.draggable);
           img_data = {
             x: mouse_position.x,
