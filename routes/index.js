@@ -45,13 +45,17 @@ exports.userCollages = function(req,res){
 exports.savePhoto = function(req,res){
 	photo_data = req.body;
 
-	var base_path = "public/images/user_content";
-	
-	photos.save(base_path, photo_data.photoId, photo_data.imageContent, function(error, filename){
+	photos.save(photo_data.photoId, photo_data.imageContent, function(error, photoUrl){
 		// console.log(res);
-		console.log(req.headers);
-		img_url = [req.headers.origin, 'images/user_content', filename].join("/");
-		res.json({url:img_url});
+		collageService.update(photo_data.photoId,{photo_url:photoUrl}, function(error,result){
+			if(error){
+				console.log(error);
+				callback(error,null);
+				return;
+			}
+			res.json({url:photoUrl});
+		})
+		
 
 	});
 

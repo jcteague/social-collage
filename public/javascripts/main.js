@@ -30,6 +30,10 @@
         exports: '$',
         deps: ['jquery']
       },
+      bootstrap: {
+        exports: '$',
+        deps: ['jquery']
+      },
       EventEmitter2: {
         exports: "EventEmitter2"
       },
@@ -51,7 +55,7 @@
     }
   });
 
-  require(['jquery', 'ColorPicker', 'UserPhotos', 'App'], function($, ColorPicker, UserPhotos, App) {
+  require(['jquery', 'bootstrap', 'EventEmitter', 'ColorPicker', 'App'], function($, bootstrap, event_emitter, ColorPicker, App) {
     return $(function() {
       var app;
       app = new App('collage-canvas');

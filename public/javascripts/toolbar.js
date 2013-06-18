@@ -27,11 +27,13 @@
           var command_name, li;
           li = $(item);
           command_name = li.data("commandname");
-          return require(["ToolbarItem-" + command_name], function(ToolbarItem) {
-            var menu_item;
-            menu_item = new ToolbarItem(_this);
-            return _this.menu_items[command_name] = menu_item;
-          });
+          if (command_name) {
+            return require(["ToolbarItem-" + command_name], function(ToolbarItem) {
+              var menu_item;
+              menu_item = new ToolbarItem(_this);
+              return _this.menu_items[command_name] = menu_item;
+            });
+          }
         });
         this.color_picker = $('#background-color-picker').colorpicker();
         this.color_picker.on("changeColor", function(ev) {

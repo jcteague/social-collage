@@ -12,7 +12,6 @@ Collage.prototype.create = function(user, collage_name,callback){
 	console.log("collage.create");
 	var UsrSrvc = require('./user');
 	var user_service = new UsrSrvc();
-	console.log(this._model);		
 	var collage = new this._model({
 		name: collage_name,
 		user_id: user._id
@@ -47,8 +46,23 @@ Collage.prototype.create = function(user, collage_name,callback){
 				callback(null,collage_result);
 			})
 		})
-	});
-	   
+	})
 };
+
+Collage.prototype.update = function(id, values, callback){
+	console.log("udpating");
+	this._model.update({_id: id}, values,function(error,result){
+		if(error){
+			console.log(error);
+			callback(error,callback);
+			return;
+		}
+		console.log("update result");
+		console.log(result);
+		callback(null, result)
+	})
+}
+	   
+
 
 

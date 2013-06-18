@@ -4,19 +4,26 @@ var SandboxedModule = require("sandboxed-module");
 var Faker = require("Faker");
 var mongoose = require("mongoose");
 var _ = require("underscore");
+
 var UserService = require("../src/User");
 var CollageService = require("../src/collage");
 
 mongoose.connect("mongodb://localhost/collage");
 mongoose.connection.on('error', function() {});
 var test_user, user, collage;
+
 describe("Collage",function(){
 	describe("when a user creates a collage",function(){
-		
-		beforeEach(function(done){
-			console.log("before each");
+		before(function(){
+			mongoose.models = {}
+			mongoose.modelSchemas = {}
 			user = new UserService();
 			collage = new CollageService();
+		})
+
+		beforeEach(function(done){
+			console.log("before each");
+			
 			//create the user
 			user.create({
 				first_name: 'John',

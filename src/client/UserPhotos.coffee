@@ -20,26 +20,21 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 			post_data =
 				imageContent: opts.imageData
 				photoId: opts.photoId
-			$.post("/photo",post_data,(response)->
+			event_emitter.emit "loading.photo.save.started"
+			$.post "/photo",post_data,(photo_url) =>
+				event_emitter.emit "loading.photo.save.completed"
 				console.log "posted photo to server"
-				console.log response
-			)
-			
-			# $.ajax({
-			# 		url: post_url
-			# 		type: "POST"
-			# 		data:fd
-			# 		processData:false
-			# 		cache:false
-			# 		success: (data)->
-			# 			console.log "success"
-			# 			console.log data
-			# 		error: (response) ->
-			# 			console.log "photo post error"
-			# 			console.log response
-			# 	})
-			
-			return
+				fd = 
+					message: "collage created by broowd."
+					url: opts.photo_url
+					access_token: @fb_accessToken
+				event_emitter.emit "loading.photo.publish.started"
+				FB.api '/me/photos','post',fd, (response) ->
+					event_emitter.emit "loading.photo.publish.completed"
+					console.log response
+					return #facebook post
+				return #save photo
+			return #publish image
 		
 
 

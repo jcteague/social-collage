@@ -1,6 +1,7 @@
 require("should");
 var sinon = require("sinon");
 var UserService = require('../src/user');
+var user = new UserService();
 var mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/collage");
 mongoose.connection.on('error', function() {});
@@ -38,9 +39,9 @@ describe("User",function(){
 		     updated_time: '2012-07-08T18:02:24+0000' } 
 		  }
 		// console.log(mongoose);
-		var user;
+		
 		beforeEach(function(done){
-			user = new UserService();
+			
 			user._model.collection.drop();	
 			done();
 

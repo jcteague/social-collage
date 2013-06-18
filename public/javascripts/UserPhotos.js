@@ -50,15 +50,28 @@
       }
 
       UserPhotos.prototype.publish_image = function(opts) {
-        var post_data;
+        var post_data,
+          _this = this;
         console.log(opts);
         post_data = {
           imageContent: opts.imageData,
           photoId: opts.photoId
         };
-        $.post("/photo", post_data, function(response) {
+        event_emitter.emit("loading.photo.save.started");
+        $.post("/photo", post_data, function(photo_url) {
+          var fd;
+          event_emitter.emit("loading.photo.save.completed");
           console.log("posted photo to server");
-          return console.log(response);
+          fd = {
+            message: "collage created by broowd.",
+            url: opts.photo_url,
+            access_token: _this.fb_accessToken
+          };
+          event_emitter.emit("loading.photo.publish.started");
+          FB.api('/me/photos', 'post', fd, function(response) {
+            event_emitter.emit("loading.photo.publish.completed");
+            console.log(response);
+          });
         });
       };
 

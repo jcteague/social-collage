@@ -13,9 +13,10 @@ define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emit
 			@toolbar.find('li').each (idx, item) =>
 				li = $(item)
 				command_name = li.data "commandname"
-				require ["ToolbarItem-#{command_name}"], (ToolbarItem) =>
-					menu_item = new ToolbarItem(@)
-					@menu_items[command_name] = menu_item
+				if(command_name)
+					require ["ToolbarItem-#{command_name}"], (ToolbarItem) =>
+						menu_item = new ToolbarItem(@)
+						@menu_items[command_name] = menu_item
 
 			@color_picker = $('#background-color-picker').colorpicker()
 			@color_picker.on "changeColor", (ev) =>

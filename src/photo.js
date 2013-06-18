@@ -1,7 +1,14 @@
 var fs = require("fs");
+var awsS3 = require("awssum-amazon-s3");
+var bucketName = "broowdphotos_test"
 
-exports.save = function(path,filename, content, callback){
-	"data:image/png;base64"
+var s3 = new awsS3.S3({
+	accessKeyId: "AKIAJBGWKUWN4K44G5HA",
+	secretAccessKey:"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",
+	region: awsS3.US_EAST_1
+
+});
+exports.save = function(filename, content, callback){
 	content_parts = content.split(',')
 	info_part = content_parts[0];
 	image_data = content_parts[1];
@@ -11,13 +18,40 @@ exports.save = function(path,filename, content, callback){
 	 
 	var buffer = new Buffer(image_data,'base64');
 	filename +="." + img_type
-	var file_path = path+"/"+filename;
-	console.log("saving image at: " + file_path);
-	fs.writeFile(file_path,buffer,function(error,result){
+
+	upload_params = {
+		BucketName: bucketName,
+		ObjectName: filename,
+		ContentLength: buffer.length,
+		Acl: "public-read",
+		Body: buffer
+	};
+	console.log("uploading");
+	s3.PutObject(upload_params,function(error, result){
+		
 		if(error){
-			callback(error);
+			console.log("error");
+			console.log(error);
+			callback(error,null);
 			return;
+
 		}
-		callback(null, filename)
+		console.log("s3 result");
+		console.log(result);
+		if(result.StatusCode = 200){
+			file_url = ["https://",s3.host(),bucketName,filename].join("/")
+			callback(null,file_url);	
+		}
+		else{
+			callback(new Error(result.Body), null)
+		}
+		
 	})
+	// fs.writeFile(file_path,buffer,function(error,result){
+	// 	if(error){
+	// 		callback(error);
+	// 		return;
+	// 	}
+	// 	callback(null, filename)
+	// })
 }

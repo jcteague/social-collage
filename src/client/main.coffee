@@ -23,6 +23,7 @@ requirejs.config(
 			underscore:{exports:'_'},
 			fabric: {exports:'fabric'},
 			jqueryUI:{exports:'$',deps:['jquery']},
+			bootstrap: {exports:'$',deps:['jquery']}
 			EventEmitter2: {exports:"EventEmitter2"},
 			async: {exports:"async"},
 			wijmoUtil: {exports: "wijmoUtil", deps:["jquery"]},
@@ -32,7 +33,7 @@ requirejs.config(
 	}
 	
 )
-require ['jquery','ColorPicker','UserPhotos','App'],($, ColorPicker, UserPhotos,App)->
+require ['jquery', 'bootstrap', 'EventEmitter','ColorPicker','App'],($, bootstrap,event_emitter,ColorPicker,App)->
 	$ ->
 		app = new App('collage-canvas')
 		console.log("loading dependencies")

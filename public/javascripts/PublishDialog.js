@@ -20,7 +20,7 @@
       var img;
       img = document.getElementById("collage-preview");
       img.src = collage.getPreviewImage();
-      return $('#publishModal').modal('show');
+      return $('#publishModal').modal('hide');
     };
   });
 
