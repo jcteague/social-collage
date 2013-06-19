@@ -10,7 +10,8 @@ var express = require('express')
   , mongoose = require('mongoose')
   , FaceBookStrategy = require('passport-facebook').Strategy
   , UserService = require('./src/user')
-  , routes = require('./routes');
+  , routes = require('./routes')
+  , config = require('./src/configuration');
 
 var FB_API_KEY = '236634053108854';
 var FB_APP_SECRET = 'fcd97617bb0528ea89206b905dd02b68';
@@ -34,8 +35,8 @@ passport.deserializeUser(function(obj, done) {
 // Configuration
 passport.use(new FaceBookStrategy(
   {
-    clientID: FB_API_KEY,
-    clientSecret: FB_APP_SECRET,
+    clientID: config.facebook_app_key,
+    clientSecret: config.facebook_app_secret,
     callbackURL: "http://localhost:3000/auth/facebook/callback"
   },function(accessToken,refreshToken, profile, done){
     console.log("facebook auth");
@@ -72,11 +73,14 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   app.use(express.logger())
-  mongoose.connect("mongodb://localhost/collage");
+  mongoose.connect(config.mongodb_connection_string);
+   
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler());
+  
+  
 }); 
 
 // Routes
