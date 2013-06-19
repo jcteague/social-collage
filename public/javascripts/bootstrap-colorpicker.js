@@ -201,7 +201,13 @@
                 color: this.color
             });
         },
-
+        getColor: function(){
+            var color = this.isInput ? this.element.prop('value') : this.element.data('color');
+            if (typeof color === "undefined" || color === null) {
+                color = '#ffffff';
+            }
+            return new Color(color);
+        },
         update: function() {
             var color = this.isInput ? this.element.prop('value') : this.element.data('color');
             if (typeof color === "undefined" || color === null) {

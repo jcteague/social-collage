@@ -19,7 +19,7 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 				mouse_position =  @stage.getPointer()
 				img = $(ui.draggable)
 				img_data =
-				  x: mouse_position.x
+				  x: mouse_position.x	
 				  y: mouse_position.y
 				  data: img.data('img_data')
 				console.log(img_data)
@@ -40,9 +40,11 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 			event_emitter.on "loading.photo.started", =>
 				console.log "loading photo started"
 				$('canvas').css "cursor", "progress"
+			
 			event_emitter.on "loading.photo.completed", =>
 				console.log "loading.photo.completed"
 				$('canvas').css "cursor", "auto"
+			
 			event_emitter.on "backgroundColor.changed", (val) =>
 				console.log "background color changed"
 				console.log val.color

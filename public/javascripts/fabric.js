@@ -16947,10 +16947,10 @@ fabric.util.object.extend(fabric.Object.prototype, /** @lends fabric.Object.prot
     _render: function(ctx) {
       ctx.drawImage(
         this._element,
-        this.cropX,
-        this.cropY,
-        this.cropWidth,
-        this.cropHeight,
+        // this.cropX,
+        // this.cropY,
+        // this.cropWidth,
+        // this.cropHeight,
         -this.width / 2,
         -this.height / 2,
         this.width,

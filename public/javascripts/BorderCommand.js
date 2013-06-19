@@ -12,7 +12,22 @@
         this.on_deactivate = on_deactivate;
         this.remove_border = __bind(this.remove_border, this);
 
+        this.set_border = __bind(this.set_border, this);
+
       }
+
+      BorderCommand.prototype.set_border = function(border) {
+        var strokeColor, strokeWidth;
+        if ((border.size != null) > 0) {
+          strokeWidth = parseInt(border.size);
+        } else {
+          strokeWidth = false;
+        }
+        strokeColor = this.format_rgba_string(border.color);
+        console.log("setting border: " + strokeWidth + ", " + strokeColor);
+        this.canvas_item.item.set("strokeWidth", strokeWidth);
+        return this.canvas_item.item.set("stroke", strokeColor);
+      };
 
       BorderCommand.prototype.activate = function(canvas_item) {
         var f_item,
@@ -25,22 +40,28 @@
         this.menu.setBorderWidth(f_item.get('strokeWidth'));
         this.menu.setBorderColor(f_item.get('stroke'));
         event_emitter.on("submenu.border.widthSet", function(evt) {
-          _this.canvas_item.item.set("strokeWidth", evt.borderSize);
-          return _this.canvas_item.stage.renderAll();
+          console.log("border stroke");
+          console.log(evt);
+          return _this.set_border(evt);
         });
         event_emitter.on("submenu.border.colorSet", function(evt) {
-          var rgb;
-          rgb = "rgba(" + evt.color.r + "," + evt.color.g + "," + evt.color.b + "," + evt.color.a + ")";
-          console.log(rgb);
-          _this.canvas_item.item.set("stroke", rgb);
-          return _this.canvas_item.stage.renderAll();
+          console.log("border color");
+          console.log(evt);
+          return _this.set_border(evt);
         });
-        event_emitter.on('submenu.apply.border', function() {
+        event_emitter.on('submenu.apply.border', function(border) {
+          console.log("apply border");
+          console.log(border);
+          _this.set_border(border);
           return _this.on_applied();
         });
         return event_emitter.on('submenu.cancel.border', function() {
           return _this.deactivate();
         });
+      };
+
+      BorderCommand.prototype.format_rgba_string = function(color) {
+        return "rgba(" + color.r + "," + color.g + "," + color.b + "," + color.a + ")";
       };
 
       BorderCommand.prototype.deactivate = function() {

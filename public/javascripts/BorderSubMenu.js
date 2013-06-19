@@ -19,24 +19,35 @@
         BorderSubMenu.__super__.constructor.call(this, '#border-submenu');
         this.border_size = $('#border-size');
         this.border_color = $('#border-color-picker').colorpicker();
+        this.color = {
+          r: 255,
+          g: 255,
+          b: 255,
+          a: 1
+        };
         this.border_size.on("blur", function(evt) {
-          var size;
+          var _ref;
           console.log("size blur");
-          size = $(evt.currentTarget).val();
-          console.log(size);
+          _this.size = (_ref = $(evt.currentTarget).val()) != null ? _ref : 0;
           return event_emitter.emit("submenu.border.widthSet", {
-            borderSize: size
+            size: _this.size,
+            color: _this.color
           });
         });
         this.border_color.on("changeColor", function(ev) {
           console.log("border color change");
+          _this.color = ev.color.toRGB();
           return event_emitter.emit("submenu.border.colorSet", {
-            color: ev.color.toRGB()
+            size: _this.size,
+            color: _this.color
           });
         });
         $('#border-apply').on('click', function(evt) {
           evt.preventDefault();
-          return event_emitter.emit("submenu.apply.border");
+          return event_emitter.emit("submenu.apply.border", {
+            size: _this.size,
+            color: _this.color
+          });
         });
         $('#border-cancel').on('click', function(evt) {
           evt.preventDefault();
