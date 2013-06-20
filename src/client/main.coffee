@@ -33,7 +33,7 @@ requirejs.config(
 	}
 	
 )
-require ['jquery', 'bootstrap', 'EventEmitter','ColorPicker','App'],($, bootstrap,event_emitter,ColorPicker,App)->
+require ['jquery', 'bootstrap', 'EventEmitter','ColorPicker','app'],($, bootstrap,event_emitter,ColorPicker,App)->
 	$ ->
 		app = new App('collage-canvas')
 		console.log("loading dependencies")

@@ -55,7 +55,7 @@
     }
   });
 
-  require(['jquery', 'bootstrap', 'EventEmitter', 'ColorPicker', 'App'], function($, bootstrap, event_emitter, ColorPicker, App) {
+  require(['jquery', 'bootstrap', 'EventEmitter', 'ColorPicker', 'app'], function($, bootstrap, event_emitter, ColorPicker, App) {
     return $(function() {
       var app;
       app = new App('collage-canvas');
