@@ -7,6 +7,8 @@ module.exports = User;
 function User(){
 	this._model = schemas.User;
 };
+
+
 	
 
 User.prototype.create = function(user_data, callback){
