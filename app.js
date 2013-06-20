@@ -78,7 +78,8 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler());
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(express.logger())
   mongoose.connect(config.mongodb_connection_string);
   
 }); 
