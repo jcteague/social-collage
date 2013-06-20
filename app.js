@@ -9,7 +9,7 @@ var express = require('express')
   , passport = require('passport')
   , mongoose = require('mongoose')
   , FaceBookStrategy = require('passport-facebook').Strategy
-  , UserService = require('./src/User')
+  , UserService = require('./src/user')
   , routes = require('./routes')
   , config = require('./src/configuration');
 
