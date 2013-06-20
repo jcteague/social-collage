@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var schemas = require('./schemas');
-var UserService = require('./user');
+var UserService = require('./User');
 
 module.exports = Collage;
 
