@@ -79,7 +79,7 @@ app.configure('development', function(){
 
 app.configure('production', function(){
   app.use(express.errorHandler());
-  
+  mongoose.connect(config.mongodb_connection_string);
   
 }); 
 
