@@ -40,7 +40,7 @@ exports.save = function(filename, content, callback){
 		console.log("s3 result");
 		console.log(result);
 		if(result.StatusCode = 200){
-			file_url = ["https://",s3.host(),bucketName,filename].join("/")
+			file_url = "https://"+[s3.host(),bucketName,filename].join("/")
 			callback(null,file_url);	
 		}
 		else{

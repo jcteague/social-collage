@@ -66,8 +66,8 @@ ul.thumbnails{
 }
 #canvas-container{
 	border: solid 1px black;
-	height:800px;
-	/*width:1040px;*/*/
+	/*height:800px;*/
+	
 }
 #collage-canvas{
 	width:100%;
