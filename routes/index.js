@@ -1,5 +1,5 @@
 var CollageService = require("../src/collage");
-var UserService = require("../src/user");
+var UserService = require("../src/User");
 
 var userService = new UserService();
 var photos = require("../src/photo");
