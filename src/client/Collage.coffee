@@ -71,7 +71,9 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 			# 		event_emitter.emit "ItemSelected", @currentItem
 
 		createImage: (opts) =>
+			@stage.deactivateAllWithDispatch()
 			data = @stage.toDataURL("imaga/jpeg")
+
 			console.log data
 			opts = _.extend(opts,{imageData:data})
 			event_emitter.emit "ImageCreated", opts	

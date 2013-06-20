@@ -6,7 +6,7 @@ define ['jquery','EventEmitter'],($,event_emitter) ->
 			photo_id = $(@).attr("data-photoid")
 			console.log "publish collage: #{photo_id}"
 			event_emitter.emit "PublishCollageClicked",{destination:"facebook",photoId: photo_id}
-			$('#publishModal').modal('close')
+			$('#publishModal').modal('hide')
 	
 	display = (collage) ->
 		img = document.getElementById "collage-preview"

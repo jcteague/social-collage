@@ -21,13 +21,14 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 				imageContent: opts.imageData
 				photoId: opts.photoId
 			event_emitter.emit "loading.photo.save.started"
-			$.post "/photo",post_data,(photo_url) =>
+			$.post "/photo",post_data,(photo_data) =>
 				event_emitter.emit "loading.photo.save.completed"
 				console.log "posted photo to server"
 				fd = 
 					message: "collage created by broowd."
-					url: opts.photo_url
+					url: photo_data.url
 					access_token: @fb_accessToken
+				console.log "uploading to facebook: #{fd.url}"
 				event_emitter.emit "loading.photo.publish.started"
 				FB.api '/me/photos','post',fd, (response) ->
 					event_emitter.emit "loading.photo.publish.completed"

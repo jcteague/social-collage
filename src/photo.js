@@ -1,10 +1,11 @@
 var fs = require("fs");
 var awsS3 = require("awssum-amazon-s3");
-var bucketName = "broowdphotos_test"
+var config = require('./configuration')
+var bucketName = config.s3_upload_bucket;
 
 var s3 = new awsS3.S3({
-	accessKeyId: "AKIAJBGWKUWN4K44G5HA",
-	secretAccessKey:"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",
+	accessKeyId: config.s3_access_key,
+	secretAccessKey:config.s3_secret_access_key,
 	region: awsS3.US_EAST_1
 
 });
