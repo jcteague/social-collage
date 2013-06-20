@@ -37,7 +37,7 @@ passport.use(new FaceBookStrategy(
   {
     clientID: config.facebook_app_key,
     clientSecret: config.facebook_app_secret,
-    callbackURL: "http://localhost:3000/auth/facebook/callback"
+    callbackURL: "/auth/facebook/callback"
   },function(accessToken,refreshToken, profile, done){
     console.log("facebook auth");
     console.log(accessToken);
@@ -121,6 +121,6 @@ app.post('/photo',ensureAuthenticated, routes.savePhoto);
 app.get('/collage/:id',ensureAuthenticated,routes.collage);
 
 
-app.listen(3000, function(){
+app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
