@@ -10,7 +10,7 @@ function Collage(){
 }
 Collage.prototype.create = function(user, collage_name,callback){
 	console.log("collage.create");
-	var UsrSrvc = require('./user');
+	var UsrSrvc = require('./User');
 	var user_service = new UsrSrvc();
 	var collage = new this._model({
 		name: collage_name,
