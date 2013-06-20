@@ -37,7 +37,7 @@ passport.use(new FaceBookStrategy(
   {
     clientID: config.facebook_app_key,
     clientSecret: config.facebook_app_secret,
-    callbackURL: app.address().address+"/auth/facebook/callback"
+    callbackURL: config.host_name+"/auth/facebook/callback"
   },function(accessToken,refreshToken, profile, done){
     console.log("facebook auth");
     console.log(accessToken);

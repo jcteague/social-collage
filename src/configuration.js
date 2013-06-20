@@ -24,6 +24,10 @@ var config_values = {
 	s3_upload_bucket: {
 		production: 'broowdphotos',
 		development: 'broowdphotos_test'
+	},
+	host_name:{
+		production: 'http://broowd.herokuapp.com',
+		development: 'http://localhost:3000'
 	}
 	
 
