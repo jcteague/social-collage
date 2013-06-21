@@ -72,7 +72,7 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 
 		createImage: (opts) =>
 			@stage.deactivateAllWithDispatch()
-			data = @stage.toDataURL("imaga/jpeg")
+			data = @stage.toDataURL({format:"jpeg",quality:80})
 
 			console.log data
 			opts = _.extend(opts,{imageData:data})

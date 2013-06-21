@@ -75,7 +75,10 @@
       Collage.prototype.createImage = function(opts) {
         var data;
         this.stage.deactivateAllWithDispatch();
-        data = this.stage.toDataURL("imaga/jpeg");
+        data = this.stage.toDataURL({
+          format: "jpeg",
+          quality: 80
+        });
         console.log(data);
         opts = _.extend(opts, {
           imageData: data
