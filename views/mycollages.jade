@@ -6,3 +6,19 @@ form#create-collage-form.form(action="/create", method="POST")
 		.span2
 			button#create-collage-btn.btn.btn-primary.btn-large
 				| Create New Collage 
+h2
+	| Your Collages
+	
+#photos.row-fluid
+	ul#photo-list.thumbnails
+		each cl in collages
+			li.span3
+				div.thumbnail
+					.img-placeholder(style="background-image:url('#{cl.photo_url}')")
+					//- img(data-src="https://#{cl.photo_url}", src="https://#{cl.photo_url}")
+					h3
+						| #{cl.Name} Collage Name
+					button.publish.btn.btn-small
+						| publish
+	script(src="/javascripts/require-full.js",data-main="/javascripts/main.js")
+	

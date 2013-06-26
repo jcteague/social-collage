@@ -61,6 +61,10 @@ Collage.prototype.update = function(id, values, callback){
 		console.log(result);
 		callback(null, result)
 	})
+};
+
+Collage.prototype.getCollages = function(filter){
+	return this._model.find(filter || {});
 }
 	   
 

@@ -63,8 +63,10 @@ h2
 							//- 		button(class="btn btn-danger submenu-button", data-event="text:cancel")
 							//- 			| Cancel
 							.pull-right
-								button#show-publish-dialog.btn.btn-large.btn-primary
-									| Publish to Facebook
+								button#show-save-collage.btn.btn-large.btn-primary
+									| Save
+								//- button#show-publish-dialog.btn.btn-large.btn-primary
+								//- 	| Publish
 
 
 
@@ -104,15 +106,30 @@ h2
 			| Publish Collage
 
 	.modal-body
-		img#collage-preview
-		textbox#post-comments
+		.preview
+			img#collage-preview
+			.loading
+				i.icon-spinner.icon-spin.icon-large
+				|Saving Your Collage
+		.saved
+			h2
+				| Image is Saved!
+
+			
 	.modal-footer
-		button.btn( data-dismiss="modal", aria-hidden="true")
-			| Close
-		
-		button#publish-collage.btn.btn-primary(data-photoid="#{id}")
-			| Save changes
+		.preview
+			button.btn( data-dismiss="modal", aria-hidden="true")
+				| Close
+			
+			button#save-collage.btn.btn-primary(data-photoid="#{id}")
+				| Save changes
+		.saved
+			button.btn( data-dismiss="modal", aria-hidden="true")
+				| Close
+			a(href="/collages").btn-large.btn-primary
+				| View and Publish
 
 	
 
-script(src="/javascripts/require-full.js",data-main="/javascripts/main.js")
+script(src="/javascripts/require-full.js",data-main="/javascripts/Editor.js")
+

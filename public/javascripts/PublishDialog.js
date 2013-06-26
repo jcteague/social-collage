@@ -2,20 +2,29 @@
 (function() {
 
   define(['jquery', 'EventEmitter'], function($, event_emitter) {
-    var display;
+    var display, toggle_sections,
+      _this = this;
     $(function() {
-      return $('#publish-collage').click(function(evt) {
+      $('#publishModal .preview').show();
+      $('#publishModal .saved').hide();
+      return $('#save-collage').click(function(evt) {
         var photo_id;
         evt.preventDefault();
         photo_id = $(this).attr("data-photoid");
         console.log("publish collage: " + photo_id);
-        event_emitter.emit("PublishCollageClicked", {
+        return event_emitter.emit("PublishCollageClicked", {
           destination: "facebook",
           photoId: photo_id
         });
-        return $('#publishModal').modal('hide');
       });
     });
+    event_emitter.on("loading.photo.save.completed", function() {
+      return toggle_sections();
+    });
+    toggle_sections = function() {
+      $('#publishModal .preview').toggle();
+      return $('#publishModal .saved').toggle();
+    };
     return display = function(collage) {
       var img;
       img = document.getElementById("collage-preview");

@@ -17,6 +17,7 @@ exports.index = function(req, res){
 
 exports.create = function(req,res){
 	console.log("create route");
+	console.log(req.body);
 	collageService.create(req.user,req.body.name,function(error,result){
 		console.log("collage.create callback");
 		
@@ -31,7 +32,9 @@ exports.collage = function(req, res){
 exports.userCollages = function(req,res){
 	console.log("user collages");
 	console.log(req.user);
-	userService.getCollages(req.user,function(error, result){
+	userService.getCollages(req.user)
+		.exists('photo_url')
+		.exec(function(error, result){
 		//TODO: handle errors;
 		if(error){
 			console.log(error);

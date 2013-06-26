@@ -13,9 +13,9 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 			@fb_app_id = ''
 
 			@fb_init()
-			event_emitter.on 'ImageCreated', @publish_image
+			event_emitter.on 'ImageCreated', @save_image
 
-		publish_image: (opts) =>
+		save_image: (opts) =>
 			console.log opts
 			post_data =
 				imageContent: opts.imageData
@@ -23,20 +23,21 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 			event_emitter.emit "loading.photo.save.started"
 			$.post "/photo",post_data,(photo_data) =>
 				event_emitter.emit "loading.photo.save.completed"
-				console.log "posted photo to server"
-				fd = 
-					message: "collage created by broowd."
-					url: photo_data.url
-					access_token: @fb_accessToken
-				console.log "uploading to facebook: #{fd.url}"
-				event_emitter.emit "loading.photo.publish.started"
-				FB.api '/me/photos','post',fd, (response) ->
-					event_emitter.emit "loading.photo.publish.completed"
-					console.log response
-					return #facebook post
+				
 				return #save photo
 			return #publish image
 		
+		publish_image: (fd) ->
+			fd = 
+				message: "collage created by broowd."
+				url: photo_data.url
+				access_token: @fb_accessToken
+			console.log "uploading to facebook: #{fd.url}"
+			event_emitter.emit "loading.photo.publish.started"
+			FB.api '/me/photos','post',fd, (response) ->
+				event_emitter.emit "loading.photo.publish.completed"
+				console.log response
+				return #facebook post
 
 
 

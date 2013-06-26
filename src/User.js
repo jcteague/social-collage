@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var schemas = require("./schemas");
 var collage = require("./collage");
-
+var collageService = new collage();
 module.exports = User;
 
 function User(){
@@ -69,8 +69,10 @@ User.prototype.getUser = function(id,callback){
 	})
 }
 
-User.prototype.getCollages = function(user,callback){
-	callback(null,null);
+User.prototype.getCollages = function(user){
+	
+	return collageService.getCollages().where('user_id').equals(user._id);
+	
 }
 	
 

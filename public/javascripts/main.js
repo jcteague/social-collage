@@ -55,13 +55,4 @@
     }
   });
 
-  require(['jquery', 'bootstrap', 'EventEmitter', 'ColorPicker', 'app'], function($, bootstrap, event_emitter, ColorPicker, App) {
-    return $(function() {
-      var app;
-      app = new App('collage-canvas');
-      console.log("loading dependencies");
-      return $('.color').colorpicker();
-    });
-  });
-
 }).call(this);

@@ -43,13 +43,13 @@
 
         this.get_facebook_collection_photos = __bind(this.get_facebook_collection_photos, this);
 
-        this.publish_image = __bind(this.publish_image, this);
+        this.save_image = __bind(this.save_image, this);
         this.fb_app_id = '';
         this.fb_init();
-        event_emitter.on('ImageCreated', this.publish_image);
+        event_emitter.on('ImageCreated', this.save_image);
       }
 
-      UserPhotos.prototype.publish_image = function(opts) {
+      UserPhotos.prototype.save_image = function(opts) {
         var post_data,
           _this = this;
         console.log(opts);
@@ -59,20 +59,21 @@
         };
         event_emitter.emit("loading.photo.save.started");
         $.post("/photo", post_data, function(photo_data) {
-          var fd;
           event_emitter.emit("loading.photo.save.completed");
-          console.log("posted photo to server");
-          fd = {
-            message: "collage created by broowd.",
-            url: photo_data.url,
-            access_token: _this.fb_accessToken
-          };
-          console.log("uploading to facebook: " + fd.url);
-          event_emitter.emit("loading.photo.publish.started");
-          FB.api('/me/photos', 'post', fd, function(response) {
-            event_emitter.emit("loading.photo.publish.completed");
-            console.log(response);
-          });
+        });
+      };
+
+      UserPhotos.prototype.publish_image = function(fd) {
+        fd = {
+          message: "collage created by broowd.",
+          url: photo_data.url,
+          access_token: this.fb_accessToken
+        };
+        console.log("uploading to facebook: " + fd.url);
+        event_emitter.emit("loading.photo.publish.started");
+        return FB.api('/me/photos', 'post', fd, function(response) {
+          event_emitter.emit("loading.photo.publish.completed");
+          console.log(response);
         });
       };
 
