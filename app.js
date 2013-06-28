@@ -120,6 +120,7 @@ app.get('/collages',ensureAuthenticated, routes.userCollages)
 app.post('/create',ensureAuthenticated, routes.create);
 app.post('/photo',ensureAuthenticated, routes.savePhoto);
 app.get('/collage/:id',ensureAuthenticated,routes.collage);
+app.post('/collage/:id/publish',ensureAuthenticated,routes.publish)
 
 
 app.listen(process.env.PORT || 3000, function(){

@@ -17,7 +17,12 @@ module.exports.userSchema = new Schema({
 module.exports.collageSchema = new Schema({
 			name: String,
 			user_id: { type: Schema.ObjectId, ref: 'User' },
-			photo_url: String
+			photo_url: String,
+			published: Boolean,
+			published_photo:{
+				service: String,
+				identifier: String
+			}
 
 	});
 module.exports.User = mongoose.model('User', module.exports.userSchema);

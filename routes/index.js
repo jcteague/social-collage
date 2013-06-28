@@ -53,7 +53,7 @@ exports.savePhoto = function(req,res){
 		collageService.update(photo_data.photoId,{photo_url:photoUrl}, function(error,result){
 			if(error){
 				console.log(error);
-				callback(error,null);
+				res.send(500,error)
 				return;
 			}
 			res.json({url:photoUrl});
@@ -63,3 +63,28 @@ exports.savePhoto = function(req,res){
 	});
 
 }
+
+exports.publish = function(req,res){
+	console.log(req.body);
+	var collage_id = req.params.id;
+	var service = req.body.service;
+	var identifier = req.body.identifier;
+	update_data = {
+		published:true,
+		published_photo:{
+			service: service,
+			identifier: identifier
+		}
+	};
+	collageService.update(collage_id,update_data,function(error,result){
+		if(error){
+			console.log(error);
+			res.send(500,error)
+			return;
+		}
+		res.json({success:true})
+	})
+
+	
+
+};

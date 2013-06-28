@@ -47,6 +47,7 @@
         this.fb_app_id = '';
         this.fb_init();
         event_emitter.on('ImageCreated', this.save_image);
+        event_emitter.on('PhotoPublishClicked', this.publish_image);
       }
 
       UserPhotos.prototype.save_image = function(opts) {
@@ -59,21 +60,31 @@
         };
         event_emitter.emit("loading.photo.save.started");
         $.post("/photo", post_data, function(photo_data) {
+          console.log(photo_data);
           event_emitter.emit("loading.photo.save.completed");
         });
       };
 
-      UserPhotos.prototype.publish_image = function(fd) {
+      UserPhotos.prototype.publish_image = function(photo_data) {
+        var fd;
         fd = {
-          message: "collage created by broowd.",
+          message: photo_data.comments,
           url: photo_data.url,
           access_token: this.fb_accessToken
         };
         console.log("uploading to facebook: " + fd.url);
         event_emitter.emit("loading.photo.publish.started");
         return FB.api('/me/photos', 'post', fd, function(response) {
-          event_emitter.emit("loading.photo.publish.completed");
+          var publish_data;
           console.log(response);
+          publish_data = {
+            service: 'facebook',
+            identifier: response.id
+          };
+          $.post("/collage/" + photo_data.id + "/publish", publish_data, function(res) {
+            event_emitter.emit("loading.photo.publish.completed");
+            return console.log("pusblished");
+          });
         });
       };
 

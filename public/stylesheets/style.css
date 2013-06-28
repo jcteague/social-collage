@@ -46,10 +46,10 @@ ul.thumbnails{
 	height:100px;
 }
 #photo-list .img-placeholder{
-	/*width:300px;*/
-	height:250px;
+	width:150px;
+	height:150px;
 }
-#image-list .thumbnails > li{
+#photo-list .thumbnails > li{
 	margin-bottom: auto;
 }
 .photo-collection-label{
@@ -134,6 +134,20 @@ ul.thumbnails{
 	height:auto;
 	margin-left: 5px;
 }
-#publishModal .loading{
+.modal .loading{
 	display:none;
+}
+.modal .saved{
+	display:none;
+}
+
+#collage-preview{
+	margin-left:80px;
+	margin-right:20px;
+	width:150px;
+	height: 150px; 
+	float:left;
+}
+#publish-comments{
+	height:150px;
 }

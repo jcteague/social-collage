@@ -18,7 +18,37 @@ h2
 					//- img(data-src="https://#{cl.photo_url}", src="https://#{cl.photo_url}")
 					h3
 						| #{cl.Name} Collage Name
-					button.publish.btn.btn-small
+					button.start-publish.btn.btn-small(data-id="#{cl._id}", data-photourl="#{cl.photo_url}")
 						| publish
-	script(src="/javascripts/require-full.js",data-main="/javascripts/main.js")
-	
+	script(src="/javascripts/require-full.js",data-main="/javascripts/MyCollages-Main.js")
+
+#publish-collage-modal(class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="publishModalLabel", aria-hidden="true")
+	.modal-header
+		button.close( type="button", class="close", data-dismiss="modal", aria-hidden="true")
+			| ×
+		h3#publishModalLabe
+			| Publish Collage
+
+	.modal-body
+		.preview
+			#collage-preview.img-placeholder
+			textarea#publish-comments(placeholder="Comments")
+
+			.loading
+				i.icon-spinner.icon-spin.icon-large
+				|Saving Your Collage
+		.saved
+			h2
+				| Image is Saved!
+
+			
+	.modal-footer
+		.preview
+			button.btn( data-dismiss="modal", aria-hidden="true")
+				| Close
+			
+			button#save-collage.btn.btn-primary
+				| Publish
+		.saved
+			button.btn( data-dismiss="modal", aria-hidden="true")
+				| Close
