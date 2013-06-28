@@ -27,6 +27,9 @@ body {
 	height:100px;
 	width:100%;
 }
+#more-images{
+	display: none;
+}
 a {
   color: #00B7FF;
 }

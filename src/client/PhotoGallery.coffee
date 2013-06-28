@@ -10,6 +10,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 
 			@image_collection_title = $('#collection-title')
 			@image_pager_btn = $('#more-images')
+			@image_pager_btn.hide();
 			@content_source = 'facebook'
 			@image_collection_sub_menu = $('#collection-sub-menu')
 			@wire_events()
@@ -138,7 +139,7 @@ define ['jqueryUI','underscore','UserPhotos','EventEmitter'], ($,_,UserPhotos,ev
 
 			
 			if(images.pager)
-				@image_pager_btn.show().unbind().on "click", ->
+				@image_pager_btn.show().unbind().on "click", =>
 					images.pager.nextResult @append_images
 			else
 				@image_pager_btn.hide()

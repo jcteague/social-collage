@@ -26,6 +26,7 @@
         this.image_list = $('#image-list');
         this.image_collection_title = $('#collection-title');
         this.image_pager_btn = $('#more-images');
+        this.image_pager_btn.hide();
         this.content_source = 'facebook';
         this.image_collection_sub_menu = $('#collection-sub-menu');
         this.wire_events();
@@ -158,7 +159,7 @@
         });
         if (images.pager) {
           return this.image_pager_btn.show().unbind().on("click", function() {
-            return images.pager.nextResult(this.append_images);
+            return images.pager.nextResult(_this.append_images);
           });
         } else {
           return this.image_pager_btn.hide();
