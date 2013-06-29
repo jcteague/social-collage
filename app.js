@@ -92,7 +92,7 @@ app.get('/auth/facebook',
   function(req,res){}
   )
 app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {failureRedirect: '/login'}),
+  passport.authenticate('facebook', {failureRedirect: '/login',scope:['email','user_groups','user_photos','friends_photos','publish_stream','photo_upload']}),
   function(req,res){
     console.log("face book callback");
     res.redirect('/collages')

@@ -49,8 +49,8 @@ ul.thumbnails{
 	height:100px;
 }
 #photo-list .img-placeholder{
-	width:150px;
-	height:150px;
+	width:130px;
+	height:100px;
 }
 #photo-list .thumbnails > li{
 	margin-bottom: auto;
