@@ -52,10 +52,18 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 
 
 
-		fbLogin: ->
-			FB.login (response) ->
-				if response.authResponse then
-					#loadUser()
+		fbLogin: =>
+			console.log "logging into facebook"
+			FB.login(@on_fb_login
+				,{
+					scope:'email,user_photos,friends_phothos,publish_stream,photo_upload'
+					}
+			)
+		on_fb_login: (response)->
+			console.log "facebook login"
+			console.log response
+
+
 		loadPhotoCollection: (content, source, cb) ->
 			console.log "load collection: #{content}, #{source}"
 			if(content == 'facebook')
@@ -183,8 +191,8 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 			fbLogin = @fbLogin
 			window.fbAsyncInit  =->
 					FB.init(
-						appId      : '236634053108854', # App ID
-						channelUrl : '//localhost/channel.html', # Channel File
+						appId      : '555942874451874', # App ID
+						channelUrl : '//localhost:5000/channel.html', # Channel File
 						status     : true, # check login status
 						cookie     : true, # enable cookies to allow the server to access the session
 						xfbml      : true  # parse XFBML

@@ -88,13 +88,16 @@ app.configure('production', function(){
 
 //auth
 app.get('/auth/facebook',
-  passport.authenticate('facebook'),
+  passport.authenticate('facebook',{scope:['email','user_photos','friends_photos','user_events','user_groups','publish_stream','read_stream','photo_upload']}),
   function(req,res){}
-  )
+  );
+
 app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {failureRedirect: '/login',scope:['email','user_groups','user_photos','friends_photos','publish_stream','photo_upload']}),
+  passport.authenticate('facebook', {failureRedirect:'/login'}),
   function(req,res){
+
     console.log("face book callback");
+    
     res.redirect('/collages')
   }
 

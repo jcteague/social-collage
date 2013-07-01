@@ -16,7 +16,7 @@
         var _this = this;
         this.edit_toolbar = $('#edit-toolbar');
         this.toolbar = $('#collage-menu-list');
-        this.publish_dialog_btn = $('#show-publish-dialog');
+        this.publish_dialog_btn = $('#show-save-dialog');
         this.publish_toolbar = $('#publish-toolbar');
         this.publish_dialog_btn.click(function() {
           console.log("show publish dialog");

@@ -4,12 +4,12 @@ var config_values = {
 		development: "mongodb://localhost/collage"
 	},
 	facebook_app_key: {
-		production: '236634053108854',
-		development:'236634053108854'
+		production: '555942874451874',
+		development:'555942874451874'
 	},
 	facebook_app_secret: {
-		production:'fcd97617bb0528ea89206b905dd02b68',
-		development:'fcd97617bb0528ea89206b905dd02b68'
+		production:'75b5a3157fe63d119f83d46fe6906c48',
+		development:'75b5a3157fe63d119f83d46fe6906c48'
 	},
 
 	s3_access_key: {

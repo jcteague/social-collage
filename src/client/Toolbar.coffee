@@ -4,7 +4,7 @@ define ['require','jquery','underscore','EventEmitter'],(require, $,_,event_emit
 			@edit_toolbar = $('#edit-toolbar')
 			@toolbar = $('#collage-menu-list')
 
-			@publish_dialog_btn = $('#show-publish-dialog')
+			@publish_dialog_btn = $('#show-save-dialog')
 			@publish_toolbar =  $('#publish-toolbar')
 			@publish_dialog_btn.click => 
 				console.log "show publish dialog"

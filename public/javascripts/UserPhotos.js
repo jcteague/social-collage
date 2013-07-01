@@ -43,6 +43,8 @@
 
         this.get_facebook_collection_photos = __bind(this.get_facebook_collection_photos, this);
 
+        this.fbLogin = __bind(this.fbLogin, this);
+
         this.save_image = __bind(this.save_image, this);
         this.fb_app_id = '';
         this.fb_init();
@@ -89,11 +91,15 @@
       };
 
       UserPhotos.prototype.fbLogin = function() {
-        return FB.login(function(response) {
-          if (response.authResponse) {
-
-          }
+        console.log("logging into facebook");
+        return FB.login(this.on_fb_login, {
+          scope: 'email,user_photos,friends_phothos,publish_stream,photo_upload'
         });
+      };
+
+      UserPhotos.prototype.on_fb_login = function(response) {
+        console.log("facebook login");
+        return console.log(response);
       };
 
       UserPhotos.prototype.loadPhotoCollection = function(content, source, cb) {
@@ -288,8 +294,8 @@
         window.fbAsyncInit = function() {
           var _this = this;
           FB.init({
-            appId: '236634053108854',
-            channelUrl: '//localhost/channel.html',
+            appId: '555942874451874',
+            channelUrl: '//localhost:5000/channel.html',
             status: true,
             cookie: true,
             xfbml: true
