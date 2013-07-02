@@ -22,7 +22,13 @@ html
 			.navbar-inner
 				.container-fluid
 					a.brand(href="#") Broowd
-					a.btn(href="/login") Login
-					a.btn(href="/logout") Logout
+					.pull-right
+						- if(user)
+							|	#{user.first_name} #{user.last_name}
+
+						- else
+							a.btn(href="/login") Login
+
+						a.btn(href="/logout") Logout
 		.container-fluid!=body
 		

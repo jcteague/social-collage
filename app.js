@@ -82,7 +82,15 @@ app.configure('production', function(){
   app.use(express.logger())
   mongoose.connect(config.mongodb_connection_string);
   
-}); 
+});
+var helpers = {};
+helpers.user = function(req,res){
+  if(req.isAuthenticated()){
+    return req.user
+  }
+  return undefined;
+} 
+app.dynamicHelpers(helpers);
 
 // Routes
 
