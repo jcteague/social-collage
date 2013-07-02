@@ -2,7 +2,7 @@
 form#create-collage-form.form(action="/create", method="POST")
 	fieldset
 		.span2
-			input#collageName.input-large.span2(placeholder="Collage Name", type="text")
+			input#collageName.input-large.span2(placeholder="Collage Name", type="text",name="collageName")
 		.span2
 			button#create-collage-btn.btn.btn-primary.btn-large
 				| Create New Collage 
@@ -17,7 +17,7 @@ h2
 					.img-placeholder(style="background-image:url('#{cl.photo_url}')")
 					//- img(data-src="https://#{cl.photo_url}", src="https://#{cl.photo_url}")
 					h3
-						| #{cl.Name} Collage Name
+						| #{cl.name}
 					button.start-publish.btn.btn-small(data-id="#{cl._id}", data-photourl="#{cl.photo_url}")
 						| publish
 	script(src="/javascripts/require-full.js",data-main="/javascripts/MyCollages-Main.js")

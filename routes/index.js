@@ -17,10 +17,8 @@ exports.index = function(req, res){
 
 exports.create = function(req,res){
 	console.log("create route");
-	console.log(req.body);
-	collageService.create(req.user,req.body.name,function(error,result){
-		console.log("collage.create callback");
-		
+	console.log(req);
+	collageService.create(req.user,req.body.collageName,function(error,result){
 		res.redirect('/collage/'+result._id);
 	})
 	
