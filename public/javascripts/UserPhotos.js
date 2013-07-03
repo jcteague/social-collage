@@ -75,6 +75,7 @@
           access_token: this.fb_accessToken
         };
         console.log("uploading to facebook: " + fd.url);
+        console.log(fd);
         event_emitter.emit("loading.photo.publish.started");
         return FB.api('/me/photos', 'post', fd, function(response) {
           var publish_data;

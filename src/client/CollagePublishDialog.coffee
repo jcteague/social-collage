@@ -34,9 +34,9 @@ define ['jquery','EventEmitter'], ($, event_emitter) ->
 		on_save_collage: (evt) =>
 			@show_loading()
 			@preview_buttons.attr('disabled')
-			comment = @comment.val()
+			comments = @comment.val()
 			url = @collage_data.url
 			collage_id = @collage_data.id
-			event_emitter.emit "PhotoPublishClicked", {id:collage_id,url:url,comment:comment}
+			event_emitter.emit "PhotoPublishClicked", {id:collage_id,url:url,comments:comments}
 
 

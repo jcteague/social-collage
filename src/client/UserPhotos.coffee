@@ -36,6 +36,7 @@ define ['jqueryUI','underscore','EventEmitter','async'], ($,_,event_emitter, asy
 				url: photo_data.url
 				access_token: @fb_accessToken
 			console.log "uploading to facebook: #{fd.url}"
+			console.log fd
 			event_emitter.emit "loading.photo.publish.started"
 
 			FB.api '/me/photos','post',fd, (response) ->

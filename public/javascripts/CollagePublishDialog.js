@@ -49,16 +49,16 @@
       };
 
       CollagePublishDialog.prototype.on_save_collage = function(evt) {
-        var collage_id, comment, url;
+        var collage_id, comments, url;
         this.show_loading();
         this.preview_buttons.attr('disabled');
-        comment = this.comment.val();
+        comments = this.comment.val();
         url = this.collage_data.url;
         collage_id = this.collage_data.id;
         return event_emitter.emit("PhotoPublishClicked", {
           id: collage_id,
           url: url,
-          comment: comment
+          comments: comments
         });
       };
 
