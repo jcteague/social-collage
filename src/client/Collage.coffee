@@ -1,6 +1,7 @@
 define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,event_emitter,Photo) ->
 	class Collage
 		constructor: (@canvas_element)->
+			@original_screen_dimensions = @get_screen_dimensions()
 			@canvas = $("##{@canvas_element}")
 			@canvas_container = @canvas.parent()
 			@stage = new fabric.Canvas(@canvas_element,{backgroundColor: 'rgba(255,255,255,1)'})
@@ -26,6 +27,9 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 				@addFbPhoto(img_data)
 			
 			@canvas.droppable({drop: 	image_dropped})
+			event_emitter.on "WindowResized", @resize_canvas
+
+
 			@stage.on "selection:created", (evt) =>
 				console.log "object selected"
 				console.log evt
@@ -69,7 +73,24 @@ define ['jqueryUI','underscore','fabric','EventEmitter','Photo'], ($,_,fabric,ev
 			# 		console.log(cnvs_item)
 			# 		@currentItem = cnvs_item
 			# 		event_emitter.emit "ItemSelected", @currentItem
-
+		get_screen_dimensions: ->
+			return {
+							width: $(window).width()
+							height: $(window).height()
+						}
+		resize_canvas: =>
+			new_window_size = @get_screen_dimensions()
+			# width_delta =  new_window_size.width - @original_screen_dimensions.width
+			# height_delta =  new_window_size.height - @original_screen_dimensions.height
+			# console.log("window size change: #{width_delta}, #{height_delta}")
+			# new_width = @canvas.width()+width_delta
+			# new_height = @canvas.height()+height_delta
+			@canvas.width(@canvas_container.width())
+			@canvas.height(@canvas_container.height())
+			@stage.setWidth @canvas_container.width()
+			@stage.setHeight @canvas_container.height()
+			@stage.calcOffset()
+			@original_screen_dimensions = new_window_size
 		createImage: (opts) =>
 			@stage.deactivateAllWithDispatch()
 			data = @stage.toDataURL({format:"jpeg",quality:80})

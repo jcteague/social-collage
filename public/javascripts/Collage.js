@@ -12,6 +12,9 @@
         this.canvas_element = canvas_element;
         this.createImage = __bind(this.createImage, this);
 
+        this.resize_canvas = __bind(this.resize_canvas, this);
+
+        this.original_screen_dimensions = this.get_screen_dimensions();
         this.canvas = $("#" + this.canvas_element);
         this.canvas_container = this.canvas.parent();
         this.stage = new fabric.Canvas(this.canvas_element, {
@@ -42,6 +45,7 @@
         this.canvas.droppable({
           drop: image_dropped
         });
+        event_emitter.on("WindowResized", this.resize_canvas);
         this.stage.on("selection:created", function(evt) {
           console.log("object selected");
           return console.log(evt);
@@ -71,6 +75,24 @@
           return _this.stage.renderAll();
         });
       }
+
+      Collage.prototype.get_screen_dimensions = function() {
+        return {
+          width: $(window).width(),
+          height: $(window).height()
+        };
+      };
+
+      Collage.prototype.resize_canvas = function() {
+        var new_window_size;
+        new_window_size = this.get_screen_dimensions();
+        this.canvas.width(this.canvas_container.width());
+        this.canvas.height(this.canvas_container.height());
+        this.stage.setWidth(this.canvas_container.width());
+        this.stage.setHeight(this.canvas_container.height());
+        this.stage.calcOffset();
+        return this.original_screen_dimensions = new_window_size;
+      };
 
       Collage.prototype.createImage = function(opts) {
         var data;
